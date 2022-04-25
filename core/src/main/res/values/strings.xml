@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Common -->
+    <string name="common_retry">Повторить</string>
+
+    <!-- Errors -->
+    <string name="error_unexpected_with_description">Что-то пошло не так. Разработчики уже исправляют проблему. %s</string>
+    <string name="error_unexpected">Что-то пошло не так. Разработчики уже исправляют проблему.</string>
+    <string name="error_no_internet_connection">Нет доступа к интернету.</string>
+    <string name="error_invalid_response">"Ошибка сервера. Пожалуйста, попробуйте позже.</string>
+    <string name="error_no_server_response">"Не удалось подключиться к серверу. Пожалуйста, попробуйте позже.</string>
+    <string name="error_matching_application_not_found">"На устройстве не найдено приложения для выполнения действия.</string>
+    <string name="error_ssl_handshake">"Не удалось установить подключение из-за параметров сетевой безопасности. Проверьте дату и время устройства.</string>
+
+</resources>

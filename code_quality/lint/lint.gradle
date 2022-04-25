@@ -1,0 +1,8 @@
+android {
+    lintOptions {
+        abortOnError true
+        warningsAsErrors false
+        checkDependencies false
+        lintConfig file('lint-config.xml')
+    }
+}
