@@ -51,8 +51,8 @@ dependencyResolutionManagement {
             alias('replica-algebra').to('com.github.aartikov', 'replica-algebra').versionRef('replica')
             alias('replica-android-network').to('com.github.aartikov', 'replica-android-network').versionRef('replica')
             alias('replica-decompose').to('com.github.aartikov', 'replica-decompose').versionRef('replica')
-            alias('replica-devtools').to('com.github.aartikov', 'replica-devtools').versionRef('replica')
-            alias('replica-devtoolsnoop').to('com.github.aartikov', 'replica-devtools-noop').versionRef('replica')
+            alias('replica-devtools-debug').to('com.github.aartikov', 'replica-devtools').versionRef('replica')
+            alias('replica-devtools-release').to('com.github.aartikov', 'replica-devtools-noop').versionRef('replica')
             bundle('replica', ['replica-core', 'replica-algebra', 'replica-android-network', 'replica-decompose'])
 
             // Serialization
