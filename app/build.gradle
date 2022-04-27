@@ -65,6 +65,9 @@ android {
         freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
         freeCompilerArgs += "-Xopt-in=kotlin.ExperimentalStdlibApi"
         freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+        freeCompilerArgs += "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi"
+        freeCompilerArgs += "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi"
     }
 
     buildFeatures {

@@ -6,11 +6,12 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.Koin
 import org.koin.dsl.koinApplication
 import ru.mobileup.core.ComponentFactory
+import ru.mobileup.core.KoinProvider
 import timber.log.Timber
 
-class App : Application() {
+class App : Application(), KoinProvider {
 
-    lateinit var koin: Koin
+    override lateinit var koin: Koin
         private set
 
     override fun onCreate() {
