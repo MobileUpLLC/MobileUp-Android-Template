@@ -1,6 +1,6 @@
 # MobileUp-Android-Template 🌀
 
-Template for initializing an android project in [MobileUp](https://mobileup.ru/).
+Hi! This is template for initializing an android project in [MobileUp](https://mobileup.ru/).
 
 ### Creating Project
 
@@ -45,3 +45,6 @@ This module contains features-classes. A feature, as a rule, has its own folder.
 - [Coil](https://github.com/coil-kt/coil)
 - [Detekt](https://github.com/detekt/detekt)
 - [Kotlin Serialization](https://github.com/Kotlin/kotlinx.serialization)
+
+
+### Good coding and happy day!🤘
