@@ -9,8 +9,6 @@ import java.time.temporal.ChronoUnit
 
 /**
  * A function that allows you to wait for a condition to be met.
- * You should be careful because function used "pollInSameThread" with conditions that wait forever
- * (or a long time) since Awaitility cannot interrupt the thread when it's using the same thread as the test.
  */
 fun awaitUntil(condition: () -> Boolean) {
     Shadows.shadowOf(Looper.getMainLooper()).idle()

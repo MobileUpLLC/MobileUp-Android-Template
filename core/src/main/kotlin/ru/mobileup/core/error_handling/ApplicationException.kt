@@ -3,27 +3,27 @@ package ru.mobileup.core.error_handling
 abstract class ApplicationException(cause: Throwable? = null) : Exception(cause)
 
 /**
- * Отсутствие доступа к данным (Access token невалиден или истек)
+ * No access to data (access token invalid or expired)
  */
 class UnauthorizedException(cause: Throwable) : ApplicationException(cause)
 
 /**
- * Получен ответ от сервера, но он невалиден - 4xx, 5xx
+ * Received a response from the server, but it is invalid - 4xx, 5xx
  */
 class ServerException(cause: Throwable? = null) : ApplicationException(cause)
 
 /**
- * Ошибка передачи данных
+ * Data transfer error
  */
 abstract class TransportException(cause: Throwable? = null) : ApplicationException(cause)
 
 /**
- * Не удалось подключиться к серверу и проблема скорее всего у клиента
+ * Failed to connect to the server and the problem is most likely on the client
  */
 class NoInternetException : TransportException()
 
 /**
- *  Не удалось подключиться к серверу и проблема скорее всего на сервере
+ *  Problems parsing json or lack of fields
  */
 class NoServerResponseException : TransportException()
 
@@ -33,23 +33,23 @@ class NoServerResponseException : TransportException()
 class DeserializationException(cause: Throwable) : TransportException(cause)
 
 /**
- * Указывает, что клиент и сервер не смогли согласовать желаемый уровень безопасности.
- * Проблема может быть на сервере - истек сертификат.
- * Проблема может быть у клиента - требуется проверка даты и времени на устройстве.
+ * Indicated that the client and server cannot agree on the desired level of security.
+ * The problem may be on the server - the certificate has expired.
+ * The problem may be on the client - verification of the date and time of collection is required.
  */
 class SSLHandshakeException : TransportException()
 
 /**
- * Не удалось найти приложение для работы с переденными данными
+ * Could not find app for action
  */
 class ExternalAppNotFoundException(cause: Throwable) : ApplicationException(cause)
 
 /**
- * Проблема возникла при работе с файлом
+ * The problem exists while working with the file
  */
 class FileOperationException(cause: Throwable) : ApplicationException(cause)
 
 /**
- * Какая-то неизвестная проблема
+ * Some unknown issue
  */
 class UnknownException(cause: Throwable, override val message: String) : ApplicationException(cause)

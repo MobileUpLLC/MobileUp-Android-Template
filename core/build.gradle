@@ -67,8 +67,6 @@ dependencies {
     implementation libs.sesame.localizedString
     implementation libs.bundles.decompose
     implementation libs.bundles.replica
-    debugImplementation libs.replica.devtools.debug
-    releaseImplementation libs.replica.devtools.release
 
     // Debugging
     implementation libs.timber

@@ -40,5 +40,3 @@ class App : Application() {
         devtools.launch()
     }
 }
-
-val Application.koin get() = (this as App).koin

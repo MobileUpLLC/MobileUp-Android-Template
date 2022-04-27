@@ -10,6 +10,9 @@ import androidx.compose.ui.layout.onGloballyPositioned
 
 val LocalMessageOffsets = staticCompositionLocalOf { mutableStateMapOf<Int, Int>() }
 
+/**
+ * This function allows you to specify that a message should be displayed above a component.
+ */
 fun Modifier.noOverlapByMessage(): Modifier = composed {
     val key = currentCompositeKeyHash
     val localMessageOffsets = LocalMessageOffsets.current

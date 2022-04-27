@@ -13,7 +13,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalSerializationApi::class)
-class NetworkApiFactory(urlProvider: BaseUrlProvider) {
+class NetworkApiFactory(private val urlProvider: BaseUrlProvider) {
 
     companion object {
         private const val CONNECT_TIMEOUT_SECONDS = 30L
@@ -22,31 +22,50 @@ class NetworkApiFactory(urlProvider: BaseUrlProvider) {
     }
 
     private val json = createJson()
-    private val retrofit = createRetrofit(urlProvider.getUrl())
+    private val authorizedOkHttpClient = createOkHttpClient(authorized = true)
+    private val unauthorizedOkHttpClient = createOkHttpClient(authorized = false)
 
-    inline fun <reified T : Any> createApi(): T = createApi(T::class.java)
+    private val authorizedRetrofit = createRetrofit(authorizedOkHttpClient)
+    private val unauthorizedRetrofit = createRetrofit(unauthorizedOkHttpClient)
 
-    fun <T : Any> createApi(clazz: Class<T>): T {
-        return retrofit.create(clazz)
+    /**
+     * Creates an api that requires authorization
+     */
+    inline fun <reified T : Any> createAuthorizedApi(): T = createAuthorizedApi(T::class.java)
+
+    /**
+     * Creates an API that does not require authorization
+     */
+    inline fun <reified T : Any> createUnauthorizedApi(): T = createUnauthorizedApi(T::class.java)
+
+    fun <T : Any> createAuthorizedApi(clazz: Class<T>): T {
+        return authorizedRetrofit.create(clazz)
     }
 
-    private fun createRetrofit(baseUrl: String): Retrofit {
+    fun <T : Any> createUnauthorizedApi(clazz: Class<T>): T {
+        return unauthorizedRetrofit.create(clazz)
+    }
+
+    private fun createRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(createOkHttpClient())
+            .baseUrl(urlProvider.getUrl())
+            .client(okHttpClient)
             .addCallAdapterFactory(ErrorHandlingCallAdapterFactory())
             .addConverterFactory(ErrorHandlingConverterFactory(json.asConverterFactory("application/json".toMediaType())))
             .build()
     }
 
-    private fun createOkHttpClient(): OkHttpClient {
+    private fun createOkHttpClient(authorized: Boolean): OkHttpClient {
         return OkHttpClient.Builder()
             .apply {
                 connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
                 readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
                 writeTimeout(WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
 
-                addInterceptor(ErrorInterceptor())
+                if (authorized) {
+                    addInterceptor(AuthorizationInterceptor())
+                }
+
                 if (BuildConfig.DEBUG) {
                     addNetworkInterceptor(createLoggingInterceptor())
                 }

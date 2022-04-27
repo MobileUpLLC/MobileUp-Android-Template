@@ -1,6 +1,5 @@
 <resources>
     <!-- List -->
-    <string name="pokemons_title">Покемоны</string>
     <string name="pokemons_select_type">Тип покемонов</string>
     <string name="pokemons_empty_description">Покемоны не найдены</string>
 

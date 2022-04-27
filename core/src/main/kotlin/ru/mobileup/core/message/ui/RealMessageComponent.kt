@@ -18,7 +18,7 @@ class RealMessageComponent(
 ) : ComponentContext by componentContext, MessageComponent {
 
     companion object {
-        private const val ShowTime = 4000L
+        private const val SHOW_TIME = 4000L
     }
 
     private val coroutineScope = componentCoroutineScope()
@@ -50,7 +50,7 @@ class RealMessageComponent(
         autoDismissJob?.cancel()
         visibleMessageData = messageData
         autoDismissJob = coroutineScope.launch {
-            delay(ShowTime)
+            delay(SHOW_TIME)
             visibleMessageData = null
         }
     }

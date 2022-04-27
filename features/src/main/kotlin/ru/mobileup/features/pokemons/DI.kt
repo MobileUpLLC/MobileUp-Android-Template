@@ -18,7 +18,7 @@ import ru.mobileup.features.pokemons.ui.details.RealPokemonDetailsComponent
 import ru.mobileup.features.pokemons.ui.list.RealPokemonListComponent
 
 val pokemonsModule = module {
-    single<PokemonApi> { get<NetworkApiFactory>().createApi() }
+    single<PokemonApi> { get<NetworkApiFactory>().createUnauthorizedApi() }
     single<PokemonRepository> { PokemonRepositoryImpl(get(), get()) }
 }
 

@@ -38,7 +38,7 @@ dependencyResolutionManagement {
             alias('coil').to('io.coil-kt', 'coil-compose').version('1.4.0')
 
             // Architecture
-            version('sesame', '1.4.0-beta1')
+            version('sesame', '1.5.0')
             alias('sesame-localizedString').to('com.github.aartikov', 'sesame-localized-string').versionRef('sesame')
 
             version('decompose', '0.5.0')
