@@ -2,6 +2,7 @@ package ru.mobileup.features.pokemons.ui.list
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -12,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import ru.mobileup.core.theme.AppTheme
 import ru.mobileup.features.pokemons.domain.PokemonType
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PokemonTypeItem(
     type: PokemonType,
