@@ -3,7 +3,6 @@ package ru.mobileup.core.utils
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import com.arkivanov.decompose.Child
 import com.arkivanov.decompose.router.RouterState
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.ValueObserver
@@ -17,10 +16,8 @@ import kotlinx.coroutines.cancel
 
 fun <T : Any> createFakeRouterState(instance: T): RouterState<*, T> {
     return RouterState(
-        activeChild = Child.Created(
-            configuration = "<fake>",
-            instance = instance
-        )
+        configuration = "<fake>",
+        instance = instance
     )
 }
 
