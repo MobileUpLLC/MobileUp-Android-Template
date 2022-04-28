@@ -1,50 +1,58 @@
-# MobileUp-Android-Template 🌀
+# MobileUp Android Template 🌀
 
-Hi! This is template for initializing an android project in [MobileUp](https://mobileup.ru/).
+Hi! This is a template for initializing an Android project in [MobileUp](https://mobileup.ru/).
 
 ### Creating Project
 
 After cloning the template:
 
-1. Search for ru.mobileup.template and replace it with the name of your project in the right places;
-2. Remove the pokens feature. It created for example-code;
-3. Replace error text resources with text for your project;
-4. If there is no authorization in the application, remove the extra code from NetworkApiFactory.
+1. Search for `ru.mobileup.template` and replace it with the name of your project in the right
+   places;
+2. Replace application name and icon to the correct ones;
+3. Remove the pokemons feature. It created for example-code;
+4. Replace error text resources with text for your project;
+5. If there is no authorization in the application, remove the extra code from `NetworkApiFactory`.
 
 ### Architecture
-The architecture is based on three gradle modules: app, core, features.
+
+The architecture is based on three gradle modules: **app**, **core**, **features**.
 
 #### app
 
-The module contains classes such as: App, MainActivity and DI. Also in this module are helpful utilities for creating unit tests.
+The module pieces all the features together and contains `App` and `MainActivity`.
 
 #### core
 
-This module contains classes that are used everywhere.
-- error_handling (Here are classes with error types, classes for error handling)
-- messages (Here are classes for showing popup-messages)
-- network (Here are classes for working with the network)
-- themes (Here are classes for application style settings)
-- widget (Frequently used widgets are stored here)
-  
+This module contains general purpose packages:
+
+- `error_handling` (Here are classes with error types, classes for error handling)
+- `messages` (Here are classes for showing popup-messages)
+- `network` (Here are classes for working with the network)
+- `themes` (Here are classes for application style settings)
+- `widget` (Frequently used widgets are stored here)
+
 #### features
 
-This module contains features-classes. A feature, as a rule, has its own folder. Inside the folder can be located:
+This module contains concrete features. A feature, as a rule, has its own package. Inside the
+package can be located:
+
 - DI-file
-- ui folder (Component, RealComponent, Layout)
-- domain folder (Interactors, data classes)
-- data folder (Storeges, Gateways)
+- ui package (Components, Jetpack Compose UI)
+- domain package (Entities, Interactors)
+- data package (Repositories, Storages)
 
 ### Technology stack
-- [Sesame](https://github.com/aartikov/Sesame)
-- [Replica](https://github.com/aartikov/Replica)
+
 - [Jetpack Compose](https://developer.android.com/jetpack/compose)
 - [Decompose](https://github.com/arkivanov/Decompose)
+- [Replica](https://github.com/aartikov/Replica)
+- [Sesame](https://github.com/aartikov/Sesame)
 - [Retrofit](https://github.com/square/retrofit)
 - [Coroutines](https://developer.android.com/kotlin/coroutines)
+- [Kotlin Serialization](https://github.com/Kotlin/kotlinx.serialization)
 - [Coil](https://github.com/coil-kt/coil)
 - [Detekt](https://github.com/detekt/detekt)
-- [Kotlin Serialization](https://github.com/Kotlin/kotlinx.serialization)
+- [Hyperion](https://github.com/willowtreeapps/Hyperion-Android)
 
 
 ### Good coding and happy day!🤘
