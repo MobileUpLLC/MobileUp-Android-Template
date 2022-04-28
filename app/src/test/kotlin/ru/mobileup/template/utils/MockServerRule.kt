@@ -1,12 +1,10 @@
 package ru.mobileup.template.utils
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
-@ExperimentalCoroutinesApi
 class MockServerRule(private val dispatcher: Dispatcher? = null) : TestWatcher() {
 
     val server = MockWebServer()
