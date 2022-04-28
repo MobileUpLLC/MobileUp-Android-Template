@@ -23,12 +23,12 @@ abstract class TransportException(cause: Throwable? = null) : ApplicationExcepti
 class NoInternetException : TransportException()
 
 /**
- *  Problems parsing json or lack of fields
+ * Failed to connect to the server and the problem is most likely on the server
  */
 class NoServerResponseException : TransportException()
 
 /**
- * Проблемы при парсинге json или нехватка полей
+ *  Problems parsing json or lack of fields
  */
 class DeserializationException(cause: Throwable) : TransportException(cause)
 

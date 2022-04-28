@@ -1,6 +1,6 @@
 <resources>
     <!-- Common -->
-    <string name="common_retry">Reload</string>
+    <string name="common_retry">Retry</string>
 
     <!-- Errors -->
     <string name="error_unexpected_with_description">Something went wrong. The developers are already fixing the problem. %s</string>

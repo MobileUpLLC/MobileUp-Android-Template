@@ -1,10 +1,10 @@
 <resources>
     <!-- List -->
-    <string name="pokemons_select_type">Тип покемонов</string>
-    <string name="pokemons_empty_description">Покемоны не найдены</string>
+    <string name="pokemons_select_type">Pokemon types</string>
+    <string name="pokemons_empty_description">Pokemons are not found</string>
 
     <!-- Details -->
-    <string name="pokemons_types">Типы:</string>
-    <string name="pokemons_weight">Ширина: %.1f</string>
-    <string name="pokemons_height">Высота: %.1f</string>
+    <string name="pokemons_types">Types:</string>
+    <string name="pokemons_weight">Weight: %.1f</string>
+    <string name="pokemons_height">Height: %.1f</string>
 </resources>
