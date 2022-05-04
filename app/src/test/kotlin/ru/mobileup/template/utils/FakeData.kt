@@ -1,7 +1,7 @@
 package ru.mobileup.template.utils
 
 object FakeData {
-    val pokemonsEmptyResponse = """
+    val pokemonListEmptyResponse = """
         {
           "pokemon": []
         }
@@ -32,6 +32,24 @@ object FakeData {
               "slot": 1
             }
           ]
+        }
+    """.trimIndent()
+
+    val detailedPokemonResponse = """
+        {
+          "height": 10,
+          "id": 77,
+          "name": "ponyta",
+          "types": [
+            {
+              "slot": 1,
+              "type": {
+                "name": "fire",
+                "url": "https://pokeapi.co/api/v2/type/10/"
+              }
+            }
+          ],
+          "weight": 300
         }
     """.trimIndent()
 }

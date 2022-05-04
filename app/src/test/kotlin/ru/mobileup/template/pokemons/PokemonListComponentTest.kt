@@ -10,7 +10,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.KoinTestRule
 import org.robolectric.annotation.Config
+import ru.mobileup.core.error_handling.DeserializationException
+import ru.mobileup.core.error_handling.ServerException
 import ru.mobileup.core.network.BaseUrlProvider
+import ru.mobileup.features.pokemons.createPokemonDetailsComponent
 import ru.mobileup.features.pokemons.createPokemonListComponent
 import ru.mobileup.features.pokemons.domain.Pokemon
 import ru.mobileup.features.pokemons.domain.PokemonId
@@ -33,7 +36,7 @@ class PokemonListComponentTest {
         mockServerRule.server.enqueue(
             MockResponse()
                 .setResponseCode(200)
-                .setBody(FakeData.pokemonsEmptyResponse)
+                .setBody(FakeData.pokemonListEmptyResponse)
         )
         val koin = koinTestRule.testKoin {
             single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
@@ -44,7 +47,6 @@ class PokemonListComponentTest {
             .createPokemonListComponent(componentContext) {}
         componentContext.moveToState(Lifecycle.State.RESUMED)
 
-        awaitUntil { sut.pokemonsState.loading }
         awaitUntil { !sut.pokemonsState.loading }
         val actualPokemonsState = sut.pokemonsState
 
@@ -84,7 +86,6 @@ class PokemonListComponentTest {
         )
         componentContext.moveToState(Lifecycle.State.RESUMED)
 
-        awaitUntil { sut.pokemonsState.loading }
         awaitUntil { !sut.pokemonsState.loading }
         val actualPokemonsState = sut.pokemonsState
 
@@ -92,54 +93,6 @@ class PokemonListComponentTest {
             Loadable(loading = false, data = data, error = null),
             actualPokemonsState
         )
-    }
-
-    @Test
-    fun `update data when retry click`() {
-        mockServerRule.server.enqueue(
-            MockResponse()
-                .setResponseCode(200)
-                .setBody(FakeData.pokemonListResponse)
-        )
-        val koin = koinTestRule.testKoin {
-            single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
-        }
-        val componentContext = TestComponentContext()
-        val sut = koin
-            .componentFactory
-            .createPokemonListComponent(componentContext) {}
-        componentContext.moveToState(Lifecycle.State.RESUMED)
-        awaitUntil { sut.pokemonsState.loading }
-        awaitUntil { !sut.pokemonsState.loading }
-
-        sut.onRetryClick()
-        mockServerRule.server.enqueue(MockResponse().setResponseCode(404))
-        awaitUntil { sut.pokemonsState.loading }
-        awaitUntil { !sut.pokemonsState.loading }
-        val actualPokemonsState = sut.pokemonsState
-
-        Assert.assertNotNull(actualPokemonsState.error)
-        Assert.assertEquals(1, actualPokemonsState.error?.exceptions?.count())
-    }
-
-    @Test
-    fun `shows error when loader failed`() {
-        mockServerRule.server.enqueue(MockResponse().setResponseCode(404))
-        val koin = koinTestRule.testKoin {
-            single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
-        }
-        val componentContext = TestComponentContext()
-        val sut = koin
-            .componentFactory
-            .createPokemonListComponent(componentContext) {}
-        componentContext.moveToState(Lifecycle.State.RESUMED)
-
-        awaitUntil { sut.pokemonsState.loading }
-        awaitUntil { !sut.pokemonsState.loading }
-        val actualPokemonsState = sut.pokemonsState
-
-        Assert.assertNotNull(actualPokemonsState.error)
-        Assert.assertEquals(1, actualPokemonsState.error?.exceptions?.count())
     }
 
     @Test
@@ -175,5 +128,25 @@ class PokemonListComponentTest {
         val actualSelectedTypeId = sut.selectedTypeId
 
         Assert.assertEquals(PokemonTypeId("101"), actualSelectedTypeId)
+    }
+
+    @Test
+    fun `shows error when loader failed`() {
+        mockServerRule.server.enqueue(MockResponse().setResponseCode(404))
+        val koin = koinTestRule.testKoin {
+            single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
+        }
+        val componentContext = TestComponentContext()
+        val sut = koin
+            .componentFactory
+            .createPokemonListComponent(componentContext) {}
+        componentContext.moveToState(Lifecycle.State.RESUMED)
+
+        awaitUntil { !sut.pokemonsState.loading }
+        val actualErrorPokemonsState = sut.pokemonsState
+
+        Assert.assertNotNull(actualErrorPokemonsState.error)
+        Assert.assertEquals(1, actualErrorPokemonsState.error?.exceptions?.count())
+        Assert.assertTrue(actualErrorPokemonsState.error?.exceptions?.first() is ServerException)
     }
 }
