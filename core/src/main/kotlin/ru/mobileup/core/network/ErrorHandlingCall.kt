@@ -38,6 +38,7 @@ class ErrorHandlingCall<T>(private val sourceCall: Call<T>) : Call<T> by sourceC
         }
 
         private fun mapToFailureException(throwable: Throwable) = when (throwable) {
+            is DeserializationException -> throwable
             is SerializationException -> DeserializationException(throwable)
             is SocketTimeoutException -> NoServerResponseException()
             is SSLHandshakeException -> SSLHandshakeException()
