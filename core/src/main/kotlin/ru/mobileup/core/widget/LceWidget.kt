@@ -16,16 +16,16 @@ fun <T : Any> LceWidget(
 ) {
     val (loading, data, error) = state
     when {
-        data == null -> emptyContent?.invoke()
-
-        data != null -> content(data, loading)
-
-        loading -> FullscreenCircularProgress(modifier)
-
         error != null -> ErrorPlaceholder(
             errorMessage = error.exception.errorMessage.resolve(),
             onRetryClick = onRetryClick,
             modifier = modifier
         )
+
+        loading -> FullscreenCircularProgress(modifier)
+
+        data == null -> emptyContent?.invoke()
+
+        data != null -> content(data, loading)
     }
 }
