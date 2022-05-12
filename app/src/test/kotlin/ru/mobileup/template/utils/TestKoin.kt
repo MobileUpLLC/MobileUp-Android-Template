@@ -2,6 +2,7 @@ package ru.mobileup.template.utils
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import me.aartikov.replica.network.NetworkConnectivityProvider
 import org.koin.core.Koin
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.ModuleDeclaration
@@ -15,6 +16,7 @@ fun KoinTestRule.testKoin(moduleDeclaration: ModuleDeclaration? = null): Koin {
     val testModule = module {
         single<Context> { ApplicationProvider.getApplicationContext<App>() }
         single { ComponentFactory(koin) }
+        single<NetworkConnectivityProvider> { FakeNetworkConnectivityProvider() }
         if (moduleDeclaration != null) moduleDeclaration()
     }
     loadKoinModules(allModules + testModule)

@@ -2,7 +2,6 @@ package ru.mobileup.template.pokemons
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.arkivanov.essenty.lifecycle.Lifecycle
-import me.aartikov.replica.network.NetworkConnectivityProvider
 import me.aartikov.replica.single.Loadable
 import okhttp3.mockwebserver.MockResponse
 import org.junit.Assert
@@ -36,7 +35,6 @@ class PokemonDetailsComponentTest {
                 .setBody(FakeData.detailedPokemonResponse)
         )
         val koin = koinTestRule.testKoin {
-            single<NetworkConnectivityProvider> { FakeAndroidNetworkConnectivityProvider() }
             single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
         }
         val componentContext = TestComponentContext()
@@ -67,7 +65,6 @@ class PokemonDetailsComponentTest {
     fun `shows error when loading failed`() {
         mockServerRule.server.enqueue(MockResponse().setResponseCode(404))
         val koin = koinTestRule.testKoin {
-            single<NetworkConnectivityProvider> { FakeAndroidNetworkConnectivityProvider() }
             single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
         }
         val componentContext = TestComponentContext()
@@ -93,7 +90,6 @@ class PokemonDetailsComponentTest {
                 .setBody(FakeData.detailedPokemonResponse)
         )
         val koin = koinTestRule.testKoin {
-            single<NetworkConnectivityProvider> { FakeAndroidNetworkConnectivityProvider() }
             single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
         }
         val componentContext = TestComponentContext()
