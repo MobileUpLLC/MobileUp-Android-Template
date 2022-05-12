@@ -35,6 +35,27 @@ object FakeData {
         }
     """.trimIndent()
 
+    val newPokemonListResponse = """
+        {
+          "pokemon": [
+            {
+              "pokemon": {
+                "name": "squirtle",
+                "url": "https://pokeapi.co/api/v2/pokemon/7/"
+              },
+              "slot": 1
+            },
+            {
+              "pokemon": {
+                "name": "wartortle",
+                "url": "https://pokeapi.co/api/v2/pokemon/8/"
+              },
+              "slot": 1
+            }
+          ]
+        }
+    """.trimIndent()
+
     val detailedPokemonResponse = """
         {
           "height": 10,
