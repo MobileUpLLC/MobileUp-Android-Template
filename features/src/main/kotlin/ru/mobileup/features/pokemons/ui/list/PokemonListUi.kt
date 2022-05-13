@@ -18,7 +18,8 @@ import androidx.compose.ui.unit.dp
 import me.aartikov.replica.single.Loadable
 import ru.mobileup.core.theme.AppTheme
 import ru.mobileup.core.widget.EmptyPlaceholder
-import ru.mobileup.core.widget.LceWidget
+import ru.mobileup.core.widget.RefreshingProgress
+import ru.mobileup.core.widget.SwipeRefreshLceWidget
 import ru.mobileup.features.R
 import ru.mobileup.features.pokemons.domain.Pokemon
 import ru.mobileup.features.pokemons.domain.PokemonId
@@ -41,11 +42,11 @@ fun PokemonListUi(
                 onTypeClick = component::onTypeClick
             )
 
-            LceWidget(
+            SwipeRefreshLceWidget(
                 state = component.pokemonsState,
-                onRetryClick = component::onRetryClick,
-                modifier = modifier,
-            ) { pokemons, _ ->
+                onRefresh = component::onRefresh,
+                onRetryClick = component::onRetryClick
+            ) { pokemons, refreshing ->
                 if (pokemons.isNotEmpty()) {
                     PokemonListContent(
                         pokemons = pokemons,
@@ -54,6 +55,7 @@ fun PokemonListUi(
                 } else {
                     EmptyPlaceholder(description = stringResource(R.string.pokemons_empty_description))
                 }
+                RefreshingProgress(refreshing)
             }
         }
     }
@@ -180,4 +182,6 @@ class FakePokemonListComponent : PokemonListComponent {
     override fun onPokemonClick(pokemonId: PokemonId) = Unit
 
     override fun onRetryClick() = Unit
+
+    override fun onRefresh() = Unit
 }

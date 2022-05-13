@@ -69,6 +69,8 @@ dependencies {
     debugImplementation libs.replica.devtools.debug
     releaseImplementation libs.replica.devtools.release
 
+    implementation libs.accompanist.swiperefresh
+
     // Debugging
     implementation libs.timber
     debugImplementation libs.chucker.main

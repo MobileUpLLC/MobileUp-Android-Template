@@ -11,21 +11,18 @@ fun <T : Any> LceWidget(
     state: Loadable<T>,
     onRetryClick: () -> Unit,
     modifier: Modifier = Modifier,
-    emptyContent: @Composable (() -> Unit)? = null,
     content: @Composable (data: T, refreshing: Boolean) -> Unit
 ) {
     val (loading, data, error) = state
     when {
+        data != null -> content(data, loading)
+
+        loading -> FullscreenCircularProgress(modifier)
+
         error != null -> ErrorPlaceholder(
             errorMessage = error.exception.errorMessage.resolve(),
             onRetryClick = onRetryClick,
             modifier = modifier
         )
-
-        loading -> FullscreenCircularProgress(modifier)
-
-        data == null -> emptyContent?.invoke()
-
-        data != null -> content(data, loading)
     }
 }

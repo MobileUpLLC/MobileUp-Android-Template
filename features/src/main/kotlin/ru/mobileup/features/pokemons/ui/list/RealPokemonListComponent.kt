@@ -48,4 +48,8 @@ class RealPokemonListComponent(
     override fun onRetryClick() {
         pokemonsByTypeReplica.refresh(selectedTypeId)
     }
+
+    override fun onRefresh() {
+        pokemonsByTypeReplica.refresh(selectedTypeId)
+    }
 }
