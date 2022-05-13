@@ -13,7 +13,7 @@ android {
         applicationId "ru.mobileup.template"
         minSdk min_sdk_version
         targetSdk target_sdk_version
-        // versionCode is set by ci.gradle
+        versionCode 1 // Can use ci.gradle to set versionCode
         versionName "0.0.1"
     }
 
@@ -111,6 +111,7 @@ dependencies {
 
     // Debugging
     implementation libs.timber
+    debugImplementation libs.bundles.hyperion
 
     // Testing
     testImplementation libs.junit

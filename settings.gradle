@@ -78,6 +78,24 @@ dependencyResolutionManagement {
             // Debugging
             alias('timber').to('com.jakewharton.timber', 'timber').version('5.0.1')
 
+            version('hyperion', '0.9.34')
+            version('hyperionAddons', '0.3.3')
+            alias('hyperion-core').to('com.willowtreeapps.hyperion', 'hyperion-core').versionRef('hyperion')
+            alias('hyperion-recorder').to('com.willowtreeapps.hyperion', 'hyperion-recorder').versionRef('hyperion')
+            alias('hyperion-crash').to('com.willowtreeapps.hyperion', 'hyperion-crash').versionRef('hyperion')
+            alias('hyperion-disk').to('com.willowtreeapps.hyperion', 'hyperion-disk').versionRef('hyperion')
+            alias('hyperion-addons-logs').to('me.nemiron.hyperion', 'logs').versionRef('hyperionAddons')
+            alias('hyperion-addons-networkEmulation').to('me.nemiron.hyperion', 'network-emulation').versionRef('hyperionAddons')
+            alias('hyperion-addons-chucker').to('me.nemiron.hyperion', 'chucker').versionRef('hyperionAddons')
+            bundle('hyperion',
+                    ['hyperion-core', 'hyperion-recorder', 'hyperion-crash', 'hyperion-disk',
+                     'hyperion-addons-logs', 'hyperion-addons-networkEmulation', 'hyperion-addons-chucker']
+            )
+
+            version('chucker', '3.5.2')
+            alias('chucker-main').to('com.github.chuckerteam.chucker', 'library').versionRef('chucker')
+            alias('chucker-noop').to('com.github.chuckerteam.chucker', 'library-no-op').versionRef('chucker')
+
             // Testing
             alias('junit').to('junit', 'junit').version('4.13.2')
             alias('extJunit').to('androidx.test.ext', 'junit-ktx').version('1.1.3')
