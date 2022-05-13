@@ -48,7 +48,7 @@ dependencyResolutionManagement {
             alias('decompose-compose').to('com.arkivanov.decompose', 'extensions-compose-jetpack').versionRef('decompose')
             bundle('decompose', ['decompose-core', 'decompose-compose'])
 
-            version('replica', '1.0.0-alpha3')
+            version('replica', '1.0.0-alpha4')
             alias('replica-core').to('com.github.aartikov', 'replica-core').versionRef('replica')
             alias('replica-algebra').to('com.github.aartikov', 'replica-algebra').versionRef('replica')
             alias('replica-android-network').to('com.github.aartikov', 'replica-android-network').versionRef('replica')
