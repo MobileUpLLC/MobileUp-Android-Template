@@ -21,7 +21,6 @@ class App : Application(), KoinProvider {
         koin = createKoin().also {
             it.declare(ComponentFactory(it))
         }
-        launchReplicaDevTools()
         initDebugTools()
     }
 
@@ -44,6 +43,7 @@ class App : Application(), KoinProvider {
     }
 
     private fun initDebugTools() {
+        launchReplicaDevTools()
         if (BuildConfig.DEBUG) {
             DebugToolsInitializer.initialize(this)
         }

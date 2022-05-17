@@ -6,6 +6,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
+import ru.mobileup.core.DebugToolsInitializer.chuckerCollector
 import java.io.IOException
 import java.net.HttpURLConnection.*
 import java.net.SocketTimeoutException
@@ -18,17 +19,24 @@ class ErrorHandlingCall<T>(private val sourceCall: Call<T>) : Call<T> by sourceC
         sourceCall.enqueue(getEnqueuedCallback(callback))
     }
 
+    @Suppress("DEPRECATION")
     private fun getEnqueuedCallback(callback: Callback<T>) = object : Callback<T> {
 
         override fun onResponse(call: Call<T>, response: Response<T>) {
             when (response.isSuccessful) {
                 true -> callback.onResponse(call, response)
-                else -> callback.onFailure(call, mapToFailureException(response))
+                else -> {
+                    val exception = mapToFailureException(response)
+                    chuckerCollector?.onError("ErrorHandlingCall", exception)
+                    callback.onFailure(call, exception)
+                }
             }
         }
 
         override fun onFailure(call: Call<T>, throwable: Throwable) {
-            callback.onFailure(call, mapToFailureException(throwable))
+            val exception = mapToFailureException(throwable)
+            chuckerCollector?.onError("ErrorHandlingCall", exception)
+            callback.onFailure(call, exception)
         }
 
         private fun mapToFailureException(response: Response<T>) = when (response.code()) {
