@@ -20,7 +20,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import me.aartikov.replica.single.Loadable
 import ru.mobileup.core.theme.AppTheme
-import ru.mobileup.core.widget.LceWidget
+import ru.mobileup.core.widget.RefreshingProgress
+import ru.mobileup.core.widget.SwipeRefreshLceWidget
 import ru.mobileup.features.R
 import ru.mobileup.features.pokemons.domain.DetailedPokemon
 import ru.mobileup.features.pokemons.domain.PokemonId
@@ -36,11 +37,13 @@ fun PokemonDetailsUi(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
     ) {
-        LceWidget(
+        SwipeRefreshLceWidget(
             state = component.pokemonState,
+            onRefresh = component::onRefresh,
             onRetryClick = component::onRetryClick
-        ) { pokemon, _ ->
-            PokemonDetailsContent(pokemon = pokemon)
+        ) { pokemon, refreshing ->
+            PokemonDetailsContent(pokemon)
+            RefreshingProgress(refreshing, modifier = Modifier.padding(top = 4.dp))
         }
     }
 }
@@ -126,4 +129,6 @@ class FakePokemonDetailsComponent : PokemonDetailsComponent {
     )
 
     override fun onRetryClick() = Unit
+
+    override fun onRefresh() = Unit
 }
