@@ -20,6 +20,8 @@ interface PokemonListComponent {
 
     fun onRetryClick()
 
+    fun onRefresh()
+
     sealed interface Output {
         data class PokemonDetailsRequested(val pokemonId: PokemonId) : Output
     }

@@ -49,7 +49,7 @@ dependencies {
     implementation libs.compose.ui
     implementation libs.compose.material
     implementation libs.activity.compose
-    debugImplementation libs.compose.tooling
+    implementation libs.compose.tooling
 
     // DI
     implementation libs.koin.android
@@ -69,6 +69,11 @@ dependencies {
     debugImplementation libs.replica.devtools.debug
     releaseImplementation libs.replica.devtools.release
 
+    implementation libs.accompanist.swiperefresh
+
     // Debugging
     implementation libs.timber
+    debugImplementation libs.chucker.main
+    releaseImplementation libs.chucker.noop
+    debugImplementation libs.bundles.hyperion
 }

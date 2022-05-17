@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!--  Errors  -->
+    <issue id="AllCaps" severity="error"/>
+    <issue id="HardcodedText" severity="error"/>
+    <issue id="UniqueConstants" severity="error"/>
+    <issue id="Override" severity="error"/>
+    <issue id="Assert" severity="error"/>
+    <issue id="MissingTranslation" severity="error"/>
+    <issue id="AllCaps" severity="error"/>
+    <issue id="NewApi" severity="error"/>
+    <issue id="UnusedAttribute" severity="error"/>
+    <issue id="Typos" severity="error"/>
+    <issue id="UnusedResources" severity="error"/>
+    <issue id="InvalidId" severity="error"/>
+    <issue id="WrongFolder" severity="error"/>
+    <issue id="SimpleDateFormat" severity="error"/>
+    <issue id="UseCompoundDrawables" severity="error"/>
+    <issue id="ButtonCase" severity="error"/>
+
+    <!--  Warnings  -->
+    <issue id="MissingConstraints" severity="warning"/>
+    <issue id="TestAppLink" severity="warning"/>
+    <issue id="BatteryLife" severity="warning"/>
+    <issue id="BottomAppBar" severity="warning"/>
+    <issue id="NonResizeableActivity" severity="warning"/>
+    <issue id="Recycle" severity="warning"/>
+
+    <!--  Info  -->
+    <issue id="MissingFirebaseInstanceTokenRefresh" severity="informational"/>
+    <issue id="SetJavaScriptEnabled" severity="informational"/>
+    <issue id="IconLocation" severity="informational"/>
+    <issue id="Typos" severity="informational"/>
+    <issue id="KtxExtensionAvailable" severity="informational"/>
+
+    <!--  Ignore  -->
+    <issue id="DuplicateIncludedIds" severity="ignore"/>
+    <issue id="DuplicateIds" severity="ignore"/>
+    <issue id="VectorPath" severity="ignore"/>
+    <issue id="Overdraw" severity="ignore"/>
+    <issue id="DefaultLocale" severity="ignore"/>
+    <issue id="Deprecated" severity="ignore"/>
+    <issue id="ContentDescription" severity="ignore"/>
+    <issue id="GradleDependency" severity="ignore"/>
+    <issue id="RtlSymmetry" severity="ignore"/>
+    <issue id="UnsafeExperimentalUsageError" severity="ignore"/>
+    <issue id="Instantiatable" severity="ignore" />
+</lint>
