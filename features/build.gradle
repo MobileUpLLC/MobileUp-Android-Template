@@ -24,6 +24,7 @@ android {
         useIR = true
         freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
         freeCompilerArgs += "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi"
+        freeCompilerArgs += "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi"
     }
 
     buildFeatures {
@@ -53,7 +54,7 @@ dependencies {
     implementation libs.compose.material
     implementation libs.activity.compose
     implementation libs.coil
-    debugImplementation libs.compose.tooling
+    implementation libs.compose.tooling
 
     // DI
     implementation libs.koin.android

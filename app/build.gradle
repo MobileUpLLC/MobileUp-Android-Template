@@ -92,7 +92,7 @@ dependencies {
     implementation libs.compose.ui
     implementation libs.compose.material
     implementation libs.activity.compose
-    debugImplementation libs.compose.tooling
+    implementation libs.compose.tooling
 
     // Architecture
     implementation libs.sesame.localizedString

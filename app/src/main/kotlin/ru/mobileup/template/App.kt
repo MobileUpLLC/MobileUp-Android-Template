@@ -6,8 +6,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.Koin
 import org.koin.dsl.koinApplication
 import ru.mobileup.core.ComponentFactory
-import ru.mobileup.core.DebugToolsInitializer
 import ru.mobileup.core.KoinProvider
+import ru.mobileup.core.ToolsInitializer
 import timber.log.Timber
 
 class App : Application(), KoinProvider {
@@ -44,8 +44,6 @@ class App : Application(), KoinProvider {
 
     private fun initDebugTools() {
         launchReplicaDevTools()
-        if (BuildConfig.DEBUG) {
-            DebugToolsInitializer.initialize(this)
-        }
+        ToolsInitializer.initialize(this)
     }
 }

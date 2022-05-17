@@ -6,7 +6,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
-import ru.mobileup.core.DebugToolsInitializer.chuckerCollector
+import ru.mobileup.core.ToolsInitializer.chuckerCollector
 import java.io.IOException
 import java.net.HttpURLConnection.*
 import java.net.SocketTimeoutException
