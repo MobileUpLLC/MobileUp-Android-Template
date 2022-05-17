@@ -6,7 +6,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
-import ru.mobileup.core.ToolsInitializer.chuckerCollector
+import ru.mobileup.core.DebugToolsInitializer.chuckerCollector
 import java.io.IOException
 import java.net.HttpURLConnection.*
 import java.net.SocketTimeoutException
@@ -40,17 +40,19 @@ class ErrorHandlingCall<T>(private val sourceCall: Call<T>) : Call<T> by sourceC
         }
 
         private fun mapToFailureException(response: Response<T>) = when (response.code()) {
-            HTTP_GATEWAY_TIMEOUT, HTTP_UNAVAILABLE -> NoServerResponseException()
-            HTTP_UNAUTHORIZED -> UnauthorizedException(cause = HttpException(response))
-            else -> ServerException(cause = HttpException(response))
+            HTTP_GATEWAY_TIMEOUT, HTTP_UNAVAILABLE -> NoServerResponseException(
+                HttpException(response)
+            )
+            HTTP_UNAUTHORIZED -> UnauthorizedException(HttpException(response))
+            else -> ServerException(HttpException(response))
         }
 
         private fun mapToFailureException(throwable: Throwable) = when (throwable) {
             is ApplicationException -> throwable
             is SerializationException -> DeserializationException(throwable)
-            is SocketTimeoutException -> NoServerResponseException()
-            is SSLHandshakeException -> SSLHandshakeException()
-            is UnknownHostException, is IOException -> NoInternetException()
+            is SocketTimeoutException -> NoServerResponseException(throwable)
+            is SSLHandshakeException -> SSLHandshakeException(throwable)
+            is UnknownHostException, is IOException -> NoInternetException(throwable)
             else -> UnknownException(throwable, throwable.message ?: "Unknown")
         }
     }

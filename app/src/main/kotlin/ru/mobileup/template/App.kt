@@ -7,7 +7,7 @@ import org.koin.core.Koin
 import org.koin.dsl.koinApplication
 import ru.mobileup.core.ComponentFactory
 import ru.mobileup.core.KoinProvider
-import ru.mobileup.core.ToolsInitializer
+import ru.mobileup.core.DebugToolsInitializer
 import timber.log.Timber
 
 class App : Application(), KoinProvider {
@@ -44,6 +44,6 @@ class App : Application(), KoinProvider {
 
     private fun initDebugTools() {
         launchReplicaDevTools()
-        ToolsInitializer.initialize(this)
+        DebugToolsInitializer.initialize(this)
     }
 }

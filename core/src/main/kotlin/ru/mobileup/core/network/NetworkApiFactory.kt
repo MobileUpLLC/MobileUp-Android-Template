@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import ru.mobileup.core.BuildConfig
-import ru.mobileup.core.ToolsInitializer
+import ru.mobileup.core.DebugToolsInitializer
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -69,8 +69,8 @@ class NetworkApiFactory(private val urlProvider: BaseUrlProvider) {
 
                 if (BuildConfig.DEBUG) {
                     addNetworkInterceptor(createLoggingInterceptor())
-                    ToolsInitializer.chuckerInterceptor?.let { addInterceptor(it) }
-                    ToolsInitializer.networkEmulatorInterceptor?.let { addInterceptor(it) }
+                    DebugToolsInitializer.chuckerInterceptor?.let { addInterceptor(it) }
+                    DebugToolsInitializer.networkEmulatorInterceptor?.let { addInterceptor(it) }
                 }
             }
             .build()

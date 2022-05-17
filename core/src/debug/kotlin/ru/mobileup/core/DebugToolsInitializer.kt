@@ -7,7 +7,7 @@ import com.chuckerteam.chucker.api.RetentionManager
 import me.nemiron.hyperion.networkemulation.NetworkEmulatorInterceptor
 import okhttp3.Interceptor
 
-object ToolsInitializer {
+object DebugToolsInitializer {
     var networkEmulatorInterceptor: Interceptor? = null
         private set
 
