@@ -20,12 +20,12 @@ abstract class TransportException(cause: Throwable? = null) : ApplicationExcepti
 /**
  * Failed to connect to the server and the problem is most likely on the client
  */
-class NoInternetException : TransportException()
+class NoInternetException(cause: Throwable? = null) : TransportException(cause)
 
 /**
  * Failed to connect to the server and the problem is most likely on the server
  */
-class NoServerResponseException : TransportException()
+class NoServerResponseException(cause: Throwable? = null) : TransportException(cause)
 
 /**
  *  Problems parsing json or lack of fields
@@ -37,7 +37,7 @@ class DeserializationException(cause: Throwable) : TransportException(cause)
  * The problem may be on the server - the certificate has expired.
  * The problem may be on the client - verification of the date and time of collection is required.
  */
-class SSLHandshakeException : TransportException()
+class SSLHandshakeException(cause: Throwable? = null) : TransportException(cause)
 
 /**
  * Could not find app for action
