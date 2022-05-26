@@ -22,6 +22,6 @@ fun coreModule(backendUrl: String) = module {
     single { ReplicaDevTools(get(), androidContext()) }
     single<MessageService> { MessageServiceImpl() }
     single { ErrorHandler(get()) }
-    single<DebugTools> { RealDebugToolsImpl(androidContext()) }
+    single<DebugTools> { RealDebugTools(androidContext()) }
     single { NetworkApiFactory(get(), get()) }
 }

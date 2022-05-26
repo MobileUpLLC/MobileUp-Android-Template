@@ -96,7 +96,6 @@ dependencyResolutionManagement {
 
             version('chucker', '3.5.2')
             alias('chucker-main').to('com.github.chuckerteam.chucker', 'library').versionRef('chucker')
-            alias('chucker-noop').to('com.github.chuckerteam.chucker', 'library-no-op').versionRef('chucker')
 
             // Testing
             alias('junit').to('junit', 'junit').version('4.13.2')

@@ -18,7 +18,7 @@ fun KoinTestRule.testKoin(moduleDeclaration: ModuleDeclaration? = null): Koin {
         single<Context> { ApplicationProvider.getApplicationContext<App>() }
         single { ComponentFactory(koin) }
         single<NetworkConnectivityProvider> { FakeNetworkConnectivityProvider() }
-        single<DebugTools> { TestDebugToolsImpl() }
+        single<DebugTools> { TestDebugTools() }
         if (moduleDeclaration != null) moduleDeclaration()
     }
     loadKoinModules(allModules + testModule)

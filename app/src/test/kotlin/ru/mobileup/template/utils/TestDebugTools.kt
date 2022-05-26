@@ -3,7 +3,7 @@ package ru.mobileup.template.utils
 import okhttp3.Interceptor
 import ru.mobileup.core.debug_tools.DebugTools
 
-class TestDebugToolsImpl : DebugTools {
+class TestDebugTools : DebugTools {
 
     override val interceptors: List<Interceptor> = emptyList()
 
