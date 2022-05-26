@@ -23,7 +23,6 @@ class RealDebugToolsImpl(context: Context) : DebugTools {
         .collector(chuckerCollector)
         .build()
 
-
     override val interceptors: List<Interceptor> = listOf(
         networkEmulatorInterceptor,
         chuckerInterceptor
