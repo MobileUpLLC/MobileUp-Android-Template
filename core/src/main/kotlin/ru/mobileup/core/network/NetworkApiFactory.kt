@@ -1,7 +1,6 @@
 package ru.mobileup.core.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -13,7 +12,6 @@ import ru.mobileup.core.debug_tools.DebugTools
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-@ExperimentalSerializationApi
 class NetworkApiFactory(
     private val urlProvider: BaseUrlProvider,
     private val debugTools: DebugTools
