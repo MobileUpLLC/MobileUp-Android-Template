@@ -9,6 +9,7 @@ import org.koin.dsl.ModuleDeclaration
 import org.koin.dsl.module
 import org.koin.test.KoinTestRule
 import ru.mobileup.core.ComponentFactory
+import ru.mobileup.core.debug_tools.DebugTools
 import ru.mobileup.template.App
 import ru.mobileup.template.allModules
 
@@ -17,6 +18,7 @@ fun KoinTestRule.testKoin(moduleDeclaration: ModuleDeclaration? = null): Koin {
         single<Context> { ApplicationProvider.getApplicationContext<App>() }
         single { ComponentFactory(koin) }
         single<NetworkConnectivityProvider> { FakeNetworkConnectivityProvider() }
+        single<DebugTools> { TestDebugToolsImpl() }
         if (moduleDeclaration != null) moduleDeclaration()
     }
     loadKoinModules(allModules + testModule)

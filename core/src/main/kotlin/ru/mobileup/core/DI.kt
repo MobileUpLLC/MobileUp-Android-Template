@@ -7,6 +7,7 @@ import me.aartikov.replica.network.NetworkConnectivityProvider
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
+import ru.mobileup.core.debug_tools.DebugTools
 import ru.mobileup.core.error_handling.ErrorHandler
 import ru.mobileup.core.message.data.MessageService
 import ru.mobileup.core.message.data.MessageServiceImpl
@@ -21,5 +22,6 @@ fun coreModule(backendUrl: String) = module {
     single { ReplicaDevTools(get(), androidContext()) }
     single<MessageService> { MessageServiceImpl() }
     single { ErrorHandler(get()) }
-    single { NetworkApiFactory(get()) }
+    single<DebugTools> { RealDebugToolsImpl(androidContext()) }
+    single { NetworkApiFactory(get(), get()) }
 }

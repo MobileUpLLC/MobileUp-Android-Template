@@ -4,7 +4,7 @@ import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
 import okhttp3.Interceptor
 
-object DebugToolsInitializer {
+object RealDebugTools {
     var networkEmulatorInterceptor: Interceptor? = null
         private set
 

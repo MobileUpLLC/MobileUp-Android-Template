@@ -7,7 +7,6 @@ import org.koin.core.Koin
 import org.koin.dsl.koinApplication
 import ru.mobileup.core.ComponentFactory
 import ru.mobileup.core.KoinProvider
-import ru.mobileup.core.DebugToolsInitializer
 import timber.log.Timber
 
 class App : Application(), KoinProvider {
@@ -21,7 +20,7 @@ class App : Application(), KoinProvider {
         koin = createKoin().also {
             it.declare(ComponentFactory(it))
         }
-        initDebugTools()
+        launchReplicaDevTools()
     }
 
     private fun initLogger() {
@@ -40,10 +39,5 @@ class App : Application(), KoinProvider {
     private fun launchReplicaDevTools() {
         val devtools = koin.get<ReplicaDevTools>()
         devtools.launch()
-    }
-
-    private fun initDebugTools() {
-        launchReplicaDevTools()
-        DebugToolsInitializer.initialize(this)
     }
 }

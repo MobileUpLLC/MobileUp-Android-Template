@@ -6,14 +6,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
-import ru.mobileup.core.DebugToolsInitializer.chuckerCollector
+import ru.mobileup.core.debug_tools.DebugTools
 import java.io.IOException
 import java.net.HttpURLConnection.*
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLHandshakeException
 
-class ErrorHandlingCall<T>(private val sourceCall: Call<T>) : Call<T> by sourceCall {
+class ErrorHandlingCall<T>(
+    private val sourceCall: Call<T>,
+    private val debugTools: DebugTools
+) : Call<T> by sourceCall {
 
     override fun enqueue(callback: Callback<T>) {
         sourceCall.enqueue(getEnqueuedCallback(callback))
@@ -27,7 +30,7 @@ class ErrorHandlingCall<T>(private val sourceCall: Call<T>) : Call<T> by sourceC
                 true -> callback.onResponse(call, response)
                 else -> {
                     val exception = mapToFailureException(response)
-                    chuckerCollector?.onError("ErrorHandlingCall", exception)
+                    debugTools.collectError(exception)
                     callback.onFailure(call, exception)
                 }
             }
@@ -35,7 +38,7 @@ class ErrorHandlingCall<T>(private val sourceCall: Call<T>) : Call<T> by sourceC
 
         override fun onFailure(call: Call<T>, throwable: Throwable) {
             val exception = mapToFailureException(throwable)
-            chuckerCollector?.onError("ErrorHandlingCall", exception)
+            debugTools.collectError(exception)
             callback.onFailure(call, exception)
         }
 
