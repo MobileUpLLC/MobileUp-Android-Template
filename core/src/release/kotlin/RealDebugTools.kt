@@ -4,17 +4,11 @@ import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
 import okhttp3.Interceptor
 
-object RealDebugTools {
-    var networkEmulatorInterceptor: Interceptor? = null
-        private set
+class RealDebugToolsImpl(context: Context) : DebugTools {
 
-    var chuckerInterceptor: Interceptor? = null
-        private set
+    override val interceptors: List<Interceptor> = emptyList()
 
-    var chuckerCollector: ChuckerCollector? = null
-        private set
-
-    fun initialize(context: Context) {
+    override fun collectError(exception: Exception) {
         // do nothing
     }
 }
