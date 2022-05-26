@@ -73,7 +73,6 @@ dependencies {
 
     // Debugging
     implementation libs.timber
-    debugImplementation libs.chucker.main
-    releaseImplementation libs.chucker.noop
+    debugImplementation libs.chucker
     debugImplementation libs.bundles.hyperion
 }
