@@ -13,7 +13,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class NetworkApiFactory(
-    private val urlProvider: BaseUrlProvider,
+    private val url: String,
     private val debugTools: DebugTools
 ) {
 
@@ -50,7 +50,7 @@ class NetworkApiFactory(
 
     private fun createRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(urlProvider.getUrl())
+            .baseUrl(url)
             .client(okHttpClient)
             .addCallAdapterFactory(ErrorHandlingCallAdapterFactory(debugTools))
             .addConverterFactory(ErrorHandlingConverterFactory(json.asConverterFactory("application/json".toMediaType())))

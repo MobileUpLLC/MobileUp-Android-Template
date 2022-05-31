@@ -10,67 +10,46 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.KoinTestRule
 import ru.mobileup.core.error_handling.ServerException
-import ru.mobileup.core.network.BaseUrlProvider
 import ru.mobileup.features.pokemons.createPokemonDetailsComponent
-import ru.mobileup.features.pokemons.domain.DetailedPokemon
-import ru.mobileup.features.pokemons.domain.PokemonId
-import ru.mobileup.features.pokemons.domain.PokemonType
-import ru.mobileup.features.pokemons.domain.PokemonTypeId
 import ru.mobileup.template.utils.*
 
 @RunWith(AndroidJUnit4::class)
 class PokemonDetailsComponentTest {
 
     @get:Rule
-    val mockServerRule = MockServerRule()
-
-    @get:Rule
     val koinTestRule = KoinTestRule.create()
 
     @Test
-    fun `shows data when it is loaded`() {
-        mockServerRule.server.enqueue(
+    fun `loads Ponyata details initially`() {
+        val koin = koinTestRule.testKoin()
+        koin.get<FakeWebServer>().sendResponse(
             MockResponse()
                 .setResponseCode(200)
-                .setBody(FakeData.detailedPokemonResponse)
+                .setBody(FakePokemons.detailedPonytaJson)
         )
-        val koin = koinTestRule.testKoin {
-            single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
-        }
         val componentContext = TestComponentContext()
-        val pokemonId = PokemonId("77")
         val sut = koin
             .componentFactory
-            .createPokemonDetailsComponent(componentContext, pokemonId = pokemonId)
+            .createPokemonDetailsComponent(componentContext, FakePokemons.detailedPonyta.id)
         componentContext.moveToState(Lifecycle.State.RESUMED)
 
         awaitUntil { !sut.pokemonState.loading }
         val actualPokemonState = sut.pokemonState
 
-        val expectedData = DetailedPokemon(
-            id = pokemonId,
-            name = "Ponyta",
-            height = 1f,
-            weight = 30f,
-            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/77.png",
-            types = listOf(PokemonType(id = PokemonTypeId("10"), name = "Fire"))
-        )
         Assert.assertEquals(
-            Loadable(loading = false, data = expectedData, error = null),
+            Loadable(loading = false, data = FakePokemons.detailedPonyta, error = null),
             actualPokemonState
         )
     }
 
     @Test
-    fun `shows error when loading failed`() {
-        mockServerRule.server.enqueue(MockResponse().setResponseCode(404))
-        val koin = koinTestRule.testKoin {
-            single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
-        }
+    fun `shows error when loading Ponyata details failed`() {
+        val koin = koinTestRule.testKoin()
+        koin.get<FakeWebServer>().sendResponse(MockResponse().setResponseCode(404))
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory
-            .createPokemonDetailsComponent(componentContext, pokemonId = PokemonId("77"))
+            .createPokemonDetailsComponent(componentContext, FakePokemons.detailedPonyta.id)
         componentContext.moveToState(Lifecycle.State.RESUMED)
 
         awaitUntil { !sut.pokemonState.loading }
@@ -82,21 +61,19 @@ class PokemonDetailsComponentTest {
     }
 
     @Test
-    fun `update data when retry click`() {
-        mockServerRule.server.enqueue(MockResponse().setResponseCode(404))
-        mockServerRule.server.enqueue(
+    fun `update Ponyata details when retry click after failed loading`() {
+        val koin = koinTestRule.testKoin()
+        koin.get<FakeWebServer>().sendResponse(MockResponse().setResponseCode(404))
+        koin.get<FakeWebServer>().sendResponse(
             MockResponse()
                 .setResponseCode(200)
-                .setBody(FakeData.detailedPokemonResponse)
+                .setBody(FakePokemons.detailedPonytaJson)
         )
-        val koin = koinTestRule.testKoin {
-            single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
-        }
+
         val componentContext = TestComponentContext()
-        val pokemonId = PokemonId("77")
         val sut = koin
             .componentFactory
-            .createPokemonDetailsComponent(componentContext, pokemonId = pokemonId)
+            .createPokemonDetailsComponent(componentContext, FakePokemons.detailedPonyta.id)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonState.loading }
 
@@ -104,16 +81,8 @@ class PokemonDetailsComponentTest {
         awaitUntil { !sut.pokemonState.loading }
         val actualPokemonState = sut.pokemonState
 
-        val expectedData = DetailedPokemon(
-            id = pokemonId,
-            name = "Ponyta",
-            height = 1f,
-            weight = 30f,
-            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/77.png",
-            types = listOf(PokemonType(id = PokemonTypeId("10"), name = "Fire"))
-        )
         Assert.assertEquals(
-            Loadable(loading = false, data = expectedData, error = null),
+            Loadable(loading = false, data = FakePokemons.detailedPonyta, error = null),
             actualPokemonState
         )
     }
