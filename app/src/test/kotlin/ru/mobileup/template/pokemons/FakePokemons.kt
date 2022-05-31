@@ -27,6 +27,13 @@ object FakePokemons {
                 "url": "https://pokeapi.co/api/v2/pokemon/6/"
               },
               "slot": 1
+            },
+            {
+              "pokemon": {
+                "name": "ponyta",
+                "url": "https://pokeapi.co/api/v2/pokemon/77/"
+              },
+              "slot": 1
             }
           ]
         }
@@ -44,6 +51,10 @@ object FakePokemons {
         Pokemon(
             id = PokemonId("6"),
             name = "Charizard"
+        ),
+        Pokemon(
+            id = PokemonId("77"),
+            name = "Ponyta"
         )
     )
 
@@ -57,7 +68,7 @@ object FakePokemons {
               "slot": 1,
               "type": {
                 "name": "fire",
-                "url": "https://pokeapi.co/api/v2/type/10/"
+                "url": "https://pokeapi.co/api/v2/pokemon/77/"
               }
             }
           ],
@@ -71,6 +82,6 @@ object FakePokemons {
         height = 1f,
         weight = 30f,
         imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/77.png",
-        types = listOf(PokemonType(id = PokemonTypeId("10"), name = "Fire"))
+        types = listOf(PokemonType(id = PokemonTypeId("77"), name = "Fire"))
     )
 }

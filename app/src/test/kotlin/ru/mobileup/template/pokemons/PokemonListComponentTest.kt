@@ -44,7 +44,7 @@ class PokemonListComponentTest {
     }
 
     @Test
-    fun `sends output when pokemon click`() {
+    fun `redirects to details when a pokemon is clicked`() {
         val koin = koinTestRule.testKoin()
         koin.get<FakeWebServer>().sendResponse(
             MockResponse()
