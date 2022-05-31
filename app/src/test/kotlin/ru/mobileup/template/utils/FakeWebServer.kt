@@ -1,6 +1,6 @@
 package ru.mobileup.template.utils
 
-import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockWebServer
 
 class FakeWebServer {
@@ -20,7 +20,7 @@ class FakeWebServer {
         url = ""
     }
 
-    fun sendResponse(response: MockResponse) {
-        server.enqueue(response)
+    fun setDispatcher(dispatcher: Dispatcher) {
+        server.dispatcher = dispatcher
     }
 }

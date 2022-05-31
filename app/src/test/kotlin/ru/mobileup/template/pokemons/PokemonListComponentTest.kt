@@ -3,7 +3,9 @@ package ru.mobileup.template.pokemons
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import me.aartikov.replica.single.Loadable
+import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.RecordedRequest
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -23,10 +25,19 @@ class PokemonListComponentTest {
     @Test
     fun `loads fire pokemons initially`() {
         val koin = koinTestRule.testKoin()
-        koin.get<FakeWebServer>().sendResponse(
-            MockResponse()
-                .setResponseCode(200)
-                .setBody(FakePokemons.firePokemonsJson)
+        koin.get<FakeWebServer>().setDispatcher(
+            object : Dispatcher() {
+                override fun dispatch(request: RecordedRequest): MockResponse {
+                    return when (request.requestUrl?.encodedPath) {
+                        "/api/v2/type/10" -> {
+                            MockResponse()
+                                .setResponseCode(200)
+                                .setBody(FakePokemons.firePokemonsJson)
+                        }
+                        else -> throw IllegalArgumentException("Unexpected request: $request")
+                    }
+                }
+            }
         )
         val componentContext = TestComponentContext()
         val sut = koin
@@ -46,10 +57,19 @@ class PokemonListComponentTest {
     @Test
     fun `redirects to details when a pokemon is clicked`() {
         val koin = koinTestRule.testKoin()
-        koin.get<FakeWebServer>().sendResponse(
-            MockResponse()
-                .setResponseCode(200)
-                .setBody(FakePokemons.firePokemonsJson)
+        koin.get<FakeWebServer>().setDispatcher(
+            object : Dispatcher() {
+                override fun dispatch(request: RecordedRequest): MockResponse {
+                    return when (request.requestUrl?.encodedPath) {
+                        "/api/v2/type/10" -> {
+                            MockResponse()
+                                .setResponseCode(200)
+                                .setBody(FakePokemons.firePokemonsJson)
+                        }
+                        else -> throw IllegalArgumentException("Unexpected request: $request")
+                    }
+                }
+            }
         )
         var actualOutput: PokemonListComponent.Output? = null
         val componentContext = TestComponentContext()
@@ -71,7 +91,16 @@ class PokemonListComponentTest {
     @Test
     fun `shows error when loading fire pokemons failed`() {
         val koin = koinTestRule.testKoin()
-        koin.get<FakeWebServer>().sendResponse(MockResponse().setResponseCode(404))
+        koin.get<FakeWebServer>().setDispatcher(
+            object : Dispatcher() {
+                override fun dispatch(request: RecordedRequest): MockResponse {
+                    return when (request.requestUrl?.encodedPath) {
+                        "/api/v2/type/10" -> MockResponse().setResponseCode(404)
+                        else -> throw IllegalArgumentException("Unexpected request: $request")
+                    }
+                }
+            }
+        )
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory
@@ -84,5 +113,40 @@ class PokemonListComponentTest {
         Assert.assertNotNull(actualErrorPokemonsState.error)
         Assert.assertEquals(1, actualErrorPokemonsState.error?.exceptions?.count())
         Assert.assertTrue(actualErrorPokemonsState.error?.exceptions?.first() is ServerException)
+    }
+
+    @Test
+    fun `update fire pokemons when retry click after failed loading`() {
+        val koin = koinTestRule.testKoin()
+        koin.get<FakeWebServer>().setDispatcher(
+            object : Dispatcher() {
+                var isFirstResponse = true
+                override fun dispatch(request: RecordedRequest): MockResponse {
+                    return if (request.requestUrl?.encodedPath == "/api/v2/type/10" && isFirstResponse) {
+                        isFirstResponse = false
+                        MockResponse().setResponseCode(404)
+                    } else {
+                        MockResponse()
+                            .setResponseCode(200)
+                            .setBody(FakePokemons.firePokemonsJson)
+                    }
+                }
+            }
+        )
+        val componentContext = TestComponentContext()
+        val sut = koin
+            .componentFactory
+            .createPokemonListComponent(componentContext) {}
+        componentContext.moveToState(Lifecycle.State.RESUMED)
+        awaitUntil { !sut.pokemonsState.loading }
+
+        sut.onRetryClick()
+        awaitUntil { !sut.pokemonsState.loading }
+        val actualPokemonsState = sut.pokemonsState
+
+        Assert.assertEquals(
+            Loadable(loading = false, data = FakePokemons.firePokemons, error = null),
+            actualPokemonsState
+        )
     }
 }
