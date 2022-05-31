@@ -10,7 +10,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.KoinTestRule
 import ru.mobileup.core.error_handling.ServerException
-import ru.mobileup.core.network.BaseUrlProvider
 import ru.mobileup.features.pokemons.createPokemonListComponent
 import ru.mobileup.features.pokemons.domain.Pokemon
 import ru.mobileup.features.pokemons.domain.PokemonId
@@ -21,46 +20,17 @@ import ru.mobileup.template.utils.*
 class PokemonListComponentTest {
 
     @get:Rule
-    val mockServerRule = MockServerRule()
-
-    @get:Rule
     val koinTestRule = KoinTestRule.create()
 
-    @Test
-    fun `shows empty state when loaded data is empty`() {
-        mockServerRule.server.enqueue(
-            MockResponse()
-                .setResponseCode(200)
-                .setBody(FakeData.pokemonListEmptyResponse)
-        )
-        val koin = koinTestRule.testKoin {
-            single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
-        }
-        val componentContext = TestComponentContext()
-        val sut = koin
-            .componentFactory
-            .createPokemonListComponent(componentContext) {}
-        componentContext.moveToState(Lifecycle.State.RESUMED)
-
-        awaitUntil { !sut.pokemonsState.loading }
-        val actualPokemonsState = sut.pokemonsState
-
-        Assert.assertEquals(
-            Loadable<List<Pokemon>>(loading = false, data = emptyList(), error = null),
-            actualPokemonsState
-        )
-    }
 
     @Test
     fun `shows data when it is loaded`() {
-        mockServerRule.server.enqueue(
+        val koin = koinTestRule.testKoin()
+        koin.get<FakeWebServer>().sendResponse(
             MockResponse()
                 .setResponseCode(200)
                 .setBody(FakeData.pokemonListResponse)
         )
-        val koin = koinTestRule.testKoin {
-            single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
-        }
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory
@@ -92,14 +62,12 @@ class PokemonListComponentTest {
 
     @Test
     fun `sends output when pokemon click`() {
-        mockServerRule.server.enqueue(
+        val koin = koinTestRule.testKoin()
+        koin.get<FakeWebServer>().sendResponse(
             MockResponse()
                 .setResponseCode(200)
                 .setBody(FakeData.pokemonListResponse)
         )
-        val koin = koinTestRule.testKoin {
-            single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
-        }
         var actualOutput: PokemonListComponent.Output? = null
         val componentContext = TestComponentContext()
         val sut = koin
@@ -119,10 +87,8 @@ class PokemonListComponentTest {
 
     @Test
     fun `shows error when loading failed`() {
-        mockServerRule.server.enqueue(MockResponse().setResponseCode(404))
-        val koin = koinTestRule.testKoin {
-            single<BaseUrlProvider> { MockServerBaseUrlProvider(mockServerRule) }
-        }
+        val koin = koinTestRule.testKoin()
+        koin.get<FakeWebServer>().sendResponse(MockResponse().setResponseCode(404))
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory

@@ -7,9 +7,11 @@ import org.koin.core.Koin
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.ModuleDeclaration
 import org.koin.dsl.module
+import org.koin.dsl.onClose
 import org.koin.test.KoinTestRule
 import ru.mobileup.core.ComponentFactory
 import ru.mobileup.core.debug_tools.DebugTools
+import ru.mobileup.core.network.NetworkApiFactory
 import ru.mobileup.template.App
 import ru.mobileup.template.allModules
 
@@ -19,6 +21,8 @@ fun KoinTestRule.testKoin(moduleDeclaration: ModuleDeclaration? = null): Koin {
         single { ComponentFactory(koin) }
         single<NetworkConnectivityProvider> { FakeNetworkConnectivityProvider() }
         single<DebugTools> { TestDebugTools() }
+        single { FakeWebServer() } onClose { it?.stopServer() }
+        single { NetworkApiFactory(get<FakeWebServer>().url, get()) }
         if (moduleDeclaration != null) moduleDeclaration()
     }
     loadKoinModules(allModules + testModule)
