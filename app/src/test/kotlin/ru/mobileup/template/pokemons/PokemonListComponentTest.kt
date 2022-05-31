@@ -11,7 +11,6 @@ import org.junit.runner.RunWith
 import org.koin.test.KoinTestRule
 import ru.mobileup.core.error_handling.ServerException
 import ru.mobileup.features.pokemons.createPokemonListComponent
-import ru.mobileup.features.pokemons.domain.PokemonId
 import ru.mobileup.features.pokemons.ui.list.PokemonListComponent
 import ru.mobileup.template.utils.*
 
@@ -21,9 +20,8 @@ class PokemonListComponentTest {
     @get:Rule
     val koinTestRule = KoinTestRule.create()
 
-
     @Test
-    fun `shows data when it is loaded`() {
+    fun `loads fire pokemons initially`() {
         val koin = koinTestRule.testKoin()
         koin.get<FakeWebServer>().sendResponse(
             MockResponse()
@@ -62,16 +60,16 @@ class PokemonListComponentTest {
             }
         componentContext.moveToState(Lifecycle.State.RESUMED)
 
-        sut.onPokemonClick(PokemonId("1"))
+        sut.onPokemonClick(FakePokemons.detailedPonyta.id)
 
         Assert.assertEquals(
-            PokemonListComponent.Output.PokemonDetailsRequested(PokemonId("1")),
+            PokemonListComponent.Output.PokemonDetailsRequested(FakePokemons.detailedPonyta.id),
             actualOutput
         )
     }
 
     @Test
-    fun `shows error when loading failed`() {
+    fun `shows error when loading fire pokemons failed`() {
         val koin = koinTestRule.testKoin()
         koin.get<FakeWebServer>().sendResponse(MockResponse().setResponseCode(404))
         val componentContext = TestComponentContext()

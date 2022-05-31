@@ -11,7 +11,6 @@ import org.junit.runner.RunWith
 import org.koin.test.KoinTestRule
 import ru.mobileup.core.error_handling.ServerException
 import ru.mobileup.features.pokemons.createPokemonDetailsComponent
-import ru.mobileup.features.pokemons.domain.PokemonId
 import ru.mobileup.template.utils.*
 
 @RunWith(AndroidJUnit4::class)
@@ -21,7 +20,7 @@ class PokemonDetailsComponentTest {
     val koinTestRule = KoinTestRule.create()
 
     @Test
-    fun `shows data when it is loaded`() {
+    fun `loads Ponyata details initially`() {
         val koin = koinTestRule.testKoin()
         koin.get<FakeWebServer>().sendResponse(
             MockResponse()
@@ -44,13 +43,13 @@ class PokemonDetailsComponentTest {
     }
 
     @Test
-    fun `shows error when loading failed`() {
+    fun `shows error when loading Ponyata details failed`() {
         val koin = koinTestRule.testKoin()
         koin.get<FakeWebServer>().sendResponse(MockResponse().setResponseCode(404))
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory
-            .createPokemonDetailsComponent(componentContext, pokemonId = PokemonId("77"))
+            .createPokemonDetailsComponent(componentContext, FakePokemons.detailedPonyta.id)
         componentContext.moveToState(Lifecycle.State.RESUMED)
 
         awaitUntil { !sut.pokemonState.loading }
@@ -62,7 +61,7 @@ class PokemonDetailsComponentTest {
     }
 
     @Test
-    fun `update data when retry click`() {
+    fun `update Ponyata details when retry click after failed loading`() {
         val koin = koinTestRule.testKoin()
         koin.get<FakeWebServer>().sendResponse(MockResponse().setResponseCode(404))
         koin.get<FakeWebServer>().sendResponse(
