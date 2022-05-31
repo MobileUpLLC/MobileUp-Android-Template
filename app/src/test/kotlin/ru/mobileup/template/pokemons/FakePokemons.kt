@@ -1,13 +1,10 @@
-package ru.mobileup.template.utils
+package ru.mobileup.template.pokemons
 
-object FakeData {
-    val pokemonListEmptyResponse = """
-        {
-          "pokemon": []
-        }
-    """.trimIndent()
+import ru.mobileup.features.pokemons.domain.*
 
-    val pokemonListResponse = """
+object FakePokemons {
+
+    val firePokemonsJson = """
         {
           "pokemon": [
             {
@@ -35,28 +32,22 @@ object FakeData {
         }
     """.trimIndent()
 
-    val newPokemonListResponse = """
-        {
-          "pokemon": [
-            {
-              "pokemon": {
-                "name": "squirtle",
-                "url": "https://pokeapi.co/api/v2/pokemon/7/"
-              },
-              "slot": 1
-            },
-            {
-              "pokemon": {
-                "name": "wartortle",
-                "url": "https://pokeapi.co/api/v2/pokemon/8/"
-              },
-              "slot": 1
-            }
-          ]
-        }
-    """.trimIndent()
+    val firePokemons = listOf(
+        Pokemon(
+            id = PokemonId("4"),
+            name = "Charmander"
+        ),
+        Pokemon(
+            id = PokemonId("5"),
+            name = "Charmeleon"
+        ),
+        Pokemon(
+            id = PokemonId("6"),
+            name = "Charizard"
+        )
+    )
 
-    val detailedPokemonResponse = """
+    val detailedPonytaJson = """
         {
           "height": 10,
           "id": 77,
@@ -73,4 +64,13 @@ object FakeData {
           "weight": 300
         }
     """.trimIndent()
+
+    val detailedPonyta = DetailedPokemon(
+        id = PokemonId("77"),
+        name = "Ponyta",
+        height = 1f,
+        weight = 30f,
+        imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/77.png",
+        types = listOf(PokemonType(id = PokemonTypeId("10"), name = "Fire"))
+    )
 }

@@ -11,10 +11,7 @@ import org.junit.runner.RunWith
 import org.koin.test.KoinTestRule
 import ru.mobileup.core.error_handling.ServerException
 import ru.mobileup.features.pokemons.createPokemonDetailsComponent
-import ru.mobileup.features.pokemons.domain.DetailedPokemon
 import ru.mobileup.features.pokemons.domain.PokemonId
-import ru.mobileup.features.pokemons.domain.PokemonType
-import ru.mobileup.features.pokemons.domain.PokemonTypeId
 import ru.mobileup.template.utils.*
 
 @RunWith(AndroidJUnit4::class)
@@ -29,28 +26,19 @@ class PokemonDetailsComponentTest {
         koin.get<FakeWebServer>().sendResponse(
             MockResponse()
                 .setResponseCode(200)
-                .setBody(FakeData.detailedPokemonResponse)
+                .setBody(FakePokemons.detailedPonytaJson)
         )
         val componentContext = TestComponentContext()
-        val pokemonId = PokemonId("77")
         val sut = koin
             .componentFactory
-            .createPokemonDetailsComponent(componentContext, pokemonId = pokemonId)
+            .createPokemonDetailsComponent(componentContext, FakePokemons.detailedPonyta.id)
         componentContext.moveToState(Lifecycle.State.RESUMED)
 
         awaitUntil { !sut.pokemonState.loading }
         val actualPokemonState = sut.pokemonState
 
-        val expectedData = DetailedPokemon(
-            id = pokemonId,
-            name = "Ponyta",
-            height = 1f,
-            weight = 30f,
-            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/77.png",
-            types = listOf(PokemonType(id = PokemonTypeId("10"), name = "Fire"))
-        )
         Assert.assertEquals(
-            Loadable(loading = false, data = expectedData, error = null),
+            Loadable(loading = false, data = FakePokemons.detailedPonyta, error = null),
             actualPokemonState
         )
     }
@@ -80,14 +68,13 @@ class PokemonDetailsComponentTest {
         koin.get<FakeWebServer>().sendResponse(
             MockResponse()
                 .setResponseCode(200)
-                .setBody(FakeData.detailedPokemonResponse)
+                .setBody(FakePokemons.detailedPonytaJson)
         )
 
         val componentContext = TestComponentContext()
-        val pokemonId = PokemonId("77")
         val sut = koin
             .componentFactory
-            .createPokemonDetailsComponent(componentContext, pokemonId = pokemonId)
+            .createPokemonDetailsComponent(componentContext, FakePokemons.detailedPonyta.id)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonState.loading }
 
@@ -95,16 +82,8 @@ class PokemonDetailsComponentTest {
         awaitUntil { !sut.pokemonState.loading }
         val actualPokemonState = sut.pokemonState
 
-        val expectedData = DetailedPokemon(
-            id = pokemonId,
-            name = "Ponyta",
-            height = 1f,
-            weight = 30f,
-            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/77.png",
-            types = listOf(PokemonType(id = PokemonTypeId("10"), name = "Fire"))
-        )
         Assert.assertEquals(
-            Loadable(loading = false, data = expectedData, error = null),
+            Loadable(loading = false, data = FakePokemons.detailedPonyta, error = null),
             actualPokemonState
         )
     }

@@ -11,7 +11,6 @@ import org.junit.runner.RunWith
 import org.koin.test.KoinTestRule
 import ru.mobileup.core.error_handling.ServerException
 import ru.mobileup.features.pokemons.createPokemonListComponent
-import ru.mobileup.features.pokemons.domain.Pokemon
 import ru.mobileup.features.pokemons.domain.PokemonId
 import ru.mobileup.features.pokemons.ui.list.PokemonListComponent
 import ru.mobileup.template.utils.*
@@ -29,7 +28,7 @@ class PokemonListComponentTest {
         koin.get<FakeWebServer>().sendResponse(
             MockResponse()
                 .setResponseCode(200)
-                .setBody(FakeData.pokemonListResponse)
+                .setBody(FakePokemons.firePokemonsJson)
         )
         val componentContext = TestComponentContext()
         val sut = koin
@@ -40,22 +39,8 @@ class PokemonListComponentTest {
         awaitUntil { !sut.pokemonsState.loading }
         val actualPokemonsState = sut.pokemonsState
 
-        val expectedData = listOf(
-            Pokemon(
-                id = PokemonId("4"),
-                name = "Charmander"
-            ),
-            Pokemon(
-                id = PokemonId("5"),
-                name = "Charmeleon"
-            ),
-            Pokemon(
-                id = PokemonId("6"),
-                name = "Charizard"
-            )
-        )
         Assert.assertEquals(
-            Loadable(loading = false, data = expectedData, error = null),
+            Loadable(loading = false, data = FakePokemons.firePokemons, error = null),
             actualPokemonsState
         )
     }
@@ -66,7 +51,7 @@ class PokemonListComponentTest {
         koin.get<FakeWebServer>().sendResponse(
             MockResponse()
                 .setResponseCode(200)
-                .setBody(FakeData.pokemonListResponse)
+                .setBody(FakePokemons.firePokemonsJson)
         )
         var actualOutput: PokemonListComponent.Output? = null
         val componentContext = TestComponentContext()
