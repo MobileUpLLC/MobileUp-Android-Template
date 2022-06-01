@@ -31,3 +31,6 @@ fun KoinTestRule.testKoin(moduleDeclaration: ModuleDeclaration? = null): Koin {
 
 val Koin.componentFactory: ComponentFactory
     get() = this.get()
+
+val Koin.fakeWebServer: FakeWebServer
+    get() = this.get()

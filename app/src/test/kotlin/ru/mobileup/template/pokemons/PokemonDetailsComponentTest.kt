@@ -3,8 +3,6 @@ package ru.mobileup.template.pokemons
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import me.aartikov.replica.single.Loadable
-import okhttp3.mockwebserver.MockResponse
-import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -12,6 +10,8 @@ import org.koin.test.KoinTestRule
 import ru.mobileup.core.error_handling.ServerException
 import ru.mobileup.features.pokemons.createPokemonDetailsComponent
 import ru.mobileup.template.utils.*
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @RunWith(AndroidJUnit4::class)
 class PokemonDetailsComponentTest {
@@ -20,70 +20,62 @@ class PokemonDetailsComponentTest {
     val koinTestRule = KoinTestRule.create()
 
     @Test
-    fun `loads Ponyata details initially`() {
+    fun `loads pokemon details for a specified id on start`() {
         val koin = koinTestRule.testKoin()
-        koin.get<FakeWebServer>().sendResponse(
-            MockResponse()
-                .setResponseCode(200)
-                .setBody(FakePokemons.detailedPonytaJson)
-        )
+        val fakeWebServer = koin.fakeWebServer
         val componentContext = TestComponentContext()
-        val sut = koin
-            .componentFactory
-            .createPokemonDetailsComponent(componentContext, FakePokemons.detailedPonyta.id)
+        val sut = koin.componentFactory.createPokemonDetailsComponent(
+            componentContext,
+            FakePokemons.detailedPonyta.id
+        )
+
+        fakeWebServer.prepareResponse("/api/v2/pokemon/77", FakePokemons.detailedPonytaJson)
         componentContext.moveToState(Lifecycle.State.RESUMED)
-
         awaitUntil { !sut.pokemonState.loading }
-        val actualPokemonState = sut.pokemonState
 
-        Assert.assertEquals(
-            Loadable(loading = false, data = FakePokemons.detailedPonyta, error = null),
-            actualPokemonState
+        assertEquals(
+            expected = Loadable(loading = false, data = FakePokemons.detailedPonyta, error = null),
+            actual = sut.pokemonState
         )
     }
 
     @Test
-    fun `shows error when loading Ponyata details failed`() {
+    fun `shows fullscreen error when details loading failed`() {
         val koin = koinTestRule.testKoin()
-        koin.get<FakeWebServer>().sendResponse(MockResponse().setResponseCode(404))
+        val fakeWebServer = koin.fakeWebServer
         val componentContext = TestComponentContext()
-        val sut = koin
-            .componentFactory
-            .createPokemonDetailsComponent(componentContext, FakePokemons.detailedPonyta.id)
+        val sut = koin.componentFactory.createPokemonDetailsComponent(
+            componentContext,
+            FakePokemons.detailedPonyta.id
+        )
+
+        fakeWebServer.prepareResponse("/api/v2/pokemon/77", FakeResponse.BadRequest)
         componentContext.moveToState(Lifecycle.State.RESUMED)
-
         awaitUntil { !sut.pokemonState.loading }
-        val actualErrorPokemonState = sut.pokemonState
 
-        Assert.assertNotNull(actualErrorPokemonState.error)
-        Assert.assertEquals(1, actualErrorPokemonState.error?.exceptions?.count())
-        Assert.assertTrue(actualErrorPokemonState.error?.exceptions?.first() is ServerException)
+        assertTrue(sut.pokemonState.error?.exception is ServerException)
     }
 
     @Test
-    fun `update Ponyata details when retry click after failed loading`() {
+    fun `reloads details when retry is clicked after failed loading`() {
         val koin = koinTestRule.testKoin()
-        koin.get<FakeWebServer>().sendResponse(MockResponse().setResponseCode(404))
-        koin.get<FakeWebServer>().sendResponse(
-            MockResponse()
-                .setResponseCode(200)
-                .setBody(FakePokemons.detailedPonytaJson)
+        val fakeWebServer = koin.fakeWebServer
+        val componentContext = TestComponentContext()
+        val sut = koin.componentFactory.createPokemonDetailsComponent(
+            componentContext,
+            FakePokemons.detailedPonyta.id
         )
 
-        val componentContext = TestComponentContext()
-        val sut = koin
-            .componentFactory
-            .createPokemonDetailsComponent(componentContext, FakePokemons.detailedPonyta.id)
+        fakeWebServer.prepareResponse("/api/v2/pokemon/77", FakeResponse.BadRequest)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonState.loading }
-
+        fakeWebServer.prepareResponse("/api/v2/pokemon/77", FakePokemons.detailedPonytaJson)
         sut.onRetryClick()
         awaitUntil { !sut.pokemonState.loading }
-        val actualPokemonState = sut.pokemonState
 
-        Assert.assertEquals(
-            Loadable(loading = false, data = FakePokemons.detailedPonyta, error = null),
-            actualPokemonState
+        assertEquals(
+            expected = Loadable(loading = false, data = FakePokemons.detailedPonyta, error = null),
+            actual = sut.pokemonState
         )
     }
 }
