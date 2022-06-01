@@ -3,9 +3,6 @@ package ru.mobileup.template.pokemons
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import me.aartikov.replica.single.Loadable
-import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.RecordedRequest
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -26,23 +23,11 @@ class PokemonListComponentTest {
     @Test
     fun `loads pokemons for the first tab on start`() {
         val koin = koinTestRule.testKoin()
-        koin.fakeWebServer.setDispatcher(
-            object : Dispatcher() {
-                override fun dispatch(request: RecordedRequest): MockResponse {
-                    return when (request.requestUrl?.encodedPath) {
-                        "/api/v2/type/10" -> {
-                            MockResponse()
-                                .setResponseCode(200)
-                                .setBody(FakePokemons.firePokemonsJson)
-                        }
-                        else -> throw IllegalArgumentException("Unexpected request: $request")
-                    }
-                }
-            }
-        )
+        val fakeWebServer = koin.fakeWebServer
         val componentContext = TestComponentContext()
         val sut = koin.componentFactory.createPokemonListComponent(componentContext) {}
 
+        fakeWebServer.prepareResponse("/api/v2/type/10", FakePokemons.firePokemonsJson)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonsState.loading }
 
@@ -55,26 +40,14 @@ class PokemonListComponentTest {
     @Test
     fun `redirects to details when a pokemon is clicked`() {
         val koin = koinTestRule.testKoin()
-        koin.fakeWebServer.setDispatcher(
-            object : Dispatcher() {
-                override fun dispatch(request: RecordedRequest): MockResponse {
-                    return when (request.requestUrl?.encodedPath) {
-                        "/api/v2/type/10" -> {
-                            MockResponse()
-                                .setResponseCode(200)
-                                .setBody(FakePokemons.firePokemonsJson)
-                        }
-                        else -> throw IllegalArgumentException("Unexpected request: $request")
-                    }
-                }
-            }
-        )
+        val fakeWebServer = koin.fakeWebServer
         val componentContext = TestComponentContext()
         var output: PokemonListComponent.Output? = null
         val sut = koin.componentFactory.createPokemonListComponent(componentContext) {
             output = it
         }
 
+        fakeWebServer.prepareResponse("/api/v2/type/10", FakePokemons.firePokemonsJson)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         sut.onPokemonClick(FakePokemons.detailedPonyta.id)
 
@@ -87,19 +60,11 @@ class PokemonListComponentTest {
     @Test
     fun `shows fullscreen error when pokemons loading failed`() {
         val koin = koinTestRule.testKoin()
-        koin.fakeWebServer.setDispatcher(
-            object : Dispatcher() {
-                override fun dispatch(request: RecordedRequest): MockResponse {
-                    return when (request.requestUrl?.encodedPath) {
-                        "/api/v2/type/10" -> MockResponse().setResponseCode(404)
-                        else -> throw IllegalArgumentException("Unexpected request: $request")
-                    }
-                }
-            }
-        )
+        val fakeWebServer = koin.fakeWebServer
         val componentContext = TestComponentContext()
         val sut = koin.componentFactory.createPokemonListComponent(componentContext) {}
 
+        fakeWebServer.prepareResponse("/api/v2/type/10", FakeResponse.BadRequest)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonsState.loading }
 
@@ -109,26 +74,14 @@ class PokemonListComponentTest {
     @Test
     fun `update pokemons when retry is clicked after failed loading`() {
         val koin = koinTestRule.testKoin()
-        koin.fakeWebServer.setDispatcher(
-            object : Dispatcher() {
-                var isFirstResponse = true
-                override fun dispatch(request: RecordedRequest): MockResponse {
-                    return if (request.requestUrl?.encodedPath == "/api/v2/type/10" && isFirstResponse) {
-                        isFirstResponse = false
-                        MockResponse().setResponseCode(404)
-                    } else {
-                        MockResponse()
-                            .setResponseCode(200)
-                            .setBody(FakePokemons.firePokemonsJson)
-                    }
-                }
-            }
-        )
+        val fakeWebServer = koin.fakeWebServer
         val componentContext = TestComponentContext()
         val sut = koin.componentFactory.createPokemonListComponent(componentContext) {}
 
+        fakeWebServer.prepareResponse("/api/v2/type/10", FakeResponse.BadRequest)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonsState.loading }
+        fakeWebServer.prepareResponse("/api/v2/type/10", FakePokemons.firePokemonsJson)
         sut.onRetryClick()
         awaitUntil { !sut.pokemonsState.loading }
 
