@@ -8,27 +8,12 @@ import okhttp3.mockwebserver.RecordedRequest
 class FakeWebServer {
 
     private val server = MockWebServer()
-
     private val responses = mutableMapOf<String, FakeResponse>()
 
     private val dispatcher = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
-            return responses
-                .entries
-                .firstOrNull { it.key == request.requestUrl?.encodedPath }
-                ?.let {
-                    when (val fakeResponse = it.value) {
-                        is FakeResponse.Success -> {
-                            MockResponse()
-                                .setResponseCode(200)
-                                .setBody(body = fakeResponse.body)
-                        }
-
-                        is FakeResponse.Error -> {
-                            MockResponse().setResponseCode(fakeResponse.responseCode)
-                        }
-                    }
-                } ?: throw IllegalArgumentException("Unexpected request: $request")
+            val fakeResponse = responses[request.requestUrl?.encodedPath] ?: FakeResponse.NotFound
+            return fakeResponse.toMockResponse()
         }
     }
 
@@ -54,4 +39,16 @@ class FakeWebServer {
 
 fun FakeWebServer.prepareResponse(path: String, body: String) {
     prepareResponse(path, FakeResponse.Success(body))
+}
+
+private fun FakeResponse.toMockResponse() = when (this) {
+    is FakeResponse.Success -> {
+        MockResponse()
+            .setResponseCode(200)
+            .setBody(body)
+    }
+
+    is FakeResponse.Error -> {
+        MockResponse().setResponseCode(responseCode)
+    }
 }

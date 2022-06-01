@@ -8,5 +8,7 @@ sealed interface FakeResponse {
 
     companion object {
         val BadRequest = Error(400)
+        val NotFound = Error(404)
+        val Unauthorized = Error(401)
     }
 }
