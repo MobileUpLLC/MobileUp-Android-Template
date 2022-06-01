@@ -42,18 +42,16 @@ class PokemonListComponentTest {
         val koin = koinTestRule.testKoin()
         val fakeWebServer = koin.fakeWebServer
         val componentContext = TestComponentContext()
-        var output: PokemonListComponent.Output? = null
-        val sut = koin.componentFactory.createPokemonListComponent(componentContext) {
-            output = it
-        }
+        val outputCaptor = OutputCaptor<PokemonListComponent.Output>()
+        val sut = koin.componentFactory.createPokemonListComponent(componentContext, outputCaptor)
 
         fakeWebServer.prepareResponse("/api/v2/type/10", FakePokemons.firePokemonsJson)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         sut.onPokemonClick(FakePokemons.detailedPonyta.id)
 
         assertEquals(
-            expected = PokemonListComponent.Output.PokemonDetailsRequested(FakePokemons.detailedPonyta.id),
-            actual = output
+            expected = listOf(PokemonListComponent.Output.PokemonDetailsRequested(FakePokemons.detailedPonyta.id)),
+            actual = outputCaptor.outputs
         )
     }
 
