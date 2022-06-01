@@ -3,9 +3,6 @@ package ru.mobileup.template.pokemons
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import me.aartikov.replica.single.Loadable
-import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.RecordedRequest
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -24,21 +21,6 @@ class PokemonDetailsComponentTest {
     @Test
     fun `loads Ponyata details initially`() {
         val koin = koinTestRule.testKoin()
-        koin.get<FakeWebServer>().setDispatcher(
-            object : Dispatcher() {
-                override fun dispatch(request: RecordedRequest): MockResponse {
-                    return when (request.requestUrl?.encodedPath) {
-                        "/api/v2/pokemon/77" -> {
-                            MockResponse()
-                                .setResponseCode(200)
-                                .setBody(FakePokemons.detailedPonytaJson)
-                        }
-
-                        else -> throw IllegalArgumentException("Unexpected request: $request")
-                    }
-                }
-            }
-        )
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory
@@ -57,16 +39,7 @@ class PokemonDetailsComponentTest {
     @Test
     fun `shows error when loading Ponyata details failed`() {
         val koin = koinTestRule.testKoin()
-        koin.get<FakeWebServer>().setDispatcher(
-            object : Dispatcher() {
-                override fun dispatch(request: RecordedRequest): MockResponse {
-                    return when (request.requestUrl?.encodedPath) {
-                        "/api/v2/pokemon/77" -> MockResponse().setResponseCode(404)
-                        else -> throw IllegalArgumentException("Unexpected request: $request")
-                    }
-                }
-            }
-        )
+        koin.get<FakeWebServer>().changeDispatcherConfiguration(hasBrokenResponse = true)
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory
@@ -84,27 +57,14 @@ class PokemonDetailsComponentTest {
     @Test
     fun `update Ponyata details when retry click after failed loading`() {
         val koin = koinTestRule.testKoin()
-        koin.get<FakeWebServer>().setDispatcher(
-            object : Dispatcher() {
-                var isFirstResponse = true
-                override fun dispatch(request: RecordedRequest): MockResponse {
-                    return if (request.requestUrl?.encodedPath == "/api/v2/pokemon/77" && isFirstResponse) {
-                        isFirstResponse = false
-                        MockResponse().setResponseCode(404)
-                    } else {
-                        MockResponse()
-                            .setResponseCode(200)
-                            .setBody(FakePokemons.detailedPonytaJson)
-                    }
-                }
-            }
-        )
+        koin.get<FakeWebServer>().changeDispatcherConfiguration(hasBrokenResponse = true)
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory
             .createPokemonDetailsComponent(componentContext, FakePokemons.detailedPonyta.id)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonState.loading }
+        koin.get<FakeWebServer>().changeDispatcherConfiguration(hasBrokenResponse = false)
 
         sut.onRetryClick()
         awaitUntil { !sut.pokemonState.loading }
