@@ -21,6 +21,10 @@ class PokemonDetailsComponentTest {
     @Test
     fun `loads Ponyata details initially`() {
         val koin = koinTestRule.testKoin()
+        koin.get<FakeWebServer>().prepareResponse(
+            path = "/api/v2/pokemon/77",
+            body = FakePokemons.detailedPonytaJson
+        )
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory
@@ -39,7 +43,10 @@ class PokemonDetailsComponentTest {
     @Test
     fun `shows error when loading Ponyata details failed`() {
         val koin = koinTestRule.testKoin()
-        koin.get<FakeWebServer>().changeDispatcherConfiguration(hasBrokenResponse = true)
+        koin.get<FakeWebServer>().prepareResponse(
+            path = "/api/v2/pokemon/77",
+            response = FakeResponse.BadRequest
+        )
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory
@@ -57,14 +64,20 @@ class PokemonDetailsComponentTest {
     @Test
     fun `update Ponyata details when retry click after failed loading`() {
         val koin = koinTestRule.testKoin()
-        koin.get<FakeWebServer>().changeDispatcherConfiguration(hasBrokenResponse = true)
+        koin.get<FakeWebServer>().prepareResponse(
+            path = "/api/v2/pokemon/77",
+            response = FakeResponse.BadRequest
+        )
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory
             .createPokemonDetailsComponent(componentContext, FakePokemons.detailedPonyta.id)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonState.loading }
-        koin.get<FakeWebServer>().changeDispatcherConfiguration(hasBrokenResponse = false)
+        koin.get<FakeWebServer>().prepareResponse(
+            path = "/api/v2/pokemon/77",
+            body = FakePokemons.detailedPonytaJson
+        )
 
         sut.onRetryClick()
         awaitUntil { !sut.pokemonState.loading }

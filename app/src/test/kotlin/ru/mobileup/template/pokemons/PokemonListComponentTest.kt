@@ -22,6 +22,10 @@ class PokemonListComponentTest {
     @Test
     fun `loads fire pokemons initially`() {
         val koin = koinTestRule.testKoin()
+        koin.get<FakeWebServer>().prepareResponse(
+            path = "/api/v2/type/10",
+            body = FakePokemons.firePokemonsJson
+        )
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory
@@ -40,6 +44,10 @@ class PokemonListComponentTest {
     @Test
     fun `redirects to details when a pokemon is clicked`() {
         val koin = koinTestRule.testKoin()
+        koin.get<FakeWebServer>().prepareResponse(
+            path = "/api/v2/type/10",
+            body = FakePokemons.firePokemonsJson
+        )
         var actualOutput: PokemonListComponent.Output? = null
         val componentContext = TestComponentContext()
         val sut = koin
@@ -60,7 +68,10 @@ class PokemonListComponentTest {
     @Test
     fun `shows error when loading fire pokemons failed`() {
         val koin = koinTestRule.testKoin()
-        koin.get<FakeWebServer>().changeDispatcherConfiguration(hasBrokenResponse = true)
+        koin.get<FakeWebServer>().prepareResponse(
+            path = "/api/v2/type/10",
+            response = FakeResponse.BadRequest
+        )
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory
@@ -78,14 +89,20 @@ class PokemonListComponentTest {
     @Test
     fun `update fire pokemons when retry click after failed loading`() {
         val koin = koinTestRule.testKoin()
-        koin.get<FakeWebServer>().changeDispatcherConfiguration(hasBrokenResponse = true)
+        koin.get<FakeWebServer>().prepareResponse(
+            path = "/api/v2/type/10",
+            response = FakeResponse.BadRequest
+        )
         val componentContext = TestComponentContext()
         val sut = koin
             .componentFactory
             .createPokemonListComponent(componentContext) {}
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonsState.loading }
-        koin.get<FakeWebServer>().changeDispatcherConfiguration(hasBrokenResponse = false)
+        koin.get<FakeWebServer>().prepareResponse(
+            path = "/api/v2/type/10",
+            body = FakePokemons.firePokemonsJson
+        )
 
         sut.onRetryClick()
         awaitUntil { !sut.pokemonsState.loading }

@@ -4,35 +4,31 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import ru.mobileup.template.pokemons.FakePokemons
 
 class FakeWebServer {
 
     private val server = MockWebServer()
 
-    private var isBrokenResponse = false
+    private val responses = mutableMapOf<String, FakeResponse>()
 
     private val dispatcher = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
-            return if (isBrokenResponse) {
-                MockResponse().setResponseCode(404)
-            } else {
-                when (request.requestUrl?.encodedPath) {
-                    "/api/v2/pokemon/77" -> {
-                        MockResponse()
-                            .setResponseCode(200)
-                            .setBody(FakePokemons.detailedPonytaJson)
-                    }
+            return responses
+                .entries
+                .firstOrNull { it.key == request.requestUrl?.encodedPath }
+                ?.let {
+                    when (val fakeResponse = it.value) {
+                        is FakeResponse.Success -> {
+                            MockResponse()
+                                .setResponseCode(200)
+                                .setBody(body = fakeResponse.body)
+                        }
 
-                    "/api/v2/type/10" -> {
-                        MockResponse()
-                            .setResponseCode(200)
-                            .setBody(FakePokemons.firePokemonsJson)
+                        is FakeResponse.Error -> {
+                            MockResponse().setResponseCode(fakeResponse.responseCode)
+                        }
                     }
-
-                    else -> throw IllegalArgumentException("Unexpected request: $request")
-                }
-            }
+                } ?: throw IllegalArgumentException("Unexpected request: $request")
         }
     }
 
@@ -47,10 +43,15 @@ class FakeWebServer {
 
     fun stopServer() {
         server.shutdown()
+        responses.clear()
         url = ""
     }
 
-    fun changeDispatcherConfiguration(hasBrokenResponse: Boolean) {
-        isBrokenResponse = hasBrokenResponse
+    fun prepareResponse(path: String, response: FakeResponse) {
+        responses[path] = response
     }
+}
+
+fun FakeWebServer.prepareResponse(path: String, body: String) {
+    prepareResponse(path, FakeResponse.Success(body))
 }
