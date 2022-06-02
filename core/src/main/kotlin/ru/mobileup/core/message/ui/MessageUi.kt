@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
-import ru.mobileup.core.message.domain.MessageData
 import me.aartikov.sesame.localizedstring.LocalizedString
+import ru.mobileup.core.message.domain.MessageData
 import ru.mobileup.core.theme.AppTheme
 import ru.mobileup.core.utils.resolve
 
@@ -29,11 +29,14 @@ fun MessageUi(
     }
     Box(modifier = modifier.fillMaxSize()) {
         component.visibleMessageData?.let {
-            MessagePopup(
-                messageData = it,
-                bottomPadding = bottomPadding + additionalBottomPadding,
-                onAction = component::onActionClick
-            )
+            val inverseIsDarkTheme = MaterialTheme.colors.isLight
+            AppTheme(inverseIsDarkTheme) {
+                MessagePopup(
+                    messageData = it,
+                    bottomPadding = bottomPadding + additionalBottomPadding,
+                    onAction = component::onActionClick
+                )
+            }
         }
     }
 }

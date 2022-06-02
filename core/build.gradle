@@ -50,6 +50,7 @@ dependencies {
     implementation libs.compose.material
     implementation libs.activity.compose
     implementation libs.compose.tooling
+    implementation libs.bundles.accompanist
 
     // DI
     implementation libs.koin.android
@@ -68,8 +69,6 @@ dependencies {
     implementation libs.bundles.replica
     debugImplementation libs.replica.devtools.debug
     releaseImplementation libs.replica.devtools.release
-
-    implementation libs.accompanist.swiperefresh
 
     // Debugging
     implementation libs.timber

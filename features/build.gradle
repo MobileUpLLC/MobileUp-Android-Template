@@ -55,6 +55,7 @@ dependencies {
     implementation libs.activity.compose
     implementation libs.coil
     implementation libs.compose.tooling
+    implementation libs.bundles.accompanist
 
     // DI
     implementation libs.koin.android

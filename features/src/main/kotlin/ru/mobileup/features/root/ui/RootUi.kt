@@ -1,10 +1,13 @@
 package ru.mobileup.features.root.ui
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.Children
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.mobileup.core.message.ui.FakeMessageComponent
 import ru.mobileup.core.message.ui.MessageUi
 import ru.mobileup.core.theme.AppTheme
@@ -17,6 +20,8 @@ fun RootUi(
     component: RootComponent,
     modifier: Modifier = Modifier
 ) {
+    SystemBarColors()
+
     Children(component.routerState, modifier) { child ->
         when (val instance = child.instance) {
             is RootComponent.Child.Pokemons -> PokemonsUi(instance.component)
@@ -28,6 +33,21 @@ fun RootUi(
         modifier = modifier,
         bottomPadding = 16.dp
     )
+}
+
+@Composable
+private fun SystemBarColors() {
+    val systemUiController = rememberSystemUiController()
+
+    val statusBarColor = MaterialTheme.colors.surface
+    LaunchedEffect(statusBarColor) {
+        systemUiController.setStatusBarColor(statusBarColor)
+    }
+
+    val navigationBarColor = MaterialTheme.colors.surface
+    LaunchedEffect(navigationBarColor) {
+        systemUiController.setNavigationBarColor(navigationBarColor)
+    }
 }
 
 @Preview(showSystemUi = true)
