@@ -97,8 +97,7 @@ dependencies {
     // Architecture
     implementation libs.sesame.localizedString
     implementation libs.bundles.decompose
-    debugImplementation libs.replica.devtools.debug
-    releaseImplementation libs.replica.devtools.release
+    implementation libs.bundles.replica
 
     // DI
     implementation libs.koin.android

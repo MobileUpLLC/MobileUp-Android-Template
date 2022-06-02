@@ -6,5 +6,7 @@ interface DebugTools {
 
     val interceptors: List<Interceptor>
 
+    fun launch()
+
     fun collectError(exception: Exception)
 }

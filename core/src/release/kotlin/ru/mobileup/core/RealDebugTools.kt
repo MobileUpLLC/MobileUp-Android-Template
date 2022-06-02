@@ -1,9 +1,15 @@
-package ru.mobileup.template.utils
+package ru.mobileup.core
 
+import android.content.Context
+import me.aartikov.replica.client.ReplicaClient
 import okhttp3.Interceptor
 import ru.mobileup.core.debug_tools.DebugTools
 
-class TestDebugTools : DebugTools {
+@Suppress("UNUSED_PARAMETER")
+class RealDebugTools(
+    context: Context,
+    replicaClient: ReplicaClient
+) : DebugTools {
 
     override val interceptors: List<Interceptor> = emptyList()
 

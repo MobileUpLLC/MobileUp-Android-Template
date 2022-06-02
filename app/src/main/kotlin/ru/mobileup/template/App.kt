@@ -1,12 +1,12 @@
 package ru.mobileup.template
 
 import android.app.Application
-import me.aartikov.replica.devtools.ReplicaDevTools
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.Koin
 import org.koin.dsl.koinApplication
 import ru.mobileup.core.ComponentFactory
 import ru.mobileup.core.KoinProvider
+import ru.mobileup.core.debug_tools.DebugTools
 import timber.log.Timber
 
 class App : Application(), KoinProvider {
@@ -20,7 +20,7 @@ class App : Application(), KoinProvider {
         koin = createKoin().also {
             it.declare(ComponentFactory(it))
         }
-        launchReplicaDevTools()
+        launchDebugTools()
     }
 
     private fun initLogger() {
@@ -36,8 +36,7 @@ class App : Application(), KoinProvider {
         }.koin
     }
 
-    private fun launchReplicaDevTools() {
-        val devtools = koin.get<ReplicaDevTools>()
-        devtools.launch()
+    private fun launchDebugTools() {
+        koin.get<DebugTools>().launch()
     }
 }
