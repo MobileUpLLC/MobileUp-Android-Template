@@ -78,35 +78,22 @@ android {
 }
 
 dependencies {
+
+    coreLibraryDesugaring libs.android.desugar
+
     // Modules
     implementation project(':core')
     implementation project(':features')
 
-    coreLibraryDesugaring libs.android.desugar
-
-    // Kotlin
-    implementation libs.kotlin.datetime
-    implementation libs.coroutines.android
-
     // UI
-    implementation libs.compose.ui
-    implementation libs.compose.material
     implementation libs.activity.compose
-    implementation libs.compose.tooling
 
     // Architecture
-    implementation libs.sesame.localizedString
     implementation libs.bundles.decompose
     implementation libs.bundles.replica
 
     // DI
     implementation libs.koin.android
-
-    // Network
-    implementation libs.retrofit.core
-
-    // Serialization
-    implementation libs.serialization.json
 
     // Debugging
     implementation libs.timber
