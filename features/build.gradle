@@ -23,8 +23,6 @@ android {
         jvmTarget = '1.8'
         useIR = true
         freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
-        freeCompilerArgs += "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi"
-        freeCompilerArgs += "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi"
     }
 
     buildFeatures {
@@ -53,9 +51,9 @@ dependencies {
     implementation libs.compose.ui
     implementation libs.compose.material
     implementation libs.activity.compose
-    implementation libs.coil
     implementation libs.compose.tooling
     implementation libs.bundles.accompanist
+    implementation libs.coil
 
     // DI
     implementation libs.koin.android
@@ -65,8 +63,6 @@ dependencies {
 
     // Network
     implementation libs.retrofit.core
-    implementation libs.retrofit.converter.serialization
-    implementation libs.okhttp.logging
 
     // Architecture
     implementation libs.sesame.localizedString

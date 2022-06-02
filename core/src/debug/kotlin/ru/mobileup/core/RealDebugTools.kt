@@ -40,6 +40,6 @@ class RealDebugTools(
 
     @Suppress("DEPRECATION")
     override fun collectError(exception: Exception) {
-        chuckerCollector.onError("RealDebugToolsImpl", exception)
+        chuckerCollector.onError("DebugTools", exception)
     }
 }

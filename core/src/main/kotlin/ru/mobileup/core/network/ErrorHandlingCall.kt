@@ -1,12 +1,12 @@
 package ru.mobileup.core.network
 
-import ru.mobileup.core.error_handling.*
 import kotlinx.serialization.SerializationException
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
 import ru.mobileup.core.debug_tools.DebugTools
+import ru.mobileup.core.error_handling.*
 import java.io.IOException
 import java.net.HttpURLConnection.*
 import java.net.SocketTimeoutException
@@ -22,7 +22,6 @@ class ErrorHandlingCall<T>(
         sourceCall.enqueue(getEnqueuedCallback(callback))
     }
 
-    @Suppress("DEPRECATION")
     private fun getEnqueuedCallback(callback: Callback<T>) = object : Callback<T> {
 
         override fun onResponse(call: Call<T>, response: Response<T>) {
