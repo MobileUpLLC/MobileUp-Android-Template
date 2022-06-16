@@ -1,7 +1,7 @@
 package ru.mobileup.template
 
-import ru.mobileup.core.coreModule
-import ru.mobileup.features.pokemons.pokemonsModule
+import ru.mobileup.template.core.coreModule
+import ru.mobileup.template.features.pokemons.pokemonsModule
 
 val allModules = listOf(
     coreModule(BuildConfig.BACKEND_URL),

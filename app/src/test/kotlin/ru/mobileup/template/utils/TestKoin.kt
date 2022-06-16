@@ -9,11 +9,11 @@ import org.koin.dsl.ModuleDeclaration
 import org.koin.dsl.module
 import org.koin.dsl.onClose
 import org.koin.test.KoinTestRule
-import ru.mobileup.core.ComponentFactory
-import ru.mobileup.core.debug_tools.DebugTools
-import ru.mobileup.core.network.NetworkApiFactory
 import ru.mobileup.template.App
 import ru.mobileup.template.allModules
+import ru.mobileup.template.core.ComponentFactory
+import ru.mobileup.template.core.debug_tools.DebugTools
+import ru.mobileup.template.core.network.NetworkApiFactory
 
 fun KoinTestRule.testKoin(moduleDeclaration: ModuleDeclaration? = null): Koin {
     val testModule = module {

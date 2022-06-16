@@ -8,9 +8,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.test.KoinTestRule
-import ru.mobileup.core.error_handling.ServerException
-import ru.mobileup.features.pokemons.createPokemonListComponent
-import ru.mobileup.features.pokemons.ui.list.PokemonListComponent
+import ru.mobileup.template.core.error_handling.ServerException
+import ru.mobileup.template.features.pokemons.createPokemonListComponent
+import ru.mobileup.template.features.pokemons.ui.list.PokemonListComponent
 import ru.mobileup.template.utils.*
 import kotlin.test.assertEquals
 

@@ -4,9 +4,9 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.Koin
 import org.koin.dsl.koinApplication
-import ru.mobileup.core.ComponentFactory
-import ru.mobileup.core.KoinProvider
-import ru.mobileup.core.debug_tools.DebugTools
+import ru.mobileup.template.core.ComponentFactory
+import ru.mobileup.template.core.KoinProvider
+import ru.mobileup.template.core.debug_tools.DebugTools
 import timber.log.Timber
 
 class App : Application(), KoinProvider {

@@ -4,11 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.arkivanov.decompose.defaultComponentContext
-import ru.mobileup.core.ComponentFactory
-import ru.mobileup.core.koin
-import ru.mobileup.features.root.ui.RootUi
-import ru.mobileup.core.theme.AppTheme
-import ru.mobileup.features.root.createRootComponent
+import ru.mobileup.template.core.ComponentFactory
+import ru.mobileup.template.core.koin
+import ru.mobileup.template.core.theme.AppTheme
+import ru.mobileup.template.features.root.createRootComponent
+import ru.mobileup.template.features.root.ui.RootUi
 
 class MainActivity : ComponentActivity() {
 

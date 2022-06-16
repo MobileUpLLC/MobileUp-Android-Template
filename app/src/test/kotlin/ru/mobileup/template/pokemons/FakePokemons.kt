@@ -1,6 +1,6 @@
 package ru.mobileup.template.pokemons
 
-import ru.mobileup.features.pokemons.domain.*
+import ru.mobileup.template.features.pokemons.domain.*
 
 object FakePokemons {
 
