@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlinx-serialization'
     id 'kotlin-parcelize'
+    id 'ru.mobileup.module-graph'
 }
 
 android {
@@ -71,4 +72,11 @@ dependencies {
 
     // Debugging
     implementation libs.timber
+}
+
+// Usage: ./gradlew generateModuleGraph
+moduleGraph {
+    featuresPackage = 'ru.mobileup.template.features'
+    featuresDirectory = project.file('src/main/kotlin/ru/mobileup/template/features')
+    outputDirectory = project.file('module_graph')
 }
