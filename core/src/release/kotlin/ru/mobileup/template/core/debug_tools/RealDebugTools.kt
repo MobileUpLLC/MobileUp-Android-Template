@@ -1,9 +1,8 @@
-package ru.mobileup.template.core
+package ru.mobileup.template.core.debug_tools
 
 import android.content.Context
 import me.aartikov.replica.client.ReplicaClient
 import okhttp3.Interceptor
-import ru.mobileup.template.core.debug_tools.DebugTools
 
 @Suppress("UNUSED_PARAMETER")
 class RealDebugTools(
@@ -17,7 +16,7 @@ class RealDebugTools(
         // do nothing
     }
 
-    override fun collectError(exception: Exception) {
+    override fun collectNetworkError(exception: Exception) {
         // do nothing
     }
 }

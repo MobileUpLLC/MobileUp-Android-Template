@@ -3,7 +3,7 @@ package ru.mobileup.template.utils
 import okhttp3.Interceptor
 import ru.mobileup.template.core.debug_tools.DebugTools
 
-class TestDebugTools : DebugTools {
+class FakeDebugTools : DebugTools {
 
     override val interceptors: List<Interceptor> = emptyList()
 
@@ -11,7 +11,7 @@ class TestDebugTools : DebugTools {
         // do nothing
     }
 
-    override fun collectError(exception: Exception) {
+    override fun collectNetworkError(exception: Exception) {
         // do nothing
     }
 }

@@ -8,5 +8,5 @@ interface DebugTools {
 
     fun launch()
 
-    fun collectError(exception: Exception)
+    fun collectNetworkError(exception: Exception)
 }

@@ -7,6 +7,9 @@ import me.aartikov.replica.keyed.KeyedReplica
 import me.aartikov.replica.single.Loadable
 import ru.mobileup.template.core.error_handling.ErrorHandler
 
+/**
+ * Observes [KeyedReplica] and uses [ErrorHandler] to handle errors.
+ */
 fun <T : Any, K : Any> KeyedReplica<K, T>.observe(
     lifecycle: Lifecycle,
     errorHandler: ErrorHandler,
@@ -17,7 +20,7 @@ fun <T : Any, K : Any> KeyedReplica<K, T>.observe(
         lifecycle,
         onError = { error, state ->
             errorHandler.handleError(
-                throwable = error.exception,
+                exception = error.exception,
                 showError = state.data != null // show error only if fullscreen error is not shown
             )
         },

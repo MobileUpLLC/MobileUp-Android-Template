@@ -5,6 +5,9 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 
+/**
+ * Starts a local web server with configurable fake responses.
+ */
 class FakeWebServer {
 
     private val server = MockWebServer()
@@ -32,11 +35,17 @@ class FakeWebServer {
         url = ""
     }
 
+    /**
+     * Configures a fake response for a given request path.
+     */
     fun prepareResponse(path: String, response: FakeResponse) {
         responses[path] = response
     }
 }
 
+/**
+ * Handy method to configure a success fake response.
+ */
 fun FakeWebServer.prepareResponse(path: String, body: String) {
     prepareResponse(path, FakeResponse.Success(body))
 }

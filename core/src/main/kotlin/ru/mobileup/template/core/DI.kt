@@ -7,6 +7,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ru.mobileup.template.core.debug_tools.DebugTools
+import ru.mobileup.template.core.debug_tools.RealDebugTools
 import ru.mobileup.template.core.error_handling.ErrorHandler
 import ru.mobileup.template.core.message.data.MessageService
 import ru.mobileup.template.core.message.data.MessageServiceImpl

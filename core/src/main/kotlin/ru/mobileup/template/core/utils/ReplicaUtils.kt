@@ -7,6 +7,9 @@ import me.aartikov.replica.single.Loadable
 import me.aartikov.replica.single.Replica
 import ru.mobileup.template.core.error_handling.ErrorHandler
 
+/**
+ * Observes [Replica] and uses [ErrorHandler] to handle errors.
+ */
 fun <T : Any> Replica<T>.observe(
     lifecycle: Lifecycle,
     errorHandler: ErrorHandler
@@ -15,7 +18,7 @@ fun <T : Any> Replica<T>.observe(
         lifecycle,
         onError = { error, state ->
             errorHandler.handleError(
-                throwable = error.exception,
+                exception = error.exception,
                 showError = state.data != null // show error only if fullscreen error is not shown
             )
         }

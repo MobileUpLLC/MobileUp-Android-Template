@@ -43,6 +43,5 @@
     <issue id="ContentDescription" severity="ignore"/>
     <issue id="GradleDependency" severity="ignore"/>
     <issue id="RtlSymmetry" severity="ignore"/>
-    <issue id="UnsafeExperimentalUsageError" severity="ignore"/>
     <issue id="Instantiatable" severity="ignore" />
 </lint>

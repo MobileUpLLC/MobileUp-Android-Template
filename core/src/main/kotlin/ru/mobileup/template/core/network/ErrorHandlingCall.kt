@@ -13,6 +13,9 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLHandshakeException
 
+/**
+ * Converts platform exceptions to [ApplicationException]s.
+ */
 class ErrorHandlingCall<T>(
     private val sourceCall: Call<T>,
     private val debugTools: DebugTools
@@ -29,7 +32,7 @@ class ErrorHandlingCall<T>(
                 true -> callback.onResponse(call, response)
                 else -> {
                     val exception = mapToFailureException(response)
-                    debugTools.collectError(exception)
+                    debugTools.collectNetworkError(exception)
                     callback.onFailure(call, exception)
                 }
             }
@@ -37,7 +40,7 @@ class ErrorHandlingCall<T>(
 
         override fun onFailure(call: Call<T>, throwable: Throwable) {
             val exception = mapToFailureException(throwable)
-            debugTools.collectError(exception)
+            debugTools.collectNetworkError(exception)
             callback.onFailure(call, exception)
         }
 

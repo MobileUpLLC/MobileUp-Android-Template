@@ -1,7 +1,7 @@
 apply plugin: 'io.gitlab.arturbosch.detekt'
 
 detekt {
-    source = files("$rootDir")
+    source = files(rootDir)
     config = rootProject.files('code_quality/detekt/config.yml')
     ignoreFailures = false
     disableDefaultRuleSets = true

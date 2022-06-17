@@ -3,7 +3,7 @@ package ru.mobileup.template.core.message.domain
 import androidx.annotation.DrawableRes
 import me.aartikov.sesame.localizedstring.LocalizedString
 
-data class MessageData(
+data class Message(
     val text: LocalizedString,
     @DrawableRes val iconRes: Int? = null,
     val actionTitle: LocalizedString? = null,
