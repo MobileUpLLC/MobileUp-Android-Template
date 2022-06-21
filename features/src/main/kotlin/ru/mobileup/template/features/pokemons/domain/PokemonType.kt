@@ -1,7 +1,11 @@
 package ru.mobileup.template.features.pokemons.domain
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 @JvmInline
-value class PokemonTypeId(val value: String)
+value class PokemonTypeId(val value: String) : Parcelable
 
 data class PokemonType(val id: PokemonTypeId, val name: String) {
     companion object {
