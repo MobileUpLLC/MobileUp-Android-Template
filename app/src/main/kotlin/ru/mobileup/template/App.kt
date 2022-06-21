@@ -17,9 +17,7 @@ class App : Application(), KoinProvider {
     override fun onCreate() {
         super.onCreate()
         initLogger()
-        koin = createKoin().also {
-            it.declare(ComponentFactory(it))
-        }
+        koin = createKoin()
         launchDebugTools()
     }
 
@@ -33,6 +31,7 @@ class App : Application(), KoinProvider {
         return koinApplication {
             androidContext(this@App)
             modules(allModules)
+            koin.declare(ComponentFactory(koin))
         }.koin
     }
 

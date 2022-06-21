@@ -14,7 +14,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 /**
- * Creates implementations for Retrofit APIs.
+ * Creates implementations of Retrofit APIs.
  */
 class NetworkApiFactory(
     private val url: String,
