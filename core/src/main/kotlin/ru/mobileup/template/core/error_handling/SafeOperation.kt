@@ -7,6 +7,9 @@ import kotlinx.coroutines.launch
 import me.aartikov.sesame.localizedstring.LocalizedString
 import ru.mobileup.template.core.R
 
+/**
+ * Allows to run a function safely (with error handing).
+ */
 fun safeRun(
     errorHandler: ErrorHandler,
     showError: Boolean = true,
@@ -19,6 +22,9 @@ fun safeRun(
     }
 }
 
+/**
+ * Allows to run a suspend function safely (with error handing).
+ */
 fun CoroutineScope.safeLaunch(
     errorHandler: ErrorHandler,
     showError: Boolean = true,
@@ -37,6 +43,9 @@ fun CoroutineScope.safeLaunch(
     }
 }
 
+/**
+ * Allows to run a suspend function safely (with error handing) and allows to retry a failed action.
+ */
 fun CoroutineScope.safeLaunchRetryable(
     errorHandler: ErrorHandler,
     onErrorHandled: ((e: Exception) -> Unit)? = null,
@@ -51,7 +60,7 @@ fun CoroutineScope.safeLaunchRetryable(
             // do nothing
         } catch (e: Exception) {
             errorHandler.handleErrorRetryable(
-                throwable = e,
+                exception = e,
                 retryActionTitle = retryActionTitle,
                 retryAction = retryAction
             )

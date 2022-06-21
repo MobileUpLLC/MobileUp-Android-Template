@@ -10,6 +10,11 @@ import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import me.aartikov.replica.single.Loadable
 
+/**
+ * Displays Replica state ([Loadable]) with swipe to refresh functionality.
+ *
+ * Note: a value of refreshing in [content] is true only when data is refreshing and swipe gesture didn't occur.
+ */
 @Composable
 fun <T : Any> SwipeRefreshLceWidget(
     state: Loadable<T>,
@@ -32,12 +37,17 @@ fun <T : Any> SwipeRefreshLceWidget(
                     contentColor = MaterialTheme.colors.primaryVariant
                 )
             }
-        ) { pullToRefreshPulled ->
-            content(data, refreshing = refreshing && !pullToRefreshPulled)
+        ) { swipeGestureOccurred ->
+            content(data, refreshing = refreshing && !swipeGestureOccurred)
         }
     }
 }
 
+/**
+ * SwipeRefresh that remembers that swipe gesture occurred.
+ *
+ * Note: it shows a loader only when [refreshing] is true and swipe gesture occurs.
+ */
 @Composable
 fun StatefulSwipeRefresh(
     refreshing: Boolean,
@@ -46,25 +56,25 @@ fun StatefulSwipeRefresh(
     indicator: @Composable (state: SwipeRefreshState, refreshTrigger: Dp) -> Unit = { s, trigger ->
         SwipeRefreshIndicator(s, trigger)
     },
-    content: @Composable (pullToRefreshPulled: Boolean) -> Unit
+    content: @Composable (swipeToRefreshPulled: Boolean) -> Unit
 ) {
-    var pullToRefreshPulled by remember { mutableStateOf(false) }
+    var swipeGestureOccurred by remember { mutableStateOf(false) }
 
     LaunchedEffect(refreshing) {
-        if (!refreshing) pullToRefreshPulled = false
+        if (!refreshing) swipeGestureOccurred = false
     }
 
-    val state = rememberSwipeRefreshState(pullToRefreshPulled && refreshing)
+    val state = rememberSwipeRefreshState(swipeGestureOccurred && refreshing)
 
     SwipeRefresh(
         state = state,
         onRefresh = {
-            pullToRefreshPulled = true
+            swipeGestureOccurred = true
             onRefresh()
         },
         indicator = indicator,
         modifier = modifier
     ) {
-        content(pullToRefreshPulled)
+        content(swipeGestureOccurred)
     }
 }

@@ -4,13 +4,21 @@ import android.os.Looper
 import org.awaitility.kotlin.await
 import org.awaitility.kotlin.withPollInterval
 import org.robolectric.Shadows
-import java.time.Duration
-import java.time.temporal.ChronoUnit
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.toJavaDuration
 
 /**
- * A function that allows you to wait for a condition to be met.
+ * Waits for a condition to be met.
+ *
+ * Note: it uses periodic polling to check a condition. Maybe it can be done in a better way.
  */
-fun awaitUntil(condition: () -> Boolean) {
+fun awaitUntil(
+    timeout: Duration = 5.seconds,
+    pollInterval: Duration = 5.milliseconds,
+    condition: () -> Boolean
+) {
     Shadows.shadowOf(Looper.getMainLooper()).idle()
 
     // Check the condition immediately
@@ -18,8 +26,8 @@ fun awaitUntil(condition: () -> Boolean) {
 
     // Then check the condition periodically
     await
-        .atMost(Duration.of(5, ChronoUnit.SECONDS))
-        .withPollInterval(Duration.of(10, ChronoUnit.MILLIS))
+        .atMost(timeout.toJavaDuration())
+        .withPollInterval(pollInterval.toJavaDuration())
         .pollInSameThread() // Use pollInSameThread() because idle() can't be called from a background thread
         .until {
             Shadows.shadowOf(Looper.getMainLooper()).idle()

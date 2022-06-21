@@ -1,4 +1,4 @@
-package ru.mobileup.template.core
+package ru.mobileup.template.core.debug_tools
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerCollector
@@ -8,7 +8,6 @@ import me.aartikov.replica.client.ReplicaClient
 import me.aartikov.replica.devtools.ReplicaDevTools
 import me.nemiron.hyperion.networkemulation.NetworkEmulatorInterceptor
 import okhttp3.Interceptor
-import ru.mobileup.template.core.debug_tools.DebugTools
 
 class RealDebugTools(
     context: Context,
@@ -39,7 +38,7 @@ class RealDebugTools(
     }
 
     @Suppress("DEPRECATION")
-    override fun collectError(exception: Exception) {
+    override fun collectNetworkError(exception: Exception) {
         chuckerCollector.onError("DebugTools", exception)
     }
 }

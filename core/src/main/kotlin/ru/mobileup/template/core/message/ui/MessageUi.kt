@@ -14,10 +14,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import me.aartikov.sesame.localizedstring.LocalizedString
-import ru.mobileup.template.core.message.domain.MessageData
+import ru.mobileup.template.core.message.domain.Message
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.utils.resolve
 
+/**
+ * Displays a [Message] as a popup at the bottom of screen.
+ */
 @Composable
 fun MessageUi(
     component: MessageComponent,
@@ -28,11 +31,11 @@ fun MessageUi(
         LocalMessageOffsets.current.values.maxOrNull()?.toDp() ?: 0.dp
     }
     Box(modifier = modifier.fillMaxSize()) {
-        component.visibleMessageData?.let {
+        component.visibleMessage?.let {
             val inverseIsDarkTheme = MaterialTheme.colors.isLight
             AppTheme(inverseIsDarkTheme) {
                 MessagePopup(
-                    messageData = it,
+                    message = it,
                     bottomPadding = bottomPadding + additionalBottomPadding,
                     onAction = component::onActionClick
                 )
@@ -43,7 +46,7 @@ fun MessageUi(
 
 @Composable
 private fun MessagePopup(
-    messageData: MessageData,
+    message: Message,
     onAction: () -> Unit,
     bottomPadding: Dp
 ) {
@@ -69,7 +72,7 @@ private fun MessagePopup(
                     .padding(vertical = 13.dp, horizontal = 16.dp)
                     .fillMaxWidth()
             ) {
-                messageData.iconRes?.let {
+                message.iconRes?.let {
                     Icon(
                         painter = painterResource(it),
                         contentDescription = null,
@@ -78,11 +81,11 @@ private fun MessagePopup(
                 }
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = messageData.text.resolve(),
+                    text = message.text.resolve(),
                     color = MaterialTheme.colors.onBackground,
                     style = MaterialTheme.typography.body1
                 )
-                messageData.actionTitle?.let {
+                message.actionTitle?.let {
                     MessageButton(text = it.resolve(), onClick = onAction)
                 }
             }
@@ -117,7 +120,7 @@ fun MessageUiPreview() {
 
 class FakeMessageComponent : MessageComponent {
 
-    override val visibleMessageData = MessageData(LocalizedString.raw("Message"))
+    override val visibleMessage = Message(LocalizedString.raw("Message"))
 
     override fun onActionClick() = Unit
 }

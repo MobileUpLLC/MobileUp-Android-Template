@@ -11,7 +11,8 @@ import androidx.compose.ui.layout.onGloballyPositioned
 val LocalMessageOffsets = staticCompositionLocalOf { mutableStateMapOf<Int, Int>() }
 
 /**
- * This function allows you to specify that a message (see [MessageUi]) should be displayed above an UI element.
+ * Allows to specify that a message (see [MessageUi]) should be displayed above an UI element.
+ * For example, set noOverlapByMessage() to a bottom navigation bar, so it will not be overlapped by a message popup.
  */
 fun Modifier.noOverlapByMessage(): Modifier = composed {
     val key = currentCompositeKeyHash

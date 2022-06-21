@@ -9,7 +9,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.mobileup.template.core.message.data.MessageService
-import ru.mobileup.template.core.message.domain.MessageData
+import ru.mobileup.template.core.message.domain.Message
 import ru.mobileup.template.core.utils.componentCoroutineScope
 
 class RealMessageComponent(
@@ -23,7 +23,7 @@ class RealMessageComponent(
 
     private val coroutineScope = componentCoroutineScope()
 
-    override var visibleMessageData by mutableStateOf<MessageData?>(null)
+    override var visibleMessage by mutableStateOf<Message?>(null)
         private set
 
     private var autoDismissJob: Job? = null
@@ -34,8 +34,8 @@ class RealMessageComponent(
 
     override fun onActionClick() {
         autoDismissJob?.cancel()
-        visibleMessageData?.action?.invoke()
-        visibleMessageData = null
+        visibleMessage?.action?.invoke()
+        visibleMessage = null
     }
 
     private fun collectMessages() {
@@ -46,12 +46,12 @@ class RealMessageComponent(
         }
     }
 
-    private fun showMessage(messageData: MessageData) {
+    private fun showMessage(message: Message) {
         autoDismissJob?.cancel()
-        visibleMessageData = messageData
+        visibleMessage = message
         autoDismissJob = coroutineScope.launch {
             delay(SHOW_TIME)
-            visibleMessageData = null
+            visibleMessage = null
         }
     }
 }

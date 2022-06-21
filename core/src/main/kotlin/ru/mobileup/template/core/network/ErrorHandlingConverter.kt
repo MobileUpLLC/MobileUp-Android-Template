@@ -3,6 +3,9 @@ package ru.mobileup.template.core.network
 import retrofit2.Converter
 import ru.mobileup.template.core.error_handling.DeserializationException
 
+/**
+ * Converts exceptions of JSON-framework to [DeserializationException].
+ */
 class ErrorHandlingConverter<F : Any, T : Any>(private val converter: Converter<F, T>) :
     Converter<F, T> {
 

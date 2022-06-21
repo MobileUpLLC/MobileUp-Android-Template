@@ -4,7 +4,10 @@ import me.aartikov.sesame.localizedstring.LocalizedString
 import ru.mobileup.template.core.BuildConfig
 import ru.mobileup.template.core.R
 
-val Throwable.errorMessage: LocalizedString
+/**
+ * Returns human readable messages for exceptions.
+ */
+val Exception.errorMessage: LocalizedString
     get() = when (this) {
         is ServerException, is DeserializationException -> LocalizedString.resource(R.string.error_invalid_response)
 

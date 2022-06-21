@@ -1,11 +1,14 @@
 package ru.mobileup.template.core.message.data
 
 import kotlinx.coroutines.flow.Flow
-import ru.mobileup.template.core.message.domain.MessageData
+import ru.mobileup.template.core.message.domain.Message
 
+/**
+ * A service for centralized message showing
+ */
 interface MessageService {
 
-    val messageFlow: Flow<MessageData>
+    val messageFlow: Flow<Message>
 
-    fun showMessage(message: MessageData)
+    fun showMessage(message: Message)
 }

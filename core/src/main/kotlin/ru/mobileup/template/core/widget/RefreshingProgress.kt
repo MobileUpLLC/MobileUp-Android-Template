@@ -8,6 +8,9 @@ import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
+/**
+ * Displays a horizontal progress bar on top of screen when data is refreshing.
+ */
 @Composable
 fun RefreshingProgress(active: Boolean, modifier: Modifier = Modifier) {
     AnimatedVisibility(

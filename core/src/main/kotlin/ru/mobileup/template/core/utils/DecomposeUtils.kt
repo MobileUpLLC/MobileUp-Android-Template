@@ -14,6 +14,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 
+/**
+ * Creates a [RouterState] with a single active component. Should be used to create a state for Jetpack Compose preview.
+ */
 fun <T : Any> createFakeRouterState(instance: T): RouterState<*, T> {
     return RouterState(
         configuration = "<fake>",
@@ -21,6 +24,9 @@ fun <T : Any> createFakeRouterState(instance: T): RouterState<*, T> {
     )
 }
 
+/**
+ * Converts [Value] from Decompose to [State] from Jetpack Compose.
+ */
 fun <T : Any> Value<T>.toComposeState(lifecycle: Lifecycle): State<T> {
     val state: MutableState<T> = mutableStateOf(this.value)
 
@@ -35,6 +41,9 @@ fun <T : Any> Value<T>.toComposeState(lifecycle: Lifecycle): State<T> {
     return state
 }
 
+/**
+ * Creates a coroutine scope tied to Decompose lifecycle. A scope is canceled when a component is destroyed.
+ */
 fun LifecycleOwner.componentCoroutineScope(): CoroutineScope {
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 

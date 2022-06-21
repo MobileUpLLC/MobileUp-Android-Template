@@ -6,6 +6,9 @@ import me.aartikov.replica.single.Loadable
 import ru.mobileup.template.core.error_handling.errorMessage
 import ru.mobileup.template.core.utils.resolve
 
+/**
+ * Displays Replica state ([Loadable]).
+ */
 @Composable
 fun <T : Any> LceWidget(
     state: Loadable<T>,

@@ -10,6 +10,7 @@ import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.features.root.createRootComponent
 import ru.mobileup.template.features.root.ui.RootUi
 
+// Note: rootComponent survives configuration changes due to "android:configChanges" setting in the manifest.
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

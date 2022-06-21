@@ -1,5 +1,9 @@
 package ru.mobileup.template.core.error_handling
 
+/**
+ * ApplicationException is a base class for application specific exceptions.
+ * All exceptions occurred on a data are mapped to the application exceptions.
+ */
 abstract class ApplicationException(cause: Throwable? = null) : Exception(cause)
 
 /**

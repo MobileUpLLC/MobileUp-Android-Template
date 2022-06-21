@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.statekeeper.consume
 import me.aartikov.replica.keyed.KeyedReplica
 import ru.mobileup.template.core.error_handling.ErrorHandler
 import ru.mobileup.template.core.utils.observe
@@ -27,7 +28,9 @@ class RealPokemonListComponent(
         PokemonType.Poison
     )
 
-    override var selectedTypeId by mutableStateOf(types[0].id)
+    override var selectedTypeId by mutableStateOf(
+        stateKeeper.consume("selectedTypeId") ?: types[0].id
+    )
         private set
 
     override val pokemonsState by pokemonsByTypeReplica.observe(
@@ -36,6 +39,10 @@ class RealPokemonListComponent(
         key = { selectedTypeId },
         keepPreviousData = true
     )
+
+    init {
+        stateKeeper.register("selectedTypeId") { selectedTypeId }
+    }
 
     override fun onTypeClick(typeId: PokemonTypeId) {
         selectedTypeId = typeId

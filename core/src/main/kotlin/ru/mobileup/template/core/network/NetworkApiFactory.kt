@@ -13,6 +13,9 @@ import ru.mobileup.template.core.debug_tools.DebugTools
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+/**
+ * Creates implementations of Retrofit APIs.
+ */
 class NetworkApiFactory(
     private val url: String,
     private val debugTools: DebugTools
@@ -37,7 +40,7 @@ class NetworkApiFactory(
     inline fun <reified T : Any> createAuthorizedApi(): T = createAuthorizedApi(T::class.java)
 
     /**
-     * Creates an API that does not require authorization
+     * Creates an API that doesn't require authorization
      */
     inline fun <reified T : Any> createUnauthorizedApi(): T = createUnauthorizedApi(T::class.java)
 
