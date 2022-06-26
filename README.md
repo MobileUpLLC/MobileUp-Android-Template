@@ -39,6 +39,7 @@ It consists of concrete features. Each feature has its own package which contain
 - [Coil](https://github.com/coil-kt/coil) - image loading
 - [Detekt](https://github.com/detekt/detekt) - static code analysis
 - [Hyperion](https://github.com/willowtreeapps/Hyperion-Android) - debug panel
+- [Robolectric](https://github.com/robolectric/robolectric) - unit testing
 - [Module Graph Gradle Plugin](https://github.com/MobileUpLLC/Module-Graph-Gradle-Plugin) - feature dependency graph visualization and validation
 
 ### Good coding and happy day!🤘
