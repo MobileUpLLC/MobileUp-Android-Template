@@ -1,5 +1,6 @@
 package ru.mobileup.template.core.utils
 
+import android.os.Parcelable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -9,6 +10,8 @@ import com.arkivanov.decompose.value.ValueObserver
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.lifecycle.LifecycleOwner
 import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.arkivanov.essenty.statekeeper.StateKeeperOwner
+import com.arkivanov.essenty.statekeeper.consume
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -56,4 +59,16 @@ fun LifecycleOwner.componentCoroutineScope(): CoroutineScope {
     }
 
     return scope
+}
+
+/**
+ * A helper function to save and restore component state.
+ */
+inline fun <reified T : Parcelable> StateKeeperOwner.persistent(
+    key: String = "PersistentState",
+    noinline save: () -> T,
+    restore: (T) -> Unit
+) {
+    stateKeeper.consume<T>(key)?.run(restore)
+    stateKeeper.register(key, save)
 }
