@@ -8,13 +8,18 @@ import me.aartikov.replica.client.ReplicaClient
 import me.aartikov.replica.devtools.ReplicaDevTools
 import me.nemiron.hyperion.networkemulation.NetworkEmulatorInterceptor
 import okhttp3.Interceptor
+import ru.mobileup.template.core.error_handling.ServerException
+import java.io.IOException
 
 class RealDebugTools(
     context: Context,
     replicaClient: ReplicaClient
 ) : DebugTools {
 
-    private val networkEmulatorInterceptor = NetworkEmulatorInterceptor(context)
+    private val networkEmulatorInterceptor = NetworkEmulatorInterceptor(
+        context,
+        failureExceptionProvider = { IOException(ServerException(cause = null)) }
+    )
     private val replicaDebugTools = ReplicaDevTools(replicaClient, context)
 
     private val chuckerCollector = ChuckerCollector(
