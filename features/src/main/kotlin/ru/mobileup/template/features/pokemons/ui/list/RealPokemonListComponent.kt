@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.statekeeper.consume
 import me.aartikov.replica.keyed.KeyedReplica
+import me.aartikov.replica.keyed.keepPreviousData
 import ru.mobileup.template.core.error_handling.ErrorHandler
 import ru.mobileup.template.core.utils.observe
 import ru.mobileup.template.features.pokemons.domain.Pokemon
@@ -33,12 +34,13 @@ class RealPokemonListComponent(
     )
         private set
 
-    override val pokemonsState by pokemonsByTypeReplica.observe(
-        lifecycle,
-        errorHandler,
-        key = { selectedTypeId },
-        keepPreviousData = true
-    )
+    override val pokemonsState by pokemonsByTypeReplica
+        .keepPreviousData()
+        .observe(
+            lifecycle,
+            errorHandler,
+            key = { selectedTypeId }
+        )
 
     init {
         stateKeeper.register("selectedTypeId") { selectedTypeId }

@@ -1,6 +1,5 @@
 package ru.mobileup.template.features.pokemons.ui.details
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -13,11 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import me.aartikov.replica.single.Loadable
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.widget.RefreshingProgress
@@ -66,11 +68,13 @@ private fun PokemonDetailsContent(
             style = MaterialTheme.typography.h5
         )
 
-        Image(
-            painter = rememberImagePainter(pokemon.imageUrl) {
-                crossfade(true)
-            },
+        AsyncImage(
             contentDescription = null,
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(pokemon.imageUrl)
+                .crossfade(true)
+                .build(),
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .padding(top = 32.dp)
                 .size(200.dp)

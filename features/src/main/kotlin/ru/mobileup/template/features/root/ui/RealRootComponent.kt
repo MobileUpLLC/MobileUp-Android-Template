@@ -4,8 +4,9 @@ import android.os.Parcelable
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
-import com.arkivanov.decompose.router.RouterState
-import com.arkivanov.decompose.router.router
+import com.arkivanov.decompose.router.stack.ChildStack
+import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.childStack
 import kotlinx.parcelize.Parcelize
 import ru.mobileup.template.core.ComponentFactory
 import ru.mobileup.template.core.message.createMessagesComponent
@@ -17,28 +18,29 @@ class RealRootComponent(
     private val componentFactory: ComponentFactory
 ) : ComponentContext by componentContext, RootComponent {
 
-    private val router = router<ChildConfig, RootComponent.Child>(
+    private val navigation = StackNavigation<ChildConfig>()
+
+    override val childStack: ChildStack<*, RootComponent.Child> by childStack(
+        source = navigation,
         initialConfiguration = ChildConfig.Pokemons,
         handleBackButton = true,
         childFactory = ::createChild
-    )
-
-    override val routerState: RouterState<*, RootComponent.Child> by router.state.toComposeState(
-        lifecycle
-    )
+    ).toComposeState(lifecycle)
 
     override val messageComponent = componentFactory.createMessagesComponent(
         childContext(key = "message")
     )
 
-    private fun createChild(config: ChildConfig, componentContext: ComponentContext) =
-        when (config) {
-            is ChildConfig.Pokemons -> {
-                RootComponent.Child.Pokemons(
-                    componentFactory.createPokemonsComponent(componentContext)
-                )
-            }
+    private fun createChild(
+        config: ChildConfig,
+        componentContext: ComponentContext
+    ): RootComponent.Child = when (config) {
+        is ChildConfig.Pokemons -> {
+            RootComponent.Child.Pokemons(
+                componentFactory.createPokemonsComponent(componentContext)
+            )
         }
+    }
 
     private sealed interface ChildConfig : Parcelable {
 
