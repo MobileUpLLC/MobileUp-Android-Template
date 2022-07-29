@@ -6,12 +6,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.arkivanov.decompose.extensions.compose.jetpack.Children
+import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.mobileup.template.core.message.ui.FakeMessageComponent
 import ru.mobileup.template.core.message.ui.MessageUi
 import ru.mobileup.template.core.theme.AppTheme
-import ru.mobileup.template.core.utils.createFakeRouterState
+import ru.mobileup.template.core.utils.createFakeChildStack
 import ru.mobileup.template.features.pokemons.ui.FakePokemonsComponent
 import ru.mobileup.template.features.pokemons.ui.PokemonsUi
 
@@ -22,7 +22,7 @@ fun RootUi(
 ) {
     SystemBarColors()
 
-    Children(component.routerState, modifier) { child ->
+    Children(component.childStack, modifier) { child ->
         when (val instance = child.instance) {
             is RootComponent.Child.Pokemons -> PokemonsUi(instance.component)
         }
@@ -60,8 +60,8 @@ fun RootUiPreview() {
 
 class FakeRootComponent : RootComponent {
 
-    override val routerState =
-        createFakeRouterState(RootComponent.Child.Pokemons(FakePokemonsComponent()))
+    override val childStack =
+        createFakeChildStack(RootComponent.Child.Pokemons(FakePokemonsComponent()))
 
     override val messageComponent = FakeMessageComponent()
 }

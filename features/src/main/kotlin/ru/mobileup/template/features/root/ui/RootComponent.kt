@@ -1,6 +1,6 @@
 package ru.mobileup.template.features.root.ui
 
-import com.arkivanov.decompose.router.RouterState
+import com.arkivanov.decompose.router.stack.ChildStack
 import ru.mobileup.template.core.message.ui.MessageComponent
 import ru.mobileup.template.features.pokemons.ui.PokemonsComponent
 
@@ -11,7 +11,7 @@ import ru.mobileup.template.features.pokemons.ui.PokemonsComponent
  */
 interface RootComponent {
 
-    val routerState: RouterState<*, Child>
+    val childStack: ChildStack<*, Child>
 
     val messageComponent: MessageComponent
 
