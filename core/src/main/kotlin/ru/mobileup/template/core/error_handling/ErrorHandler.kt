@@ -8,7 +8,7 @@ import ru.mobileup.template.core.message.domain.Message
 import timber.log.Timber
 
 /**
- * Executes error processing: shows messages, log exceptions, notifies that auto logout happens.
+ * Executes error processing: shows error messages, logs exceptions, notifies that auto logout happens.
  * Should be used only in Decompose components.
  */
 class ErrorHandler(private val messageService: MessageService) {

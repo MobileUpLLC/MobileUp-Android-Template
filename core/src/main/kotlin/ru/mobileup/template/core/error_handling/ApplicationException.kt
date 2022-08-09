@@ -49,11 +49,6 @@ class SSLHandshakeException(cause: Throwable?) : TransportException(cause)
 class ExternalAppNotFoundException(cause: Throwable?) : ApplicationException(cause)
 
 /**
- * The problem exists while working with the file
- */
-class FileOperationException(cause: Throwable?) : ApplicationException(cause)
-
-/**
  * Some unknown issue
  */
 class UnknownException(cause: Throwable?, override val message: String) :

@@ -13,12 +13,14 @@ import ru.mobileup.template.core.R
 fun safeRun(
     errorHandler: ErrorHandler,
     showError: Boolean = true,
+    onErrorHandled: ((e: Exception) -> Unit)? = null,
     block: () -> Unit
 ) {
     try {
         block()
     } catch (e: Exception) {
         errorHandler.handleError(e, showError)
+        onErrorHandled?.invoke(e)
     }
 }
 

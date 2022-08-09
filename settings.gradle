@@ -102,7 +102,6 @@ dependencyResolutionManagement {
                     ['hyperion-core', 'hyperion-recorder', 'hyperion-crash', 'hyperion-disk',
                      'hyperion-addons-logs', 'hyperion-addons-networkEmulation', 'hyperion-addons-chucker']
             )
-
             library('chucker', 'com.github.chuckerteam.chucker', 'library').version('3.5.2')
 
             // Testing
