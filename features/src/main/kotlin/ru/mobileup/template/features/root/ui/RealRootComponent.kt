@@ -9,7 +9,7 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import kotlinx.parcelize.Parcelize
 import ru.mobileup.template.core.ComponentFactory
-import ru.mobileup.template.core.message.createMessagesComponent
+import ru.mobileup.template.core.createMessageComponent
 import ru.mobileup.template.core.utils.toComposeState
 import ru.mobileup.template.features.pokemons.createPokemonsComponent
 
@@ -27,7 +27,7 @@ class RealRootComponent(
         childFactory = ::createChild
     ).toComposeState(lifecycle)
 
-    override val messageComponent = componentFactory.createMessagesComponent(
+    override val messageComponent = componentFactory.createMessageComponent(
         childContext(key = "message")
     )
 
