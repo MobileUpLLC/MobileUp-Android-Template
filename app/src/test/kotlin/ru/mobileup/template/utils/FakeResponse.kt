@@ -15,3 +15,13 @@ sealed interface FakeResponse {
         val NotFound = Error(404)
     }
 }
+
+enum class HttpMethod {
+    Get, Post, Put, Delete, Patch;
+
+    companion object {
+        fun fromString(str: String): HttpMethod? {
+            return values().firstOrNull { it.name.equals(str, ignoreCase = true) }
+        }
+    }
+}

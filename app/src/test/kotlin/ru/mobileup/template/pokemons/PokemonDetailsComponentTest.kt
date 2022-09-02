@@ -23,7 +23,7 @@ class PokemonDetailsComponentTest {
             FakePokemons.detailedPonyta.id
         )
 
-        fakeWebServer.prepareResponse("/api/v2/pokemon/77", FakePokemons.detailedPonytaJson)
+        fakeWebServer.prepare(HttpMethod.Get, "/api/v2/pokemon/77", FakePokemons.detailedPonytaJson)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonState.loading }
 
@@ -42,7 +42,7 @@ class PokemonDetailsComponentTest {
             FakePokemons.detailedPonyta.id
         )
 
-        fakeWebServer.prepareResponse("/api/v2/pokemon/77", FakeResponse.BadRequest)
+        fakeWebServer.prepare(HttpMethod.Get, "/api/v2/pokemon/77", FakeResponse.BadRequest)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonState.loading }
 
@@ -58,10 +58,10 @@ class PokemonDetailsComponentTest {
             FakePokemons.detailedPonyta.id
         )
 
-        fakeWebServer.prepareResponse("/api/v2/pokemon/77", FakeResponse.BadRequest)
+        fakeWebServer.prepare(HttpMethod.Get, "/api/v2/pokemon/77", FakeResponse.BadRequest)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonState.loading }
-        fakeWebServer.prepareResponse("/api/v2/pokemon/77", FakePokemons.detailedPonytaJson)
+        fakeWebServer.prepare(HttpMethod.Get, "/api/v2/pokemon/77", FakePokemons.detailedPonytaJson)
         sut.onRetryClick()
         awaitUntil { !sut.pokemonState.loading }
 

@@ -21,7 +21,7 @@ class PokemonListComponentTest {
         val componentContext = TestComponentContext()
         val sut = koin.componentFactory.createPokemonListComponent(componentContext) {}
 
-        fakeWebServer.prepareResponse("/api/v2/type/10", FakePokemons.firePokemonsJson)
+        fakeWebServer.prepare(HttpMethod.Get, "/api/v2/type/10", FakePokemons.firePokemonsJson)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonsState.loading }
 
@@ -38,7 +38,7 @@ class PokemonListComponentTest {
         val outputCaptor = OutputCaptor<PokemonListComponent.Output>()
         val sut = koin.componentFactory.createPokemonListComponent(componentContext, outputCaptor)
 
-        fakeWebServer.prepareResponse("/api/v2/type/10", FakePokemons.firePokemonsJson)
+        fakeWebServer.prepare(HttpMethod.Get, "/api/v2/type/10", FakePokemons.firePokemonsJson)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         sut.onPokemonClick(FakePokemons.detailedPonyta.id)
 
@@ -54,7 +54,7 @@ class PokemonListComponentTest {
         val componentContext = TestComponentContext()
         val sut = koin.componentFactory.createPokemonListComponent(componentContext) {}
 
-        fakeWebServer.prepareResponse("/api/v2/type/10", FakeResponse.BadRequest)
+        fakeWebServer.prepare(HttpMethod.Get, "/api/v2/type/10", FakeResponse.BadRequest)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonsState.loading }
 
@@ -67,10 +67,10 @@ class PokemonListComponentTest {
         val componentContext = TestComponentContext()
         val sut = koin.componentFactory.createPokemonListComponent(componentContext) {}
 
-        fakeWebServer.prepareResponse("/api/v2/type/10", FakeResponse.BadRequest)
+        fakeWebServer.prepare(HttpMethod.Get, "/api/v2/type/10", FakeResponse.BadRequest)
         componentContext.moveToState(Lifecycle.State.RESUMED)
         awaitUntil { !sut.pokemonsState.loading }
-        fakeWebServer.prepareResponse("/api/v2/type/10", FakePokemons.firePokemonsJson)
+        fakeWebServer.prepare(HttpMethod.Get, "/api/v2/type/10", FakePokemons.firePokemonsJson)
         sut.onRetryClick()
         awaitUntil { !sut.pokemonsState.loading }
 

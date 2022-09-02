@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import me.aartikov.replica.client.ReplicaClient
 import me.aartikov.replica.network.AndroidNetworkConnectivityProvider
 import me.aartikov.replica.network.NetworkConnectivityProvider
+import org.koin.core.component.get
 import org.koin.dsl.module
 import ru.mobileup.template.core.debug_tools.DebugTools
 import ru.mobileup.template.core.debug_tools.RealDebugTools

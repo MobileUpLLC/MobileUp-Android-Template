@@ -11,11 +11,11 @@ import okhttp3.mockwebserver.RecordedRequest
 class FakeWebServer {
 
     private val server = MockWebServer()
-    private val responses = mutableMapOf<String, FakeResponse>()
+    private val responses = mutableMapOf<RequestKey, FakeResponse>()
 
     private val dispatcher = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
-            val fakeResponse = responses[request.requestUrl?.encodedPath] ?: FakeResponse.NotFound
+            val fakeResponse = responses[request.requestKey] ?: FakeResponse.NotFound
             return fakeResponse.toMockResponse()
         }
     }
@@ -38,17 +38,22 @@ class FakeWebServer {
     /**
      * Configures a fake response for a given request path.
      */
-    fun prepareResponse(path: String, response: FakeResponse) {
-        responses[path] = response
+    fun prepare(method: HttpMethod, path: String, response: FakeResponse) {
+        responses[RequestKey(method, path)] = response
     }
 }
 
 /**
  * Handy method to configure a success fake response.
  */
-fun FakeWebServer.prepareResponse(path: String, body: String) {
-    prepareResponse(path, FakeResponse.Success(body))
+fun FakeWebServer.prepare(method: HttpMethod, path: String, body: String) {
+    prepare(method, path, FakeResponse.Success(body))
 }
+
+private data class RequestKey(
+    val method: HttpMethod,
+    val path: String
+)
 
 private fun FakeResponse.toMockResponse() = when (this) {
     is FakeResponse.Success -> {
@@ -61,3 +66,12 @@ private fun FakeResponse.toMockResponse() = when (this) {
         MockResponse().setResponseCode(responseCode)
     }
 }
+
+private val RecordedRequest.requestKey: RequestKey?
+    get() {
+        val methodStr = method ?: return null
+        val method = HttpMethod.fromString(methodStr) ?: return null
+        val path = requestUrl?.encodedPath ?: return null
+        return RequestKey(method, path)
+    }
+
