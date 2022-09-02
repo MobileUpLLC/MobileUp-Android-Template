@@ -4,9 +4,6 @@ import com.arkivanov.decompose.ComponentContext
 import me.aartikov.replica.client.ReplicaClient
 import me.aartikov.replica.network.AndroidNetworkConnectivityProvider
 import me.aartikov.replica.network.NetworkConnectivityProvider
-import org.koin.android.ext.koin.androidApplication
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.component.get
 import org.koin.dsl.module
 import ru.mobileup.template.core.debug_tools.DebugTools
 import ru.mobileup.template.core.debug_tools.RealDebugTools
@@ -18,11 +15,11 @@ import ru.mobileup.template.core.message.ui.RealMessageComponent
 import ru.mobileup.template.core.network.NetworkApiFactory
 
 fun coreModule(backendUrl: String) = module {
-    single<NetworkConnectivityProvider> { AndroidNetworkConnectivityProvider(androidApplication()) }
+    single<NetworkConnectivityProvider> { AndroidNetworkConnectivityProvider(get()) }
     single { ReplicaClient(get()) }
     single<MessageService> { MessageServiceImpl() }
     single { ErrorHandler(get()) }
-    single<DebugTools> { RealDebugTools(androidContext(), get()) }
+    single<DebugTools> { RealDebugTools(get(), get()) }
     single { NetworkApiFactory(backendUrl, get()) }
 }
 

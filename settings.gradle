@@ -78,7 +78,7 @@ dependencyResolutionManagement {
 
             // DI
             version('koin', '3.2.0')
-            library('koin-android', 'io.insert-koin', 'koin-android').versionRef('koin')
+            library('koin', 'io.insert-koin', 'koin-core').versionRef('koin')
             library('koinTest', 'io.insert-koin', 'koin-test').versionRef('koin')
             library('koinTestJunit', 'io.insert-koin', 'koin-test-junit4').versionRef('koin')
             bundle('koin-test', ['koinTest', 'koinTestJunit'])

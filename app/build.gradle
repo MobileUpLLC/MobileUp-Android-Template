@@ -91,7 +91,7 @@ dependencies {
     implementation libs.bundles.replica
 
     // DI
-    implementation libs.koin.android
+    implementation libs.koin
 
     // Debugging
     implementation libs.timber

@@ -1,9 +1,8 @@
 package ru.mobileup.template
 
 import android.app.Application
-import org.koin.android.ext.koin.androidContext
+import android.content.Context
 import org.koin.core.Koin
-import org.koin.dsl.koinApplication
 import ru.mobileup.template.core.ComponentFactory
 import ru.mobileup.template.core.KoinProvider
 import ru.mobileup.template.core.debug_tools.DebugTools
@@ -28,11 +27,12 @@ class App : Application(), KoinProvider {
     }
 
     private fun createKoin(): Koin {
-        return koinApplication {
-            androidContext(this@App)
-            modules(allModules)
-            koin.declare(ComponentFactory(koin))
-        }.koin
+        return Koin().apply {
+            loadModules(allModules)
+            declare(this@App as Application)
+            declare(this@App as Context)
+            declare(ComponentFactory(this))
+        }
     }
 
     private fun launchDebugTools() {

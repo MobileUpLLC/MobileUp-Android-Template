@@ -56,7 +56,7 @@ dependencies {
     implementation libs.coil
 
     // DI
-    implementation libs.koin.android
+    implementation libs.koin
 
     // Serialization
     implementation libs.serialization.json
