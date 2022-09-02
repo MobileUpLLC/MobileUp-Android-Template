@@ -58,7 +58,7 @@ dependencyResolutionManagement {
             library('decompose-compose', 'com.arkivanov.decompose', 'extensions-compose-jetpack').versionRef('decompose')
             bundle('decompose', ['decompose-core', 'decompose-compose'])
 
-            version('replica', '1.0.0-alpha5')
+            version('replica', '1.0.0-alpha6')
             library('replica-core', 'com.github.aartikov', 'replica-core').versionRef('replica')
             library('replica-algebra', 'com.github.aartikov', 'replica-algebra').versionRef('replica')
             library('replica-android-network', 'com.github.aartikov', 'replica-android-network').versionRef('replica')
