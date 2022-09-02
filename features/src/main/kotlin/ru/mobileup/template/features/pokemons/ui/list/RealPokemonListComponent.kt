@@ -2,10 +2,10 @@ package ru.mobileup.template.features.pokemons.ui.list
 
 import android.os.Parcelable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.parcelize.Parcelize
+import me.aartikov.replica.keyed.KeyedPhysicalReplica
 import me.aartikov.replica.keyed.KeyedReplica
 import me.aartikov.replica.keyed.keepPreviousData
 import ru.mobileup.template.core.error_handling.ErrorHandler
@@ -31,16 +31,20 @@ class RealPokemonListComponent(
         PokemonType.Poison
     )
 
-    override var selectedTypeId by mutableStateOf(types[0].id)
-        private set
+    private val selectedTypeIdStateFlow = MutableStateFlow(types[0].id)
+
+    override var selectedTypeId by selectedTypeIdStateFlow::value
 
     override val pokemonsState by pokemonsByTypeReplica
         .keepPreviousData()
         .observe(
             lifecycle,
             errorHandler,
-            key = { selectedTypeId }
+            selectedTypeIdStateFlow
         )
+
+    override val replica: KeyedPhysicalReplica<PokemonTypeId, List<Pokemon>>
+        get() = pokemonsByTypeReplica as KeyedPhysicalReplica<PokemonTypeId, List<Pokemon>>
 
     init {
         persistent(

@@ -2,6 +2,7 @@ package ru.mobileup.template.core.utils
 
 import androidx.compose.runtime.State
 import com.arkivanov.essenty.lifecycle.Lifecycle
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.aartikov.replica.decompose.coroutineScope
@@ -49,6 +50,28 @@ fun <T : Any, K : Any> KeyedReplica<K, T>.observe(
 
     val coroutineScope = lifecycle.coroutineScope()
     val observer = observe(lifecycle, snapshotStateFlow(coroutineScope, key))
+
+    observer
+        .loadingErrorFlow
+        .onEach { error ->
+            errorHandler.handleError(
+                error.exception,
+                showError = observer.currentState.data != null  // show error only if fullscreen error is not shown
+            )
+        }
+        .launchIn(coroutineScope)
+
+    return observer.stateFlow.toComposeState(coroutineScope)
+}
+
+fun <T : Any, K : Any> KeyedReplica<K, T>.observe(
+    lifecycle: Lifecycle,
+    errorHandler: ErrorHandler,
+    key: StateFlow<K>
+): State<Loadable<T>> {
+
+    val coroutineScope = lifecycle.coroutineScope()
+    val observer = observe(lifecycle, key)
 
     observer
         .loadingErrorFlow

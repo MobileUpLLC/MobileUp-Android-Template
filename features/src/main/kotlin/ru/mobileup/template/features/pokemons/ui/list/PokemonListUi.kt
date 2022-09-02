@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import me.aartikov.replica.keyed.KeyedPhysicalReplica
 import me.aartikov.replica.single.Loadable
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.widget.EmptyPlaceholder
@@ -176,6 +177,8 @@ class FakePokemonListComponent : PokemonListComponent {
             )
         )
     )
+    override val replica: KeyedPhysicalReplica<PokemonTypeId, List<Pokemon>>
+        get() = TODO("Not yet implemented")
 
     override fun onTypeClick(typeId: PokemonTypeId) = Unit
 

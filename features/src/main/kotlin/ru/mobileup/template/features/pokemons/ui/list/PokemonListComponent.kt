@@ -1,5 +1,6 @@
 package ru.mobileup.template.features.pokemons.ui.list
 
+import me.aartikov.replica.keyed.KeyedPhysicalReplica
 import me.aartikov.replica.single.Loadable
 import ru.mobileup.template.features.pokemons.domain.Pokemon
 import ru.mobileup.template.features.pokemons.domain.PokemonId
@@ -13,6 +14,8 @@ interface PokemonListComponent {
     val selectedTypeId: PokemonTypeId
 
     val pokemonsState: Loadable<List<Pokemon>>
+
+    val replica: KeyedPhysicalReplica<PokemonTypeId, List<Pokemon>>
 
     fun onTypeClick(typeId: PokemonTypeId)
 

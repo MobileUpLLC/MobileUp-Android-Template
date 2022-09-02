@@ -8,6 +8,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import ru.mobileup.template.core.error_handling.ServerException
 import ru.mobileup.template.features.pokemons.createPokemonListComponent
+import ru.mobileup.template.features.pokemons.domain.PokemonTypeId
 import ru.mobileup.template.features.pokemons.ui.list.PokemonListComponent
 import ru.mobileup.template.utils.*
 import kotlin.test.assertEquals
@@ -27,6 +28,25 @@ class PokemonListComponentTest {
 
         assertEquals(
             expected = Loadable(loading = false, data = FakePokemons.firePokemons, error = null),
+            actual = sut.pokemonsState
+        )
+    }
+
+    @Test
+    fun `loads pokemons for the second tab after tab is changed`() = withTestKoin { koin ->
+        val fakeWebServer = koin.fakeWebServer
+        val componentContext = TestComponentContext()
+        val sut = koin.componentFactory.createPokemonListComponent(componentContext) {}
+
+        fakeWebServer.prepareResponse("/api/v2/type/10", FakePokemons.firePokemonsJson)
+        fakeWebServer.prepareResponse("/api/v2/type/11", FakePokemons.watterPokemonsJson)
+        componentContext.moveToState(Lifecycle.State.RESUMED)
+        awaitUntil { !sut.pokemonsState.loading }
+        sut.onTypeClick(PokemonTypeId("11"))
+        awaitUntil { !sut.pokemonsState.loading }
+
+        assertEquals(
+            expected = Loadable(loading = false, data = FakePokemons.watterPokemons, error = null),
             actual = sut.pokemonsState
         )
     }
