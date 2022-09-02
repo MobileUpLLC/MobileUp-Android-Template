@@ -4,10 +4,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import me.aartikov.replica.single.Loadable
 import org.junit.Assert.assertTrue
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.test.KoinTestRule
 import ru.mobileup.template.core.error_handling.ServerException
 import ru.mobileup.template.features.pokemons.createPokemonListComponent
 import ru.mobileup.template.features.pokemons.ui.list.PokemonListComponent
@@ -17,12 +15,8 @@ import kotlin.test.assertEquals
 @RunWith(AndroidJUnit4::class)
 class PokemonListComponentTest {
 
-    @get:Rule
-    val koinTestRule = KoinTestRule.create()
-
     @Test
-    fun `loads pokemons for the first tab on start`() {
-        val koin = koinTestRule.testKoin()
+    fun `loads pokemons for the first tab on start`() = withTestKoin { koin ->
         val fakeWebServer = koin.fakeWebServer
         val componentContext = TestComponentContext()
         val sut = koin.componentFactory.createPokemonListComponent(componentContext) {}
@@ -38,8 +32,7 @@ class PokemonListComponentTest {
     }
 
     @Test
-    fun `redirects to details when a pokemon is clicked`() {
-        val koin = koinTestRule.testKoin()
+    fun `redirects to details when a pokemon is clicked`() = withTestKoin { koin ->
         val fakeWebServer = koin.fakeWebServer
         val componentContext = TestComponentContext()
         val outputCaptor = OutputCaptor<PokemonListComponent.Output>()
@@ -56,8 +49,7 @@ class PokemonListComponentTest {
     }
 
     @Test
-    fun `shows fullscreen error when pokemons loading failed`() {
-        val koin = koinTestRule.testKoin()
+    fun `shows fullscreen error when pokemons loading failed`() = withTestKoin { koin ->
         val fakeWebServer = koin.fakeWebServer
         val componentContext = TestComponentContext()
         val sut = koin.componentFactory.createPokemonListComponent(componentContext) {}
@@ -70,8 +62,7 @@ class PokemonListComponentTest {
     }
 
     @Test
-    fun `update pokemons when retry is clicked after failed loading`() {
-        val koin = koinTestRule.testKoin()
+    fun `update pokemons when retry is clicked after failed loading`() = withTestKoin { koin ->
         val fakeWebServer = koin.fakeWebServer
         val componentContext = TestComponentContext()
         val sut = koin.componentFactory.createPokemonListComponent(componentContext) {}

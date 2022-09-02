@@ -100,7 +100,7 @@ dependencies {
     // Testing
     testImplementation libs.junit
     testImplementation libs.extJunit
-    testImplementation libs.bundles.koin.test
+    testImplementation libs.kotlinTest
     testImplementation libs.mockWebServer
     testImplementation libs.awaitility
     testImplementation libs.robolectric
