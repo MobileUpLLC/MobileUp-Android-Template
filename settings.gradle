@@ -41,6 +41,7 @@ dependencyResolutionManagement {
             library('activity-compose', 'androidx.activity', 'activity-compose').version('1.5.0')
             library('appcompat', 'androidx.appcompat', 'appcompat').version('1.5.0')
             library('coil', 'io.coil-kt', 'coil-compose').version('2.1.0')
+            library('splashscreen', 'androidx.core', 'core-splashscreen').version('1.0.0')
             version('accompanist', '0.24.13-rc')
             library('accompanist-systemuicontroller', 'com.google.accompanist', 'accompanist-systemuicontroller').versionRef('accompanist')
             library('accompanist-swiperefresh', 'com.google.accompanist', 'accompanist-swiperefresh').versionRef('accompanist')

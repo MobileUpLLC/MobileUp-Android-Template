@@ -85,6 +85,7 @@ dependencies {
 
     // UI
     implementation libs.activity.compose
+    implementation libs.splashscreen
 
     // Architecture
     implementation libs.bundles.decompose

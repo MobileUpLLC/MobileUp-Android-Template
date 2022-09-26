@@ -3,6 +3,7 @@ package ru.mobileup.template
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.arkivanov.decompose.defaultComponentContext
 import ru.mobileup.template.core.ComponentFactory
 import ru.mobileup.template.core.koin
@@ -14,6 +15,7 @@ import ru.mobileup.template.features.root.ui.RootUi
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
 
         val componentFactory = application.koin.get<ComponentFactory>()
