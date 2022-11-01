@@ -357,7 +357,7 @@ style:
     max: 2
   UnderscoresInNumericLiterals:
     active: true
-    acceptableDecimalLength: 5
+    acceptableLength: 5
   UnnecessaryFilter:
     active: true
   UntilInsteadOfRangeTo:

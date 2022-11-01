@@ -1,0 +1,51 @@
+#!/bin/sh
+
+# docs: https://git-scm.com/docs/githooks#_prepare_commit_msg
+
+# 1 - commit message file
+# 2 - commit source (message / template / merge / squash / commit)
+# 3 - SHA1 hash of commit
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+SHA1=$3
+ISSUE_PREFIX="ISSUE_PREFIX_NAME"
+
+addIssueNumberToMessage () {
+    issuePrefix=$1
+    commitMessageFile=$2
+
+    branchName=$(git rev-parse --abbrev-ref HEAD)
+    commitMessage=$(cat $commitMessageFile)
+    issueRegex="($issuePrefix-[0-9]+)"
+    issue=$(echo "${branchName}" | grep -Eo "${issueRegex}")
+    commitIssue=$(echo "${commitMessage}" | grep -Eo "^${issueRegex}(.*)$")
+
+    if [ -z "$issuePrefix" ]
+    then
+        echo "Issue prefix must be not empty in .git/hooks/prepare-commit-message!"
+        exit -1
+    fi
+
+    if [ -z "$issue" ]
+    then
+        echo "Cannot find issue number in branch ${branchName}"
+        exit 0
+    fi
+
+    if [ -n "$commitIssue" ]
+    then
+        echo "Issue number is already in commit message"
+        exit 0
+    fi
+
+    echo "Adding Issue number in commit message..."
+    echo "${issue}: ${commitMessage}" > "${commitMessageFile}"
+}
+
+
+# Only add custom message when there is commit source is message.
+# Otherwise, keep the default message proposed by Git. 
+if [ "$COMMIT_SOURCE" = "message" ]
+then
+    addIssueNumberToMessage "${ISSUE_PREFIX}" "${COMMIT_MSG_FILE}"
+fi
