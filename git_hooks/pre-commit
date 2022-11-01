@@ -13,6 +13,7 @@ then
     echo "                 Detekt failed                 "
     echo " Please fix the above issues before committing "
     echo "***********************************************"
+    rm "$OUTPUT"
     exit $EXIT_CODE
 else
     echo "Detekt completed successfully"
