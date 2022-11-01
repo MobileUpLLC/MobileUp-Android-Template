@@ -5,6 +5,8 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+apply from: rootProject.file('git_hooks/install_git_hooks.gradle')
+
 android {
     compileSdk target_sdk_version
 

@@ -29,7 +29,7 @@ fun <T : Any> Replica<T>.observe(
         .onEach { error ->
             errorHandler.handleError(
                 error.exception,
-                showError = observer.currentState.data != null  // show error only if fullscreen error is not shown
+                showError = observer.currentState.data != null // show error only if fullscreen error is not shown
             )
         }
         .launchIn(coroutineScope)
@@ -55,7 +55,7 @@ fun <T : Any, K : Any> KeyedReplica<K, T>.observe(
         .onEach { error ->
             errorHandler.handleError(
                 error.exception,
-                showError = observer.currentState.data != null  // show error only if fullscreen error is not shown
+                showError = observer.currentState.data != null // show error only if fullscreen error is not shown
             )
         }
         .launchIn(coroutineScope)

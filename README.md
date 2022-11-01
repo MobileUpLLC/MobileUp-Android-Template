@@ -1,5 +1,6 @@
 # MobileUp Android Template 🌀
 
+
 Hi! This is a template for initializing an Android project in [MobileUp](https://mobileup.ru/).
 
 ## Creating Project
@@ -41,5 +42,15 @@ It consists of concrete features. Each feature has its own package which contain
 - [Hyperion](https://github.com/willowtreeapps/Hyperion-Android) - debug panel
 - [Robolectric](https://github.com/robolectric/robolectric) - unit testing
 - [Module Graph Gradle Plugin](https://github.com/MobileUpLLC/Module-Graph-Gradle-Plugin) - feature dependency graph visualization and validation
+
+### Git hooks
+
+1. Run detekt static code analysis before commit. Installation: 
+
+`cp git_hooks/pre-commit .git/hooks/ && chmod 0775 .git/hooks/pre-commit`
+
+2. Add issue prefix in every commit message according to branch name. Replace `YOUR_ISSUE_PREFIX` with your issue prefix:
+
+`sed 's/ISSUE_PREFIX_NAME/YOUR_ISSUE_PREFIX/g' git_hooks/prepare-commit-msg > .git/hooks/prepare-commit-msg && chmod 0775 .git/hooks/prepare-commit-msg`
 
 ### Good coding and happy day!🤘
