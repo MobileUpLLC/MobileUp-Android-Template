@@ -8,13 +8,13 @@ import kotlinx.coroutines.sync.withLock
 import ru.mobileup.template.core.activity.ActivityProvider
 
 /**
- * A manager that allows to request permissions by a suspend function call.
+ * Allows to request permissions by a suspend function call.
  *
  * When a permission request is called multiple times, a queue is formed and processed sequentially.
  *
  * Must be tied to [ActivityProvider].
  */
-class PermissionManager(
+class PermissionService(
     private val activityProvider: ActivityProvider,
     private val applicationContext: Context
 ) {

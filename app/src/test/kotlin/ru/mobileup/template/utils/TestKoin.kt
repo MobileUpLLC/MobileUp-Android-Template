@@ -16,6 +16,7 @@ fun withTestKoin(block: (Koin) -> Unit) {
     val koin = Koin()
     koin.loadModules(allModules + createTestModule(koin))
     try {
+        koin.createEagerInstances()
         block(koin)
     } finally {
         koin.close()

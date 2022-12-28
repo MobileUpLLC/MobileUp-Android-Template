@@ -32,6 +32,7 @@ class App : Application(), KoinProvider {
             declare(this@App as Application)
             declare(this@App as Context)
             declare(ComponentFactory(this))
+            createEagerInstances()
         }
     }
 
