@@ -3,19 +3,54 @@
 # docs: https://git-scm.com/docs/githooks#_pre_commit
 
 echo "Running detekt check..."
-OUTPUT="/tmp/detekt-$(date +%s)"
-./gradlew detekt > $OUTPUT
+OUTPUT_DETEKT="/tmp/detekt-$(date +%s)"
+./gradlew detekt > "$OUTPUT_DETEKT"
 EXIT_CODE=$?
 if [ $EXIT_CODE -ne 0 ]
 then
-    cat "$OUTPUT"
+    cat "$OUTPUT_DETEKT"
     echo "***********************************************"
     echo "                 Detekt failed                 "
     echo " Please fix the above issues before committing "
     echo "***********************************************"
-    rm "$OUTPUT"
+    rm "$OUTPUT_DETEKT"
     exit $EXIT_CODE
 else
     echo "Detekt completed successfully"
 fi
-rm "$OUTPUT"
+
+OUTPUT_MODULE_GRAPH_GENERATE="/tmp/module-graph-generate$(date +%s)"
+./gradlew generateModuleGraph > "$OUTPUT_MODULE_GRAPH_GENERATE"
+EXIT_CODE=$?
+if [ $EXIT_CODE -ne 0 ]
+then
+    cat "$OUTPUT_MODULE_GRAPH_GENERATE"
+    echo "***********************************************"
+    echo "         Generate Module Graph failed          "
+    echo "***********************************************"
+    rm "$OUTPUT_MODULE_GRAPH_GENERATE"
+    exit $EXIT_CODE
+else
+    git add features/module_graph/modules.dot
+    git add features/module_graph/modules.svg
+    echo "Generate Module Graph Cycles completed successfully"
+fi
+
+OUTPUT_MODULE_GRAPH_CYCLES="/tmp/module-graph-cycles$(date +%s)"
+./gradlew detectGraphCycles > "$OUTPUT_MODULE_GRAPH_CYCLES"
+EXIT_CODE=$?
+if [ $EXIT_CODE -ne 0 ]
+then
+    cat "$OUTPUT_MODULE_GRAPH_CYCLES"
+    echo "***********************************************"
+    echo "      Detect Module Graph Cycles failed        "
+    echo " Please fix the some cycles before committing  "
+    echo "***********************************************"
+    rm "$OUTPUT_MODULE_GRAPH_CYCLES"
+    exit $EXIT_CODE
+else
+    echo "Detect Module Graph Cycles completed successfully"
+fi
+
+rm "$OUTPUT_DETEKT"
+rm "$OUTPUT_MODULE_GRAPH_GENERATE"

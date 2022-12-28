@@ -28,6 +28,9 @@ It consists of concrete features. Each feature has its own package which contain
 - **domain layer** - entities, interactors
 - **data layer** - repositories, storages
 
+## Features structure
+<img src="features/module_graph/modules.svg">
+
 ## Technology stack
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) - UI
 - [Decompose](https://github.com/arkivanov/Decompose) - componentization and navigation
@@ -45,7 +48,7 @@ It consists of concrete features. Each feature has its own package which contain
 
 ### Git hooks
 
-1. Run detekt static code analysis before commit. Installation: 
+1. Run detekt static code analysis and module graph validation before commit. Installation: 
 
 `cp git_hooks/pre-commit .git/hooks/ && chmod 0775 .git/hooks/pre-commit`
 
