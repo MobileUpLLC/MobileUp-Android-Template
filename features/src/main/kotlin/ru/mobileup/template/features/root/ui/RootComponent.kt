@@ -1,6 +1,7 @@
 package ru.mobileup.template.features.root.ui
 
 import com.arkivanov.decompose.router.stack.ChildStack
+import kotlinx.coroutines.flow.StateFlow
 import ru.mobileup.template.core.message.ui.MessageComponent
 import ru.mobileup.template.features.pokemons.ui.PokemonsComponent
 
@@ -11,7 +12,7 @@ import ru.mobileup.template.features.pokemons.ui.PokemonsComponent
  */
 interface RootComponent {
 
-    val childStack: ChildStack<*, Child>
+    val childStack: StateFlow<ChildStack<*, Child>>
 
     val messageComponent: MessageComponent
 

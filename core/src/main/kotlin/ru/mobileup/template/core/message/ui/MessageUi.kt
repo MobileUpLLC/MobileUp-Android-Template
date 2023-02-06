@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -13,6 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import kotlinx.coroutines.flow.MutableStateFlow
 import me.aartikov.sesame.localizedstring.LocalizedString
 import ru.mobileup.template.core.message.domain.Message
 import ru.mobileup.template.core.theme.AppTheme
@@ -27,11 +30,12 @@ fun MessageUi(
     modifier: Modifier = Modifier,
     bottomPadding: Dp
 ) {
+    val visibleMessage by component.visibleMessage.collectAsState()
     val additionalBottomPadding = with(LocalDensity.current) {
         LocalMessageOffsets.current.values.maxOrNull()?.toDp() ?: 0.dp
     }
     Box(modifier = modifier.fillMaxSize()) {
-        component.visibleMessage?.let {
+        visibleMessage?.let {
             val inverseIsDarkTheme = MaterialTheme.colors.isLight
             AppTheme(inverseIsDarkTheme) {
                 MessagePopup(
@@ -120,7 +124,9 @@ fun MessageUiPreview() {
 
 class FakeMessageComponent : MessageComponent {
 
-    override val visibleMessage = Message(LocalizedString.raw("Message"))
+    override val visibleMessage = MutableStateFlow(
+        Message(LocalizedString.raw("Message"))
+    )
 
     override fun onActionClick() = Unit
 }

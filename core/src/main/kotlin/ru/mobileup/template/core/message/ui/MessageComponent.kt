@@ -1,5 +1,6 @@
 package ru.mobileup.template.core.message.ui
 
+import kotlinx.coroutines.flow.StateFlow
 import ru.mobileup.template.core.message.domain.Message
 
 /**
@@ -8,7 +9,7 @@ import ru.mobileup.template.core.message.domain.Message
  */
 interface MessageComponent {
 
-    val visibleMessage: Message?
+    val visibleMessage: StateFlow<Message?>
 
     fun onActionClick()
 }

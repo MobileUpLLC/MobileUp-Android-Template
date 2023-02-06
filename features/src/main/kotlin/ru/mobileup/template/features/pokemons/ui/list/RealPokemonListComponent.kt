@@ -1,10 +1,8 @@
 package ru.mobileup.template.features.pokemons.ui.list
 
 import android.os.Parcelable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.parcelize.Parcelize
 import me.aartikov.replica.keyed.KeyedReplica
 import me.aartikov.replica.keyed.keepPreviousData
@@ -31,26 +29,25 @@ class RealPokemonListComponent(
         PokemonType.Poison
     )
 
-    override var selectedTypeId by mutableStateOf(types[0].id)
-        private set
+    override val selectedTypeId = MutableStateFlow(types[0].id)
 
-    override val pokemonsState by pokemonsByTypeReplica
+    override val pokemonsState = pokemonsByTypeReplica
         .keepPreviousData()
         .observe(
             lifecycle,
             errorHandler,
-            key = { selectedTypeId }
+            key = selectedTypeId
         )
 
     init {
         persistent(
-            save = { PersistentState(selectedTypeId) },
-            restore = { state -> selectedTypeId = state.selectedTypeId }
+            save = { PersistentState(selectedTypeId.value) },
+            restore = { state -> selectedTypeId.value = state.selectedTypeId }
         )
     }
 
     override fun onTypeClick(typeId: PokemonTypeId) {
-        selectedTypeId = typeId
+        selectedTypeId.value = typeId
     }
 
     override fun onPokemonClick(pokemonId: PokemonId) {
@@ -58,11 +55,11 @@ class RealPokemonListComponent(
     }
 
     override fun onRetryClick() {
-        pokemonsByTypeReplica.refresh(selectedTypeId)
+        pokemonsByTypeReplica.refresh(selectedTypeId.value)
     }
 
     override fun onRefresh() {
-        pokemonsByTypeReplica.refresh(selectedTypeId)
+        pokemonsByTypeReplica.refresh(selectedTypeId.value)
     }
 
     @Parcelize

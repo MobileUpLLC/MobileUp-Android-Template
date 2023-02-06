@@ -1,5 +1,6 @@
 package ru.mobileup.template.features.pokemons.ui.list
 
+import kotlinx.coroutines.flow.StateFlow
 import me.aartikov.replica.single.Loadable
 import ru.mobileup.template.features.pokemons.domain.Pokemon
 import ru.mobileup.template.features.pokemons.domain.PokemonId
@@ -10,9 +11,9 @@ interface PokemonListComponent {
 
     val types: List<PokemonType>
 
-    val selectedTypeId: PokemonTypeId
+    val selectedTypeId: StateFlow<PokemonTypeId>
 
-    val pokemonsState: Loadable<List<Pokemon>>
+    val pokemonsState: StateFlow<Loadable<List<Pokemon>>>
 
     fun onTypeClick(typeId: PokemonTypeId)
 

@@ -1,16 +1,14 @@
 package ru.mobileup.template.features.root.ui
 
 import android.os.Parcelable
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
-import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import kotlinx.parcelize.Parcelize
 import ru.mobileup.template.core.ComponentFactory
 import ru.mobileup.template.core.createMessageComponent
-import ru.mobileup.template.core.utils.toComposeState
+import ru.mobileup.template.core.utils.toStateFlow
 import ru.mobileup.template.features.pokemons.createPokemonsComponent
 
 class RealRootComponent(
@@ -20,12 +18,12 @@ class RealRootComponent(
 
     private val navigation = StackNavigation<ChildConfig>()
 
-    override val childStack: ChildStack<*, RootComponent.Child> by childStack(
+    override val childStack = childStack(
         source = navigation,
         initialConfiguration = ChildConfig.Pokemons,
         handleBackButton = true,
         childFactory = ::createChild
-    ).toComposeState(lifecycle)
+    ).toStateFlow(lifecycle)
 
     override val messageComponent = componentFactory.createMessageComponent(
         childContext(key = "message")
@@ -42,7 +40,7 @@ class RealRootComponent(
         }
     }
 
-    private sealed interface ChildConfig : Parcelable {
+    sealed interface ChildConfig : Parcelable {
 
         @Parcelize
         object Pokemons : ChildConfig

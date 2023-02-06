@@ -1,12 +1,10 @@
 package ru.mobileup.template.core.message.ui
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnCreate
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import ru.mobileup.template.core.message.data.MessageService
 import ru.mobileup.template.core.message.domain.Message
@@ -23,8 +21,7 @@ class RealMessageComponent(
 
     private val coroutineScope = componentCoroutineScope()
 
-    override var visibleMessage by mutableStateOf<Message?>(null)
-        private set
+    override val visibleMessage = MutableStateFlow<Message?>(null)
 
     private var autoDismissJob: Job? = null
 
@@ -34,8 +31,8 @@ class RealMessageComponent(
 
     override fun onActionClick() {
         autoDismissJob?.cancel()
-        visibleMessage?.action?.invoke()
-        visibleMessage = null
+        visibleMessage.value?.action?.invoke()
+        visibleMessage.value = null
     }
 
     private fun collectMessages() {
@@ -48,10 +45,10 @@ class RealMessageComponent(
 
     private fun showMessage(message: Message) {
         autoDismissJob?.cancel()
-        visibleMessage = message
+        visibleMessage.value = message
         autoDismissJob = coroutineScope.launch {
             delay(SHOW_TIME)
-            visibleMessage = null
+            visibleMessage.value = null
         }
     }
 }
