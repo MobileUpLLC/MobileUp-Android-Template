@@ -1,15 +1,13 @@
 package ru.mobileup.template.features.pokemons.ui
 
 import android.os.Parcelable
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.push
 import kotlinx.parcelize.Parcelize
 import ru.mobileup.template.core.ComponentFactory
-import ru.mobileup.template.core.utils.toComposeState
+import ru.mobileup.template.core.utils.toStateFlow
 import ru.mobileup.template.features.pokemons.createPokemonDetailsComponent
 import ru.mobileup.template.features.pokemons.createPokemonListComponent
 import ru.mobileup.template.features.pokemons.domain.PokemonId
@@ -22,12 +20,12 @@ class RealPokemonsComponent(
 
     private val navigation = StackNavigation<ChildConfig>()
 
-    override val childStack: ChildStack<*, PokemonsComponent.Child> by childStack(
+    override val childStack = childStack(
         source = navigation,
         initialConfiguration = ChildConfig.List,
         handleBackButton = true,
         childFactory = ::createChild
-    ).toComposeState(lifecycle)
+    ).toStateFlow(lifecycle)
 
     private fun createChild(
         config: ChildConfig,
@@ -60,7 +58,7 @@ class RealPokemonsComponent(
         }
     }
 
-    private sealed interface ChildConfig : Parcelable {
+    sealed interface ChildConfig : Parcelable {
 
         @Parcelize
         object List : ChildConfig

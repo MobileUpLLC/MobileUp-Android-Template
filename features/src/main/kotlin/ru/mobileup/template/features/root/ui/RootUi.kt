@@ -3,6 +3,8 @@ package ru.mobileup.template.features.root.ui
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -11,7 +13,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.mobileup.template.core.message.ui.FakeMessageComponent
 import ru.mobileup.template.core.message.ui.MessageUi
 import ru.mobileup.template.core.theme.AppTheme
-import ru.mobileup.template.core.utils.createFakeChildStack
+import ru.mobileup.template.core.utils.createFakeChildStackStateFlow
 import ru.mobileup.template.features.pokemons.ui.FakePokemonsComponent
 import ru.mobileup.template.features.pokemons.ui.PokemonsUi
 
@@ -20,9 +22,11 @@ fun RootUi(
     component: RootComponent,
     modifier: Modifier = Modifier
 ) {
+    val childStack by component.childStack.collectAsState()
+
     SystemBarColors()
 
-    Children(component.childStack, modifier) { child ->
+    Children(childStack, modifier) { child ->
         when (val instance = child.instance) {
             is RootComponent.Child.Pokemons -> PokemonsUi(instance.component)
         }
@@ -60,8 +64,9 @@ fun RootUiPreview() {
 
 class FakeRootComponent : RootComponent {
 
-    override val childStack =
-        createFakeChildStack(RootComponent.Child.Pokemons(FakePokemonsComponent()))
+    override val childStack = createFakeChildStackStateFlow(
+        RootComponent.Child.Pokemons(FakePokemonsComponent())
+    )
 
     override val messageComponent = FakeMessageComponent()
 }

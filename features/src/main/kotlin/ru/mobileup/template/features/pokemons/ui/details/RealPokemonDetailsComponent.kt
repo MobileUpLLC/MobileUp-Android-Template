@@ -1,6 +1,5 @@
 package ru.mobileup.template.features.pokemons.ui.details
 
-import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.ComponentContext
 import me.aartikov.replica.single.Replica
 import ru.mobileup.template.core.error_handling.ErrorHandler
@@ -13,7 +12,7 @@ class RealPokemonDetailsComponent(
     errorHandler: ErrorHandler
 ) : ComponentContext by componentContext, PokemonDetailsComponent {
 
-    override val pokemonState by pokemonReplica.observe(lifecycle, errorHandler)
+    override val pokemonState = pokemonReplica.observe(lifecycle, errorHandler)
 
     override fun onRetryClick() {
         pokemonReplica.refresh()
