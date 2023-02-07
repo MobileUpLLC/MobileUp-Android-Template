@@ -14,7 +14,7 @@ android {
     compileSdk = targetSdkVersion
 
     defaultConfig {
-        applicationId = "ru.flawery"
+        applicationId = "ru.mobileup.template"
         minSdk = minSdkVersion
         targetSdk = targetSdkVersion
         versionCode = 1

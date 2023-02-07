@@ -79,7 +79,7 @@ dependencies {
 
 // Usage: ./gradlew generateModuleGraph detectGraphCycles
 moduleGraph {
-    featuresPackage.set("ru.flawery.features")
-    featuresDirectory.set(project.file("src/commonMain/kotlin/ru/flawery/features"))
+    featuresPackage.set("ru.mobileup.template")
+    featuresDirectory.set(project.file("src/main/kotlin/ru/mobileup/template/features"))
     outputDirectory.set(project.file("module_graph"))
 }
