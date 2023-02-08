@@ -21,6 +21,8 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
 
+
+
         val activityProvider = application.koin.get<ActivityProvider>()
         activityProvider.attachActivity(this)
         lifecycle.asEssentyLifecycle().doOnDestroy {
