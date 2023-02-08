@@ -4,6 +4,8 @@ plugins {
     kotlin("plugin.serialization")
     kotlin("plugin.parcelize")
     id("io.gitlab.arturbosch.detekt")
+    id("com.google.devtools.ksp")
+    id("de.jensklingenberg.ktorfit")
 }
 
 android {
@@ -42,6 +44,8 @@ android {
 }
 
 dependencies {
+    ksp(libs.ktorfit.ksp)
+
     // Kotlin
     implementation(libs.kotlin.datetime)
     implementation(libs.coroutines.core)
@@ -61,9 +65,11 @@ dependencies {
     implementation(libs.serialization.json)
 
     // Network
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.converter.serialization)
-    implementation(libs.okhttp.logging)
+    implementation(libs.ktorfit.lib)
+    implementation(libs.ktor.android)
+    implementation(libs.ktor.content.negotiation)
+    implementation(libs.ktor.serialization)
+    implementation(libs.ktor.logging)
 
     // Architecture
     implementation(libs.sesame.localizedString)
@@ -72,6 +78,7 @@ dependencies {
 
     // Debugging
     implementation(libs.timber)
+    implementation(libs.logger.kermit)
     debugImplementation(libs.chucker)
     debugImplementation(libs.bundles.hyperion)
     debugImplementation(libs.replica.devtools)

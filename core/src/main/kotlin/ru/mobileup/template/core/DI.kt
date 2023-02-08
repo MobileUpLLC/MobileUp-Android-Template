@@ -14,7 +14,9 @@ import ru.mobileup.template.core.message.data.MessageService
 import ru.mobileup.template.core.message.data.MessageServiceImpl
 import ru.mobileup.template.core.message.ui.MessageComponent
 import ru.mobileup.template.core.message.ui.RealMessageComponent
+import ru.mobileup.template.core.network.ErrorCollector
 import ru.mobileup.template.core.network.NetworkApiFactory
+import ru.mobileup.template.core.network.createOkHttpEngine
 import ru.mobileup.template.core.permissions.PermissionService
 
 fun coreModule(backendUrl: String) = module {
@@ -24,7 +26,19 @@ fun coreModule(backendUrl: String) = module {
     single<MessageService> { MessageServiceImpl() }
     single { ErrorHandler(get()) }
     single<DebugTools> { RealDebugTools(get(), get()) }
-    single { NetworkApiFactory(backendUrl, get()) }
+    single { createOkHttpEngine(get()) }
+    single {
+        NetworkApiFactory(
+            loggingEnabled = BuildConfig.DEBUG,
+            backendUrl = backendUrl,
+            httpClientEngine = get(),
+            errorCollector = get()
+        )
+    }
+    single {
+        val debugTools = get<DebugTools>()
+        ErrorCollector { debugTools.collectNetworkError(it) }
+    }
     single(createdAtStart = true) { PermissionService(get(), get()) }
 }
 

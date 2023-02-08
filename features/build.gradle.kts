@@ -5,6 +5,8 @@ plugins {
     kotlin("plugin.parcelize")
     id("io.gitlab.arturbosch.detekt")
     id("ru.mobileup.module-graph")
+    id("com.google.devtools.ksp")
+    id("de.jensklingenberg.ktorfit")
 }
 
 android {
@@ -43,6 +45,8 @@ android {
 }
 
 dependencies {
+    ksp(libs.ktorfit.ksp)
+
     // Modules
     implementation(project(":core"))
 
@@ -66,7 +70,8 @@ dependencies {
     implementation(libs.serialization.json)
 
     // Network
-    implementation(libs.retrofit.core)
+    implementation(libs.ktorfit.lib)
+    implementation(libs.ktor.android)
 
     // Architecture
     implementation(libs.sesame.localizedString)

@@ -1,92 +1,78 @@
 package ru.mobileup.template.core.network
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import de.jensklingenberg.ktorfit.Ktorfit
+import io.ktor.client.*
+import io.ktor.client.engine.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import ru.mobileup.template.core.BuildConfig
-import ru.mobileup.template.core.debug_tools.DebugTools
-import timber.log.Timber
-import java.util.concurrent.TimeUnit
+
+// import ru.mobileup.template.core.network.createKtorLogger
 
 /**
- * Creates implementations of Retrofit APIs.
+ * Creates implementations of Ktorfit APIs.
  */
 class NetworkApiFactory(
-    private val baseUrl: String,
-    private val debugTools: DebugTools
+    private val loggingEnabled: Boolean,
+    private val backendUrl: String,
+    private val httpClientEngine: HttpClientEngine,
+    private val errorCollector: ErrorCollector?
 ) {
-
     companion object {
-        private const val CONNECT_TIMEOUT_SECONDS = 30L
-        private const val READ_TIMEOUT_SECONDS = 60L
-        private const val WRITE_TIMEOUT_SECONDS = 60L
+        private const val CONNECT_TIMEOUT_MILLISECONDS = 30000L
+        private const val READ_WRITE_TIMEOUT_MILLISECONDS = 60000L
     }
 
     private val json = createJson()
-    private val authorizedOkHttpClient = createOkHttpClient(authorized = true)
-    private val unauthorizedOkHttpClient = createOkHttpClient(authorized = false)
-
-    private val authorizedRetrofit = createRetrofit(authorizedOkHttpClient)
-    private val unauthorizedRetrofit = createRetrofit(unauthorizedOkHttpClient)
+    private val authorizedHttpClient = createHttpClient(authorized = true)
+    private val unauthorizedHttpClient = createHttpClient(authorized = false)
 
     /**
-     * Creates an api that requires authorization
+     * Ktorfit for creating of authorized APIs
      */
-    inline fun <reified T : Any> createAuthorizedApi(): T = createAuthorizedApi(T::class.java)
+    val authorizedKtorfit = createKtorfit(authorizedHttpClient)
 
     /**
-     * Creates an API that doesn't require authorization
+     * Ktorfit for creating of APIs that don't require authorization
      */
-    inline fun <reified T : Any> createUnauthorizedApi(): T = createUnauthorizedApi(T::class.java)
+    val unauthorizedKtorfit = createKtorfit(unauthorizedHttpClient)
 
-    fun <T : Any> createAuthorizedApi(clazz: Class<T>): T {
-        return authorizedRetrofit.create(clazz)
-    }
-
-    fun <T : Any> createUnauthorizedApi(clazz: Class<T>): T {
-        return unauthorizedRetrofit.create(clazz)
-    }
-
-    @OptIn(ExperimentalSerializationApi::class)
-    private fun createRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .client(okHttpClient)
-            .addCallAdapterFactory(ErrorHandlingCallAdapterFactory(debugTools))
-            .addConverterFactory(ErrorHandlingConverterFactory(json.asConverterFactory("application/json".toMediaType())))
-            .build()
-    }
-
-    private fun createOkHttpClient(authorized: Boolean): OkHttpClient {
-        return OkHttpClient.Builder()
-            .apply {
-                connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-                readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-                writeTimeout(WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-
-                if (authorized) {
-                    addInterceptor(AuthorizationInterceptor())
-                }
-
-                if (BuildConfig.DEBUG) {
-                    addNetworkInterceptor(createLoggingInterceptor())
-                    debugTools.interceptors.forEach { addInterceptor(it) }
-                }
+    private fun createHttpClient(authorized: Boolean): HttpClient {
+        return HttpClient(httpClientEngine) {
+            install(Logging) {
+                logger = createKtorLogger()
+                level = if (loggingEnabled) LogLevel.ALL else LogLevel.NONE
             }
-            .build()
+
+            install(ContentNegotiation) {
+                json(json)
+            }
+
+            install(HttpTimeout) {
+                connectTimeoutMillis = CONNECT_TIMEOUT_MILLISECONDS
+                requestTimeoutMillis = READ_WRITE_TIMEOUT_MILLISECONDS
+            }
+
+            defaultRequest {
+                url(backendUrl)
+            }
+
+            if (authorized) {
+                // TODO: install Auth component and set it up
+            }
+
+            setupErrorConverter(errorCollector)
+        }
     }
 
-    private fun createLoggingInterceptor(): Interceptor {
-        return HttpLoggingInterceptor { message ->
-            Timber.tag("OkHttp").d(message)
-        }.apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
+    private fun createKtorfit(httpClient: HttpClient): Ktorfit {
+        return Ktorfit.Builder()
+            .baseUrl(backendUrl)
+            .httpClient(httpClient)
+            .build()
     }
 
     @OptIn(ExperimentalSerializationApi::class)
