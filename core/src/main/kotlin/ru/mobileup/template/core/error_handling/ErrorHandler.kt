@@ -1,17 +1,20 @@
 package ru.mobileup.template.core.error_handling
 
+import co.touchlab.kermit.Logger
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import me.aartikov.sesame.localizedstring.LocalizedString
 import ru.mobileup.template.core.message.data.MessageService
 import ru.mobileup.template.core.message.domain.Message
-import timber.log.Timber
+import ru.mobileup.template.core.utils.e
 
 /**
  * Executes error processing: shows error messages, logs exceptions, notifies that auto logout happens.
  * Should be used only in Decompose components.
  */
 class ErrorHandler(private val messageService: MessageService) {
+
+    private val logger = Logger.withTag("ErrorHandler")
 
     private val unauthorizedEventChannel = Channel<Unit>(Channel.UNLIMITED)
 
@@ -24,7 +27,7 @@ class ErrorHandler(private val messageService: MessageService) {
         if (lastHandledException === exception) return
         lastHandledException = exception
 
-        Timber.e(exception)
+        logger.e(exception)
         when {
             exception is UnauthorizedException -> {
                 unauthorizedEventChannel.trySend(Unit)
@@ -47,7 +50,7 @@ class ErrorHandler(private val messageService: MessageService) {
         if (lastHandledException === exception) return
         lastHandledException = exception
 
-        Timber.e(exception)
+        logger.e(exception)
         when (exception) {
             is UnauthorizedException -> {
                 unauthorizedEventChannel.trySend(Unit)

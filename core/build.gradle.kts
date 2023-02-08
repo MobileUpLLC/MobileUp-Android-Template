@@ -77,7 +77,6 @@ dependencies {
     implementation(libs.bundles.replica)
 
     // Debugging
-    implementation(libs.timber)
     implementation(libs.logger.kermit)
     debugImplementation(libs.chucker)
     debugImplementation(libs.bundles.hyperion)

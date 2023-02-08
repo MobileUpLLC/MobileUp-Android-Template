@@ -79,7 +79,7 @@ dependencies {
     implementation(libs.bundles.replica)
 
     // Debugging
-    implementation(libs.timber)
+    implementation(libs.logger.kermit)
 }
 
 // Usage: ./gradlew generateModuleGraph detectGraphCycles

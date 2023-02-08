@@ -104,10 +104,11 @@ dependencies {
     implementation(libs.koin)
 
     // Debugging
-    implementation(libs.timber)
+    debugImplementation(libs.bundles.hyperion)
     debugImplementation(libs.bundles.hyperion)
     debugImplementation(libs.chucker)
     debugImplementation(libs.replica.devtools)
+    implementation(libs.logger.kermit)
 
     // Testing
     testImplementation(libs.junit)
