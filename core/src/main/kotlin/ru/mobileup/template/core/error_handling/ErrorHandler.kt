@@ -1,9 +1,9 @@
 package ru.mobileup.template.core.error_handling
 
 import co.touchlab.kermit.Logger
+import dev.icerock.moko.resources.desc.StringDesc
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import me.aartikov.sesame.localizedstring.LocalizedString
 import ru.mobileup.template.core.message.data.MessageService
 import ru.mobileup.template.core.message.domain.Message
 import ru.mobileup.template.core.utils.e
@@ -44,7 +44,7 @@ class ErrorHandler(private val messageService: MessageService) {
      */
     fun handleErrorRetryable(
         exception: Exception,
-        retryActionTitle: LocalizedString,
+        retryActionTitle: StringDesc,
         retryAction: () -> Unit
     ) {
         if (lastHandledException === exception) return

@@ -1,11 +1,12 @@
 package ru.mobileup.template.core.error_handling
 
+import dev.icerock.moko.resources.desc.StringDesc
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import me.aartikov.sesame.localizedstring.LocalizedString
 import ru.mobileup.template.core.R
+import ru.mobileup.template.core.utils.Resource
 
 /**
  * Allows to run a function safely (with error handing).
@@ -51,7 +52,7 @@ fun CoroutineScope.safeLaunch(
 fun CoroutineScope.safeLaunchRetryable(
     errorHandler: ErrorHandler,
     onErrorHandled: ((e: Exception) -> Unit)? = null,
-    retryActionTitle: LocalizedString = LocalizedString.resource(R.string.common_retry),
+    retryActionTitle: StringDesc = StringDesc.Resource(R.string.common_retry),
     retryAction: () -> Unit,
     block: suspend () -> Unit
 ): Job {

@@ -15,11 +15,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import dev.icerock.moko.resources.compose.localized
+import dev.icerock.moko.resources.desc.Raw
+import dev.icerock.moko.resources.desc.StringDesc
 import kotlinx.coroutines.flow.MutableStateFlow
-import me.aartikov.sesame.localizedstring.LocalizedString
 import ru.mobileup.template.core.message.domain.Message
 import ru.mobileup.template.core.theme.AppTheme
-import ru.mobileup.template.core.utils.resolve
 
 /**
  * Displays a [Message] as a popup at the bottom of screen.
@@ -85,12 +86,12 @@ private fun MessagePopup(
                 }
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = message.text.resolve(),
+                    text = message.text.localized(),
                     color = MaterialTheme.colors.onBackground,
                     style = MaterialTheme.typography.body1
                 )
                 message.actionTitle?.let {
-                    MessageButton(text = it.resolve(), onClick = onAction)
+                    MessageButton(text = it.localized(), onClick = onAction)
                 }
             }
         }
@@ -125,7 +126,7 @@ fun MessageUiPreview() {
 class FakeMessageComponent : MessageComponent {
 
     override val visibleMessage = MutableStateFlow(
-        Message(LocalizedString.raw("Message"))
+        Message(StringDesc.Raw("Message"))
     )
 
     override fun onActionClick() = Unit

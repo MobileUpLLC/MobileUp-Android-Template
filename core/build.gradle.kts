@@ -72,9 +72,10 @@ dependencies {
     implementation(libs.ktor.logging)
 
     // Architecture
-    implementation(libs.sesame.localizedString)
     implementation(libs.bundles.decompose)
     implementation(libs.bundles.replica)
+    api(libs.moko.resources)
+    implementation(libs.moko.resourcesCompose)
 
     // Debugging
     implementation(libs.logger.kermit)
