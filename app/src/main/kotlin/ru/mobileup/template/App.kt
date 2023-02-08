@@ -2,11 +2,12 @@ package ru.mobileup.template
 
 import android.app.Application
 import android.content.Context
+import co.touchlab.kermit.Logger
+import co.touchlab.kermit.Severity
 import org.koin.core.Koin
 import ru.mobileup.template.core.ComponentFactory
 import ru.mobileup.template.core.KoinProvider
 import ru.mobileup.template.core.debug_tools.DebugTools
-import timber.log.Timber
 
 class App : Application(), KoinProvider {
 
@@ -21,8 +22,8 @@ class App : Application(), KoinProvider {
     }
 
     private fun initLogger() {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
+        if (!BuildConfig.DEBUG) {
+            Logger.setMinSeverity(Severity.Assert)
         }
     }
 

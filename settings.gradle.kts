@@ -110,8 +110,6 @@ dependencyResolutionManagement {
             val kermitVersion = "1.2.2"
             library("logger-kermit", "co.touchlab", "kermit").version(kermitVersion)
 
-            library("timber", "com.jakewharton.timber", "timber").version("5.0.1")
-
             val hyperionVersion = "0.9.34"
             val hyperionAddonsVersion = "0.3.3"
 
