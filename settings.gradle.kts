@@ -9,6 +9,8 @@ pluginManagement {
     val androidPluginVersion = "7.4.0"
     val detektVersion = "1.22.0"
     val moduleGraphVersion = "1.3.3"
+    val kspVersion = "1.8.0-1.0.9"
+    val ktorfitVersion = "1.0.0"
 
     plugins {
         id("com.android.application") version androidPluginVersion
@@ -18,6 +20,8 @@ pluginManagement {
         id("org.jetbrains.kotlin.android") version kotlinVersion
         kotlin("plugin.serialization") version kotlinVersion
         kotlin("plugin.parcelize") version kotlinVersion
+        id("com.google.devtools.ksp") version kspVersion
+        id("de.jensklingenberg.ktorfit") version ktorfitVersion
     }
 }
 
@@ -84,9 +88,7 @@ dependencyResolutionManagement {
             val replicaVersion = "1.0.0-alpha6"
 
             library("replica-core", "com.github.aartikov", "replica-core").version(replicaVersion)
-            library("replica-algebra", "com.github.aartikov", "replica-algebra").version(
-                replicaVersion
-            )
+            library("replica-algebra", "com.github.aartikov", "replica-algebra").version(replicaVersion)
             library("replica-android-network", "com.github.aartikov", "replica-android-network").version(replicaVersion)
             library("replica-decompose", "com.github.aartikov", "replica-decompose").version(replicaVersion)
             library("replica-devtools", "com.github.aartikov", "replica-devtools").version(replicaVersion)
@@ -98,11 +100,6 @@ dependencyResolutionManagement {
             library("serialization-core", "org.jetbrains.kotlinx", "kotlinx-serialization-core").version(serializationVersion)
             library("serialization-json", "org.jetbrains.kotlinx", "kotlinx-serialization-json").version(serializationVersion)
 
-            // Network
-            library("retrofit-core", "com.squareup.retrofit2", "retrofit").version("2.9.0")
-            library("retrofit-converter-serialization", "com.jakewharton.retrofit", "retrofit2-kotlinx-serialization-converter").version("0.8.0")
-            library("okhttp-logging", "com.squareup.okhttp3", "logging-interceptor").version("4.9.2")
-
             // DI
             library("koin", "io.insert-koin", "koin-core").version("3.2.0")
 
@@ -110,6 +107,9 @@ dependencyResolutionManagement {
             library("detekt-formatting", "io.gitlab.arturbosch.detekt", "detekt-formatting").version("1.21.0")
 
             // Debugging
+            val kermitVersion = "1.2.2"
+            library("logger-kermit", "co.touchlab", "kermit").version(kermitVersion)
+
             library("timber", "com.jakewharton.timber", "timber").version("5.0.1")
 
             val hyperionVersion = "0.9.34"
@@ -132,6 +132,18 @@ dependencyResolutionManagement {
             library("mockWebServer", "com.squareup.okhttp3", "mockwebserver").version("4.3.1")
             library("awaitility", "org.awaitility", "awaitility-kotlin").version("4.2.0")
             library("robolectric", "org.robolectric", "robolectric").version("4.8")
+
+            // Network
+            val ktorVersion = "2.2.2"
+            val ktorfitVersion = "1.0.0-beta17"
+            library("ktor-core", "io.ktor", "ktor-client-core").version(ktorVersion)
+            library("ktor-auth", "io.ktor", "ktor-client-auth").version(ktorVersion)
+            library("ktor-serialization", "io.ktor", "ktor-serialization-kotlinx-json").version(ktorVersion)
+            library("ktor-content-negotiation", "io.ktor", "ktor-client-content-negotiation").version(ktorVersion)
+            library("ktor-logging", "io.ktor", "ktor-client-logging").version(ktorVersion)
+            library("ktor-android", "io.ktor", "ktor-client-okhttp").version(ktorVersion)
+            library("ktorfit-lib", "de.jensklingenberg.ktorfit", "ktorfit-lib").version(ktorfitVersion)
+            library("ktorfit-ksp", "de.jensklingenberg.ktorfit", "ktorfit-ksp").version(ktorfitVersion)
         }
     }
 }
