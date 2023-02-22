@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.launch
 
-fun <T, R : Any> ComponentContext.computed(
+fun <T, R> ComponentContext.computed(
     flow: StateFlow<T>,
     transform: (T) -> R
 ): StateFlow<R> {
@@ -20,7 +20,7 @@ fun <T, R : Any> ComponentContext.computed(
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <T1, T2, R : Any> ComponentContext.computed(
+fun <T1, T2, R> ComponentContext.computed(
     flow1: StateFlow<T1>,
     flow2: StateFlow<T2>,
     transform: (T1, T2) -> R
@@ -34,7 +34,7 @@ fun <T1, T2, R : Any> ComponentContext.computed(
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <T1, T2, T3, R : Any> ComponentContext.computed(
+fun <T1, T2, T3, R> ComponentContext.computed(
     flow1: StateFlow<T1>,
     flow2: StateFlow<T2>,
     flow3: StateFlow<T3>,
@@ -50,7 +50,7 @@ fun <T1, T2, T3, R : Any> ComponentContext.computed(
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <T1, T2, T3, T4, R : Any> ComponentContext.computed(
+fun <T1, T2, T3, T4, R> ComponentContext.computed(
     flow1: StateFlow<T1>,
     flow2: StateFlow<T2>,
     flow3: StateFlow<T3>,
@@ -68,7 +68,7 @@ fun <T1, T2, T3, T4, R : Any> ComponentContext.computed(
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <T1, T2, T3, T4, T5, R : Any> ComponentContext.computed(
+fun <T1, T2, T3, T4, T5, R> ComponentContext.computed(
     flow1: StateFlow<T1>,
     flow2: StateFlow<T2>,
     flow3: StateFlow<T3>,
@@ -87,7 +87,7 @@ fun <T1, T2, T3, T4, T5, R : Any> ComponentContext.computed(
     }
 }
 
-private inline fun <T, R : Any> ComponentContext.computedImpls(
+private inline fun <T, R> ComponentContext.computedImpls(
     vararg flows: StateFlow<T>,
     crossinline transform: (List<T>) -> R
 ): StateFlow<R> {
