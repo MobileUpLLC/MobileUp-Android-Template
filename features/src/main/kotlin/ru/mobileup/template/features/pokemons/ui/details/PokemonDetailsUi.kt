@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import kotlinx.coroutines.flow.MutableStateFlow
-import me.aartikov.replica.single.Loadable
 import ru.mobileup.template.core.theme.AppTheme
+import ru.mobileup.template.core.utils.LoadableState
 import ru.mobileup.template.core.widget.RefreshingProgress
 import ru.mobileup.template.core.widget.SwipeRefreshLceWidget
 import ru.mobileup.template.features.R
@@ -126,7 +126,7 @@ fun PokemonDetailsUiPreview() {
 class FakePokemonDetailsComponent : PokemonDetailsComponent {
 
     override val pokemonState = MutableStateFlow(
-        Loadable(
+        LoadableState(
             loading = true,
             data = DetailedPokemon(
                 id = PokemonId("1"),

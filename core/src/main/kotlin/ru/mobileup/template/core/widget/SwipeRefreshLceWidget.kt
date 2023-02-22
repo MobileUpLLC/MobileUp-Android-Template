@@ -9,6 +9,7 @@ import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.SwipeRefreshState
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import me.aartikov.replica.single.Loadable
+import ru.mobileup.template.core.utils.LoadableState
 
 /**
  * Displays Replica state ([Loadable]) with swipe-to-refresh functionality.
@@ -17,7 +18,7 @@ import me.aartikov.replica.single.Loadable
  */
 @Composable
 fun <T : Any> SwipeRefreshLceWidget(
-    state: Loadable<T>,
+    state: LoadableState<T>,
     onRefresh: () -> Unit,
     onRetryClick: () -> Unit,
     modifier: Modifier = Modifier,

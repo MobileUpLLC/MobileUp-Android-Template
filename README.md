@@ -35,9 +35,10 @@ It consists of concrete features. Each feature has its own package which contain
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) - UI
 - [Decompose](https://github.com/arkivanov/Decompose) - componentization and navigation
 - [Replica](https://github.com/aartikov/Replica) - organizing of network communication
-- [Sesame](https://github.com/aartikov/Sesame) - architecture components: [localized strings](https://github.com/aartikov/Sesame/tree/master/sesame-localized-string), [dialogs](https://github.com/aartikov/Sesame/tree/master/sesame-dialog), [form validation](https://github.com/aartikov/Sesame/tree/master/sesame-compose-form)
+- [Sesame](https://github.com/aartikov/Sesame) - architecture components: [form validation](https://github.com/aartikov/Sesame/tree/master/sesame-compose-form)
 - [Koin](https://github.com/InsertKoinIO/koin) - Dependency Injection
-- [Retrofit](https://github.com/square/retrofit) - network requests
+- [Ktor](https://ktor.io/) - Network
+- [Ktorfit](https://github.com/Foso/Ktorfit) - network requests in Retrofit way
 - [Coroutines](https://developer.android.com/kotlin/coroutines) - asynchronous operations
 - [Kotlin Serialization](https://github.com/Kotlin/kotlinx.serialization) - JSON serialization and parsing
 - [Coil](https://github.com/coil-kt/coil) - image loading

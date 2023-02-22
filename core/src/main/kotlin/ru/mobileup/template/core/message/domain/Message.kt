@@ -1,11 +1,11 @@
 package ru.mobileup.template.core.message.domain
 
 import androidx.annotation.DrawableRes
-import me.aartikov.sesame.localizedstring.LocalizedString
+import dev.icerock.moko.resources.desc.StringDesc
 
 data class Message(
-    val text: LocalizedString,
+    val text: StringDesc,
     @DrawableRes val iconRes: Int? = null,
-    val actionTitle: LocalizedString? = null,
+    val actionTitle: StringDesc? = null,
     val action: (() -> Unit)? = null
 )

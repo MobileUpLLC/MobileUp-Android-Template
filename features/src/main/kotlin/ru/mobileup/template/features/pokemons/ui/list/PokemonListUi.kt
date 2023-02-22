@@ -18,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.MutableStateFlow
-import me.aartikov.replica.single.Loadable
 import ru.mobileup.template.core.theme.AppTheme
+import ru.mobileup.template.core.utils.LoadableState
 import ru.mobileup.template.core.widget.EmptyPlaceholder
 import ru.mobileup.template.core.widget.RefreshingProgress
 import ru.mobileup.template.core.widget.SwipeRefreshLceWidget
@@ -166,7 +166,7 @@ class FakePokemonListComponent : PokemonListComponent {
     override val selectedTypeId = MutableStateFlow(types[0].id)
 
     override val pokemonsState = MutableStateFlow(
-        Loadable(
+        LoadableState(
             loading = true,
             data = listOf(
                 Pokemon(

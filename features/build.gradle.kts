@@ -74,9 +74,10 @@ dependencies {
     implementation(libs.ktor.android)
 
     // Architecture
-    implementation(libs.sesame.localizedString)
     implementation(libs.bundles.decompose)
     implementation(libs.bundles.replica)
+    api(libs.moko.resources)
+    implementation(libs.moko.resourcesCompose)
 
     // Debugging
     implementation(libs.logger.kermit)

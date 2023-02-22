@@ -9,5 +9,4 @@
     <string name="error_invalid_response">Server error. Please try again later.</string>
     <string name="error_no_server_response">Failed to connect to the server. Please try again later.</string>
     <string name="error_matching_application_not_found">No applications found to perform the action.</string>
-    <string name="error_ssl_handshake">Connection could not be established due to network security settings. Check the date and time of the device.</string>
 </resources>

@@ -2,16 +2,15 @@ package ru.mobileup.template.core.widget
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import me.aartikov.replica.single.Loadable
-import ru.mobileup.template.core.error_handling.errorMessage
-import ru.mobileup.template.core.utils.resolve
+import dev.icerock.moko.resources.compose.localized
+import ru.mobileup.template.core.utils.LoadableState
 
 /**
- * Displays Replica state ([Loadable]).
+ * Displays Replica state ([LoadableState]).
  */
 @Composable
 fun <T : Any> LceWidget(
-    state: Loadable<T>,
+    state: LoadableState<T>,
     onRetryClick: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable (data: T, refreshing: Boolean) -> Unit
@@ -23,7 +22,7 @@ fun <T : Any> LceWidget(
         loading -> FullscreenCircularProgress(modifier)
 
         error != null -> ErrorPlaceholder(
-            errorMessage = error.exception.errorMessage.resolve(),
+            errorMessage = error.localized(),
             onRetryClick = onRetryClick,
             modifier = modifier
         )

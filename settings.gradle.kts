@@ -11,6 +11,7 @@ pluginManagement {
     val moduleGraphVersion = "1.3.3"
     val kspVersion = "1.8.0-1.0.9"
     val ktorfitVersion = "1.0.0"
+    val mokoResourcesVersion = "0.20.1"
 
     plugins {
         id("com.android.application") version androidPluginVersion
@@ -22,6 +23,7 @@ pluginManagement {
         kotlin("plugin.parcelize") version kotlinVersion
         id("com.google.devtools.ksp") version kspVersion
         id("de.jensklingenberg.ktorfit") version ktorfitVersion
+        id("dev.icerock.mobile.multiplatform-resources") version mokoResourcesVersion
     }
 }
 
@@ -73,11 +75,12 @@ dependencyResolutionManagement {
 
             // Architecture
             val sesameVersion = "1.5.0"
-
-            library("sesame-localizedString", "com.github.aartikov", "sesame-localized-string").version(sesameVersion)
-            library("sesame-dialog", "com.github.aartikov", "sesame-dialog").version(sesameVersion)
             library("sesame-composeForm", "com.github.aartikov", "sesame-compose-form").version(sesameVersion)
-            bundle("sesame", listOf("sesame-localizedString", "sesame-dialog", "sesame-composeForm"))
+
+            // Resources
+            val mokoResourcesVersion = "0.20.1"
+            library("moko-resources", "dev.icerock.moko", "resources").version(mokoResourcesVersion)
+            library("moko-resourcesCompose", "dev.icerock.moko", "resources-compose").version(mokoResourcesVersion)
 
             val decomposeVersion = "0.8.0"
 
