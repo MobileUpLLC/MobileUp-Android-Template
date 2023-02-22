@@ -18,8 +18,6 @@ val Exception.errorMessage: StringDesc
 
         is NoInternetException -> StringDesc.Resource(R.string.error_no_internet_connection)
 
-        is SSLHandshakeException -> StringDesc.Resource(R.string.error_ssl_handshake)
-
         is ExternalAppNotFoundException -> StringDesc.Resource(R.string.error_matching_application_not_found)
 
         else -> {
