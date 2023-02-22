@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import ru.mobileup.template.core.message.data.MessageService
 import ru.mobileup.template.core.message.domain.Message
-import ru.mobileup.template.core.utils.componentCoroutineScope
+import ru.mobileup.template.core.utils.componentScope
 
 class RealMessageComponent(
     componentContext: ComponentContext,
@@ -18,8 +18,6 @@ class RealMessageComponent(
     companion object {
         private const val SHOW_TIME = 4000L
     }
-
-    private val coroutineScope = componentCoroutineScope()
 
     override val visibleMessage = MutableStateFlow<Message?>(null)
 
@@ -36,7 +34,7 @@ class RealMessageComponent(
     }
 
     private fun collectMessages() {
-        coroutineScope.launch {
+        componentScope.launch {
             messageService.messageFlow.collect { messageData ->
                 showMessage(messageData)
             }
@@ -46,7 +44,7 @@ class RealMessageComponent(
     private fun showMessage(message: Message) {
         autoDismissJob?.cancel()
         visibleMessage.value = message
-        autoDismissJob = coroutineScope.launch {
+        autoDismissJob = componentScope.launch {
             delay(SHOW_TIME)
             visibleMessage.value = null
         }

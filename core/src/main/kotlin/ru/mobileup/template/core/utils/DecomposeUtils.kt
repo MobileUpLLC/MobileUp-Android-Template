@@ -2,10 +2,11 @@ package ru.mobileup.template.core.utils
 
 import android.os.Parcelable
 import androidx.compose.runtime.State
+import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.lifecycle.Lifecycle
-import com.arkivanov.essenty.lifecycle.LifecycleOwner
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.essenty.statekeeper.StateKeeperOwner
 import com.arkivanov.essenty.statekeeper.consume
@@ -48,8 +49,22 @@ fun <T : Any> Value<T>.toStateFlow(lifecycle: Lifecycle): StateFlow<T> {
 /**
  * Creates a coroutine scope tied to Decompose lifecycle. A scope is canceled when a component is destroyed.
  */
-fun LifecycleOwner.componentCoroutineScope(): CoroutineScope {
-    return lifecycle.coroutineScope()
+val ComponentContext.componentScope: CoroutineScope
+    get() {
+        val scope = (instanceKeeper.get(ComponentScopeKey) as? CoroutineScopeWrapper)?.scope
+        if (scope != null) return scope
+
+        val newScope = lifecycle.coroutineScope()
+        instanceKeeper.put(ComponentScopeKey, CoroutineScopeWrapper(newScope))
+        return newScope
+    }
+
+private object ComponentScopeKey
+
+private class CoroutineScopeWrapper(val scope: CoroutineScope) : InstanceKeeper.Instance {
+    override fun onDestroy() {
+        // nothing
+    }
 }
 
 /**
