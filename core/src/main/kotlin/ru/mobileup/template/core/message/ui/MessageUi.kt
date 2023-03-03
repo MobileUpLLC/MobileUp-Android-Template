@@ -16,9 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import dev.icerock.moko.resources.compose.localized
-import dev.icerock.moko.resources.desc.Raw
-import dev.icerock.moko.resources.desc.StringDesc
-import kotlinx.coroutines.flow.MutableStateFlow
 import ru.mobileup.template.core.message.domain.Message
 import ru.mobileup.template.core.theme.AppTheme
 
@@ -121,13 +118,4 @@ fun MessageUiPreview() {
     AppTheme {
         MessageUi(FakeMessageComponent(), Modifier, 40.dp)
     }
-}
-
-class FakeMessageComponent : MessageComponent {
-
-    override val visibleMessage = MutableStateFlow(
-        Message(StringDesc.Raw("Message"))
-    )
-
-    override fun onActionClick() = Unit
 }

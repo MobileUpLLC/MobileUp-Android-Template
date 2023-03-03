@@ -22,15 +22,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import kotlinx.coroutines.flow.MutableStateFlow
 import ru.mobileup.template.core.theme.AppTheme
-import ru.mobileup.template.core.utils.LoadableState
 import ru.mobileup.template.core.widget.RefreshingProgress
 import ru.mobileup.template.core.widget.SwipeRefreshLceWidget
 import ru.mobileup.template.features.R
 import ru.mobileup.template.features.pokemons.domain.DetailedPokemon
-import ru.mobileup.template.features.pokemons.domain.PokemonId
-import ru.mobileup.template.features.pokemons.domain.PokemonType
 import ru.mobileup.template.features.pokemons.ui.list.PokemonTypeItem
 
 @Composable
@@ -121,25 +117,4 @@ fun PokemonDetailsUiPreview() {
     AppTheme {
         PokemonDetailsUi(FakePokemonDetailsComponent())
     }
-}
-
-class FakePokemonDetailsComponent : PokemonDetailsComponent {
-
-    override val pokemonState = MutableStateFlow(
-        LoadableState(
-            loading = true,
-            data = DetailedPokemon(
-                id = PokemonId("1"),
-                name = "Bulbasaur",
-                imageUrl = "",
-                height = 0.7f,
-                weight = 6.9f,
-                types = listOf(PokemonType.Grass, PokemonType.Poison)
-            )
-        )
-    )
-
-    override fun onRetryClick() = Unit
-
-    override fun onRefresh() = Unit
 }

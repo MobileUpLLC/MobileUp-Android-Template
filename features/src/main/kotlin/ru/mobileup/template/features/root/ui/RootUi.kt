@@ -10,11 +10,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import ru.mobileup.template.core.message.ui.FakeMessageComponent
 import ru.mobileup.template.core.message.ui.MessageUi
 import ru.mobileup.template.core.theme.AppTheme
-import ru.mobileup.template.core.utils.createFakeChildStackStateFlow
-import ru.mobileup.template.features.pokemons.ui.FakePokemonsComponent
 import ru.mobileup.template.features.pokemons.ui.PokemonsUi
 
 @Composable
@@ -60,13 +57,4 @@ fun RootUiPreview() {
     AppTheme {
         RootUi(FakeRootComponent())
     }
-}
-
-class FakeRootComponent : RootComponent {
-
-    override val childStack = createFakeChildStackStateFlow(
-        RootComponent.Child.Pokemons(FakePokemonsComponent())
-    )
-
-    override val messageComponent = FakeMessageComponent()
 }
