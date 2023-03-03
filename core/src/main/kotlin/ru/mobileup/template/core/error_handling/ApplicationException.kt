@@ -14,7 +14,8 @@ class UnauthorizedException(cause: Throwable?) : ApplicationException(cause)
 /**
  * Received a response from the server, but it is invalid - 4xx, 5xx
  */
-class ServerException(cause: Throwable?) : ApplicationException(cause)
+class ServerException(cause: Throwable?, override val message: String? = null) :
+    ApplicationException(cause)
 
 /**
  * Data transfer error

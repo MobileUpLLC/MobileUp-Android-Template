@@ -7,8 +7,6 @@ import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
 
 // import ru.mobileup.template.core.network.createKtorLogger
 
@@ -26,7 +24,7 @@ class NetworkApiFactory(
         private const val READ_WRITE_TIMEOUT_MILLISECONDS = 60000L
     }
 
-    private val json = createJson()
+    private val json = createDefaultJson()
     private val authorizedHttpClient = createHttpClient(authorized = true)
     private val unauthorizedHttpClient = createHttpClient(authorized = false)
 
@@ -73,15 +71,5 @@ class NetworkApiFactory(
             .baseUrl(backendUrl)
             .httpClient(httpClient)
             .build()
-    }
-
-    @OptIn(ExperimentalSerializationApi::class)
-    private fun createJson(): Json {
-        return Json {
-            explicitNulls = false
-            encodeDefaults = true
-            ignoreUnknownKeys = true
-            isLenient = true
-        }
     }
 }
