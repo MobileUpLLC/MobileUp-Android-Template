@@ -35,7 +35,6 @@ It consists of concrete features. Each feature has its own package which contain
 - [Jetpack Compose](https://developer.android.com/jetpack/compose) - UI
 - [Decompose](https://github.com/arkivanov/Decompose) - componentization and navigation
 - [Replica](https://github.com/aartikov/Replica) - organizing of network communication
-- [Sesame](https://github.com/aartikov/Sesame) - architecture components: [form validation](https://github.com/aartikov/Sesame/tree/master/sesame-compose-form)
 - [Koin](https://github.com/InsertKoinIO/koin) - Dependency Injection
 - [Ktor](https://ktor.io/) - Network
 - [Ktorfit](https://github.com/Foso/Ktorfit) - network requests in Retrofit way
@@ -48,13 +47,10 @@ It consists of concrete features. Each feature has its own package which contain
 - [Module Graph Gradle Plugin](https://github.com/MobileUpLLC/Module-Graph-Gradle-Plugin) - feature dependency graph visualization and validation
 
 ### Git hooks
+1. Runs detekt static code analysis and module graph validation before commit. Installation:
+   `cp git_hooks/pre-commit .git/hooks/ && chmod 0775 .git/hooks/pre-commit`
 
-1. Run detekt static code analysis and module graph validation before commit. Installation: 
-
-`cp git_hooks/pre-commit .git/hooks/ && chmod 0775 .git/hooks/pre-commit`
-
-2. Add issue prefix in every commit message according to branch name. Replace `YOUR_ISSUE_PREFIX` with your issue prefix:
-
-`sed 's/ISSUE_PREFIX_NAME/YOUR_ISSUE_PREFIX/g' git_hooks/prepare-commit-msg > .git/hooks/prepare-commit-msg && chmod 0775 .git/hooks/prepare-commit-msg`
+2. Adds issue prefix in every commit message according to branch name. Installation:
+   `cp git_hooks/prepare-commit-msg .git/hooks/ && chmod 0775 .git/hooks/prepare-commit-msg`
 
 ### Good coding and happy day!🤘

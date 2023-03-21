@@ -51,36 +51,33 @@ dependencies {
     implementation(project(":core"))
 
     // Kotlin
-    implementation(libs.kotlin.datetime)
+    implementation(libs.kotlinx.datetime)
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
 
     // UI
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material)
-    implementation(libs.activity.compose)
-    implementation(libs.compose.tooling)
+    implementation(libs.bundles.compose)
     implementation(libs.bundles.accompanist)
     implementation(libs.coil)
 
     // DI
     implementation(libs.koin)
 
+    // Logging
+    implementation(libs.logger.kermit)
+
     // Serialization
     implementation(libs.serialization.json)
 
     // Network
+    implementation(libs.bundles.ktor)
     implementation(libs.ktorfit.lib)
-    implementation(libs.ktor.android)
 
     // Architecture
     implementation(libs.bundles.decompose)
     implementation(libs.bundles.replica)
     api(libs.moko.resources)
     implementation(libs.moko.resourcesCompose)
-
-    // Debugging
-    implementation(libs.logger.kermit)
 }
 
 // Usage: ./gradlew generateModuleGraph detectGraphCycles

@@ -47,29 +47,26 @@ dependencies {
     ksp(libs.ktorfit.ksp)
 
     // Kotlin
-    implementation(libs.kotlin.datetime)
+    implementation(libs.kotlinx.datetime)
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
 
     // UI
-    implementation(libs.compose.ui)
-    implementation(libs.compose.material)
-    implementation(libs.activity.compose)
-    implementation(libs.compose.tooling)
+    implementation(libs.bundles.compose)
     implementation(libs.bundles.accompanist)
 
     // DI
     implementation(libs.koin)
 
+    // Logging
+    implementation(libs.logger.kermit)
+
     // Serialization
     implementation(libs.serialization.json)
 
     // Network
+    implementation(libs.bundles.ktor)
     implementation(libs.ktorfit.lib)
-    implementation(libs.ktor.android)
-    implementation(libs.ktor.content.negotiation)
-    implementation(libs.ktor.serialization)
-    implementation(libs.ktor.logging)
 
     // Architecture
     implementation(libs.bundles.decompose)
@@ -78,7 +75,6 @@ dependencies {
     implementation(libs.moko.resourcesCompose)
 
     // Debugging
-    implementation(libs.logger.kermit)
     debugImplementation(libs.chucker)
     debugImplementation(libs.bundles.hyperion)
     debugImplementation(libs.replica.devtools)
