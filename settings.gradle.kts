@@ -5,13 +5,13 @@ pluginManagement {
         mavenCentral()
     }
 
-    val kotlinVersion = "1.8.0"
-    val androidPluginVersion = "7.4.0"
+    val kotlinVersion = "1.8.10"
+    val androidPluginVersion = "7.4.1"
     val detektVersion = "1.22.0"
     val moduleGraphVersion = "1.3.3"
-    val kspVersion = "1.8.0-1.0.9"
+    val kspVersion = "1.8.10-1.0.9"
     val ktorfitVersion = "1.0.0"
-    val mokoResourcesVersion = "0.20.1"
+    val mokoResourcesVersion = "0.21.1"
 
     plugins {
         id("com.android.application") version androidPluginVersion
@@ -53,14 +53,14 @@ dependencyResolutionManagement {
             library("coroutines-android", "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
             // Architecture
-            val decomposeVersion = "0.8.0"
+            val decomposeVersion = "1.0.0"
             library("decompose-core", "com.arkivanov.decompose:decompose:$decomposeVersion")
             library("decompose-compose", "com.arkivanov.decompose:extensions-compose-jetpack:$decomposeVersion")
             bundle("decompose", listOf("decompose-core", "decompose-compose"))
 
             // Network
-            val ktorVersion = "2.2.2"
-            val ktorfitVersion = "1.0.0-beta17"
+            val ktorVersion = "2.2.4"
+            val ktorfitVersion = "1.0.1"
             library("ktor-core", "io.ktor:ktor-client-core:$ktorVersion")
             library("ktor-auth", "io.ktor:ktor-client-auth:$ktorVersion")
             library("ktor-serialization", "io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
@@ -99,11 +99,11 @@ dependencyResolutionManagement {
             )
 
             // Serialization
-            val serializationVersion = "1.3.3"
+            val serializationVersion = "1.5.0"
             library("serialization-json", "org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
             // DI
-            val koinVersion = "3.2.0"
+            val koinVersion = "3.4.0"
             library("koin", "io.insert-koin:koin-core:$koinVersion")
 
             // Logging
@@ -111,27 +111,24 @@ dependencyResolutionManagement {
             library("logger-kermit", "co.touchlab:kermit:$kermitVersion")
 
             // Code quality
-            val detectVersion = "1.21.0"
+            val detectVersion = "1.22.0"
             library("detekt-formatting", "io.gitlab.arturbosch.detekt:detekt-formatting:$detectVersion")
 
             // Android
-            val androidDesugarVersion = "1.1.5"
-            val lifecycleProcessVersion = "2.4.0"
+            val androidDesugarVersion = "2.0.2"
             library("android-desugar", "com.android.tools:desugar_jdk_libs:$androidDesugarVersion")
-            library("androidx-lifecycle-process", "androidx.lifecycle:lifecycle-process:$lifecycleProcessVersion")
 
             // Android UI
-            val composeVersion = "1.4.0-beta02"
-            version("composeCompiler", "1.4.0")
-            val activityComposeVersion = "1.6.1"
-            val activityVersion = "1.6.1"
-            val coilVersion = "2.1.0"
+            val composeVersion = "1.4.0"
+            version("composeCompiler", "1.4.4")
+            val activityVersion = "1.7.0"
+            val coilVersion = "2.3.0"
             val splashscreenVersion = "1.0.0"
             val accompanistVersion = "0.24.13-rc"
             library("compose-ui", "androidx.compose.ui:ui:$composeVersion")
             library("compose-material", "androidx.compose.material:material:$composeVersion")
             library("compose-tooling", "androidx.compose.ui:ui-tooling:$composeVersion")
-            library("activity-compose", "androidx.activity:activity-compose:$activityComposeVersion")
+            library("activity-compose", "androidx.activity:activity-compose:$activityVersion")
             library("activity", "androidx.activity:activity-ktx:$activityVersion")
             bundle(
                 "compose",
@@ -157,7 +154,7 @@ dependencyResolutionManagement {
             )
 
             // Resources
-            val mokoResourcesVersion = "0.20.1"
+            val mokoResourcesVersion = "0.21.1"
             library("moko-resources", "dev.icerock.moko:resources:$mokoResourcesVersion")
             library("moko-resourcesCompose", "dev.icerock.moko:resources-compose:$mokoResourcesVersion")
 
