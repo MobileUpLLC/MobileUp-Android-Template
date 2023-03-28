@@ -16,7 +16,7 @@ After cloning the template:
 The project is based on three gradle modules:
 
 #### app
-It pieces all the features together, contains `Application` and `Activity` classes. Also all tests are placed here.
+It pieces all the features together, contains `Application` and `Activity` classes.
 
 #### core
 It contains general purpose things: error handing, message showing, network, theme, utils, reusable widgets.
@@ -43,7 +43,6 @@ It consists of concrete features. Each feature has its own package which contain
 - [Coil](https://github.com/coil-kt/coil) - image loading
 - [Detekt](https://github.com/detekt/detekt) - static code analysis
 - [Hyperion](https://github.com/willowtreeapps/Hyperion-Android) - debug panel
-- [Robolectric](https://github.com/robolectric/robolectric) - unit testing
 - [Module Graph Gradle Plugin](https://github.com/MobileUpLLC/Module-Graph-Gradle-Plugin) - feature dependency graph visualization and validation
 
 ### Git hooks

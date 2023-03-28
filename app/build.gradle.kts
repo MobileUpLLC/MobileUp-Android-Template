@@ -108,12 +108,4 @@ dependencies {
     debugImplementation(libs.chucker)
     debugImplementation(libs.replica.devtools)
     implementation(libs.logger.kermit)
-
-    // Testing
-    testImplementation(libs.junit)
-    testImplementation(libs.extJunit)
-    testImplementation(libs.kotlinTest)
-    testImplementation(libs.mockWebServer)
-    testImplementation(libs.awaitility)
-    testImplementation(libs.robolectric)
 }

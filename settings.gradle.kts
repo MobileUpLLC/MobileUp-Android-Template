@@ -182,14 +182,6 @@ dependencyResolutionManagement {
                     "hyperion-addons-chucker"
                 )
             )
-
-            // Testing
-            library("junit", "junit:junit:4.13.2")
-            library("extJunit", "androidx.test.ext:junit-ktx:1.1.3")
-            library("kotlinTest", "org.jetbrains.kotlin:kotlin-test:1.7.10")
-            library("mockWebServer", "com.squareup.okhttp3:mockwebserver:4.3.1")
-            library("awaitility", "org.awaitility:awaitility-kotlin:4.2.0")
-            library("robolectric", "org.robolectric:robolectric:4.8")
         }
     }
 }
