@@ -1,5 +1,4 @@
 digraph {
 pokemons
 root
-root -> pokemons
 }

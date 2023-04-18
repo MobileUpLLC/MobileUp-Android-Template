@@ -111,8 +111,8 @@ dependencyResolutionManagement {
             library("logger-kermit", "co.touchlab:kermit:$kermitVersion")
 
             // Code quality
-            val detectVersion = "1.22.0"
-            library("detekt-formatting", "io.gitlab.arturbosch.detekt:detekt-formatting:$detectVersion")
+            val detektVersion = "1.22.0"
+            library("detekt-formatting", "io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion")
 
             // Android
             val androidDesugarVersion = "2.0.2"

@@ -1,6 +1,5 @@
 build:
   maxIssues: 0
-  excludes: ['**/build/**', '**/resources/**']
 
 config:
   validation: true
@@ -9,7 +8,7 @@ config:
 complexity:
   LongParameterList:
     active: false
-  ComplexMethod:
+  CyclomaticComplexMethod:
     active: true
     threshold: 15
     ignoreSingleWhenExpression: true
@@ -159,10 +158,6 @@ formatting:
   PackageName:
     active: false
     autoCorrect: false
-  ParameterListWrapping:
-    active: true
-    autoCorrect: true
-    indentSize: 4
   SpacingAroundDoubleColon:
     active: false
     autoCorrect: true
@@ -266,20 +261,13 @@ potential-bugs:
     active: true
   DontDowncastCollectionTypes:
     active: true
-  DuplicateCaseInWhenExpression:
-    active: true
   EqualsAlwaysReturnsTrueOrFalse:
     active: true
   IteratorNotThrowingNoSuchElementException:
     active: true
   MapGetWithNotNullAssertionOperator:
     active: true
-  MissingWhenCase:
-    active: true
-    allowElseExpression: true
   NullableToStringCall:
-    active: true
-  RedundantElseInWhen:
     active: true
   UnnecessaryNotNullOperator:
     active: true

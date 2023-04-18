@@ -16,6 +16,10 @@ detekt {
     }
 }
 
+tasks.findByName("detekt").configure {
+    exclude('**/build/**', '**/resources/**')
+}
+
 dependencies {
     detektPlugins libs.detekt.formatting
 }

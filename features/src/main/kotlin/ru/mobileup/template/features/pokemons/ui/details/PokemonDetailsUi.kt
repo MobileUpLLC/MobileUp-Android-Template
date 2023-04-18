@@ -55,7 +55,7 @@ fun PokemonDetailsUi(
                 onRetryClick = component::onRetryClick
             ) { pokemon, refreshing ->
                 PokemonDetailsContent(pokemon)
-                RefreshingProgress( refreshing, modifier = Modifier.padding(top = 4.dp))
+                RefreshingProgress(refreshing, modifier = Modifier.padding(top = 4.dp))
             }
         }
     }
