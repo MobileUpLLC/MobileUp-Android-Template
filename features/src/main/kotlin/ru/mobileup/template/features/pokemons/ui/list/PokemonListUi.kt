@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -19,14 +20,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.widget.EmptyPlaceholder
+import ru.mobileup.template.core.widget.PullRefreshLceWidget
 import ru.mobileup.template.core.widget.RefreshingProgress
-import ru.mobileup.template.core.widget.SwipeRefreshLceWidget
 import ru.mobileup.template.features.R
 import ru.mobileup.template.features.pokemons.domain.Pokemon
 import ru.mobileup.template.features.pokemons.domain.PokemonId
 import ru.mobileup.template.features.pokemons.domain.PokemonType
 import ru.mobileup.template.features.pokemons.domain.PokemonTypeId
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PokemonListUi(
     component: PokemonListComponent,
@@ -46,7 +48,7 @@ fun PokemonListUi(
                 onTypeClick = component::onTypeClick
             )
 
-            SwipeRefreshLceWidget(
+            PullRefreshLceWidget(
                 state = pokemonsState,
                 onRefresh = component::onRefresh,
                 onRetryClick = component::onRetryClick

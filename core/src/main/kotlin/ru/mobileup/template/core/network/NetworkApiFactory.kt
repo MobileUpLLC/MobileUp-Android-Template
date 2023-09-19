@@ -16,8 +16,7 @@ import io.ktor.serialization.kotlinx.json.*
 class NetworkApiFactory(
     private val loggingEnabled: Boolean,
     private val backendUrl: String,
-    private val httpClientEngine: HttpClientEngine,
-    private val errorCollector: ErrorCollector?
+    private val httpClientEngine: HttpClientEngine
 ) {
     companion object {
         private const val CONNECT_TIMEOUT_MILLISECONDS = 30000L
@@ -62,7 +61,7 @@ class NetworkApiFactory(
                 // TODO: install Auth component and set it up
             }
 
-            setupErrorConverter(errorCollector)
+            setupErrorConverter()
         }
     }
 

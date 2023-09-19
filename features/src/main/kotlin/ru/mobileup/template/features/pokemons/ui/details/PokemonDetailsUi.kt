@@ -24,12 +24,13 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.utils.dispatchOnBackPressed
+import ru.mobileup.template.core.widget.PullRefreshLceWidget
 import ru.mobileup.template.core.widget.RefreshingProgress
-import ru.mobileup.template.core.widget.SwipeRefreshLceWidget
 import ru.mobileup.template.features.R
 import ru.mobileup.template.features.pokemons.domain.DetailedPokemon
 import ru.mobileup.template.features.pokemons.ui.list.PokemonTypeItem
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PokemonDetailsUi(
     component: PokemonDetailsComponent,
@@ -49,7 +50,7 @@ fun PokemonDetailsUi(
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
             }
 
-            SwipeRefreshLceWidget(
+            PullRefreshLceWidget(
                 state = pokemonState,
                 onRefresh = component::onRefresh,
                 onRetryClick = component::onRetryClick

@@ -42,6 +42,7 @@ android {
     packagingOptions {
         resources.excludes += "META-INF/*"
     }
+    namespace = "ru.mobileup.template.features"
 }
 
 dependencies {
@@ -65,9 +66,6 @@ dependencies {
 
     // Logging
     implementation(libs.logger.kermit)
-
-    // Serialization
-    implementation(libs.serialization.json)
 
     // Network
     implementation(libs.bundles.ktor)

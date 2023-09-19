@@ -31,13 +31,8 @@ fun coreModule(backendUrl: String) = module {
         NetworkApiFactory(
             loggingEnabled = BuildConfig.DEBUG,
             backendUrl = backendUrl,
-            httpClientEngine = get(),
-            errorCollector = get()
+            httpClientEngine = get()
         )
-    }
-    single {
-        val debugTools = get<DebugTools>()
-        ErrorCollector { debugTools.collectNetworkError(it) }
     }
     single(createdAtStart = true) { PermissionService(get(), get()) }
 }
