@@ -8,18 +8,20 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.*
 import io.ktor.utils.io.errors.*
+import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.SerializationException
 import ru.mobileup.template.core.error_handling.*
 
-fun <T : HttpClientEngineConfig> HttpClientConfig<T>.setupErrorConverter(
-    errorCollector: ErrorCollector?
-) {
+fun <T : HttpClientEngineConfig> HttpClientConfig<T>.setupErrorConverter() {
     expectSuccess = true
 
     HttpResponseValidator {
         handleResponseExceptionWithRequest { cause, _ ->
+            if (cause is CancellationException) {
+                throw cause
+            }
+
             val exception = convertToApplicationException(cause)
-            errorCollector?.collectNetworkError(exception)
             throw exception
         }
     }
