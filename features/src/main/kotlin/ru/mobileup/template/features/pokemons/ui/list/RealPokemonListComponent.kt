@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.arkivanov.decompose.ComponentContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.parcelize.Parcelize
+import me.aartikov.replica.algebra.withKey
 import me.aartikov.replica.keyed.KeyedReplica
 import me.aartikov.replica.keyed.keepPreviousData
 import ru.mobileup.template.core.error_handling.ErrorHandler
@@ -17,7 +18,7 @@ import ru.mobileup.template.features.pokemons.domain.PokemonTypeId
 class RealPokemonListComponent(
     componentContext: ComponentContext,
     private val onOutput: (PokemonListComponent.Output) -> Unit,
-    private val pokemonsByTypeReplica: KeyedReplica<PokemonTypeId, List<Pokemon>>,
+    pokemonsByTypeReplica: KeyedReplica<PokemonTypeId, List<Pokemon>>,
     errorHandler: ErrorHandler
 ) : ComponentContext by componentContext, PokemonListComponent {
 
@@ -31,13 +32,11 @@ class RealPokemonListComponent(
 
     override val selectedTypeId = MutableStateFlow(types[0].id)
 
-    override val pokemonsState = pokemonsByTypeReplica
+    private val pokemonsReplica = pokemonsByTypeReplica
         .keepPreviousData()
-        .observe(
-            lifecycle,
-            errorHandler,
-            key = selectedTypeId
-        )
+        .withKey(selectedTypeId)
+
+    override val pokemonsState = pokemonsReplica.observe(this, errorHandler)
 
     init {
         persistent(
@@ -55,11 +54,11 @@ class RealPokemonListComponent(
     }
 
     override fun onRetryClick() {
-        pokemonsByTypeReplica.refresh(selectedTypeId.value)
+        pokemonsReplica.refresh()
     }
 
     override fun onRefresh() {
-        pokemonsByTypeReplica.refresh(selectedTypeId.value)
+        pokemonsReplica.refresh()
     }
 
     @Parcelize

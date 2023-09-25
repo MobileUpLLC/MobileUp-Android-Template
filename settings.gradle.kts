@@ -82,7 +82,7 @@ dependencyResolutionManagement {
             )
 
             // Replica
-            val replicaVersion = "1.0.0-alpha13"
+            val replicaVersion = "1.0.0-alpha15"
             library("replica-core", "com.github.aartikov:replica-core:$replicaVersion")
             library("replica-algebra", "com.github.aartikov:replica-algebra:$replicaVersion")
             library("replica-android-network", "com.github.aartikov:replica-android-network:$replicaVersion")

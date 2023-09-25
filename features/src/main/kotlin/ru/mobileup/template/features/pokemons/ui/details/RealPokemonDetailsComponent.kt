@@ -12,7 +12,7 @@ class RealPokemonDetailsComponent(
     errorHandler: ErrorHandler
 ) : ComponentContext by componentContext, PokemonDetailsComponent {
 
-    override val pokemonState = pokemonReplica.observe(lifecycle, errorHandler)
+    override val pokemonState = pokemonReplica.observe(this, errorHandler)
 
     override fun onRetryClick() {
         pokemonReplica.refresh()
