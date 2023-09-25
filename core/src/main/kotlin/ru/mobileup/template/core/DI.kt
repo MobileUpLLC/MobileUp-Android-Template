@@ -14,7 +14,6 @@ import ru.mobileup.template.core.message.data.MessageService
 import ru.mobileup.template.core.message.data.MessageServiceImpl
 import ru.mobileup.template.core.message.ui.MessageComponent
 import ru.mobileup.template.core.message.ui.RealMessageComponent
-import ru.mobileup.template.core.network.ErrorCollector
 import ru.mobileup.template.core.network.NetworkApiFactory
 import ru.mobileup.template.core.network.createOkHttpEngine
 import ru.mobileup.template.core.permissions.PermissionService

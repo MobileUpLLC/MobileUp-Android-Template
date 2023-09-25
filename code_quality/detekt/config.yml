@@ -197,7 +197,6 @@ naming:
     parameterPattern: '[a-z][A-Za-z0-9]*'
     privateParameterPattern: '[a-z][A-Za-z0-9]*'
     excludeClassPattern: '$^'
-    ignoreOverridden: true
   EnumNaming:
     active: true
     enumEntryPattern: '[A-Z][_a-zA-Z0-9]*'
@@ -205,13 +204,11 @@ naming:
     active: true
     functionPattern: '([a-z][a-zA-Z0-9]*)|(`.*`)'
     excludeClassPattern: '$^'
-    ignoreOverridden: true
     ignoreAnnotated: [ 'Composable' ]
   FunctionParameterNaming:
     active: true
     parameterPattern: '[a-z][A-Za-z0-9]*'
     excludeClassPattern: '$^'
-    ignoreOverridden: true
   MemberNameEqualsClassName:
     active: true
     ignoreOverridden: true
@@ -242,7 +239,6 @@ naming:
     active: true
     variablePattern: '[A-Za-z][_A-Za-z_0-9]*'
     excludeClassPattern: '$^'
-    ignoreOverridden: true
 
 performance:
   ArrayPrimitive:
@@ -328,7 +324,7 @@ style:
     active: true
   OptionalUnit:
     active: true
-  OptionalWhenBraces:
+  BracesOnWhenStatements:
     active: false
   PreferToOverPairSyntax:
     active: true
