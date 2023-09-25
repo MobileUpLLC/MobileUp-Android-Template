@@ -4,10 +4,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.PullRefreshState
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import ru.mobileup.template.core.utils.LoadableState
 
@@ -23,9 +28,6 @@ fun <T : Any> PullRefreshLceWidget(
     onRefresh: () -> Unit,
     onRetryClick: () -> Unit,
     modifier: Modifier = Modifier,
-    pullRefreshIndicator: @Composable (state: PullRefreshState, refreshing: Boolean) -> Unit = { s, refreshing ->
-        PullRefreshIndicator(refreshing = refreshing, state = s, contentColor = MaterialTheme.colors.primaryVariant)
-    },
     content: @Composable (data: T, refreshing: Boolean) -> Unit
 ) {
     LceWidget(
@@ -41,20 +43,25 @@ fun <T : Any> PullRefreshLceWidget(
 
         val pullRefreshState = rememberPullRefreshState(
             refreshing = pullGestureOccurred && refreshing,
-            onRefresh = onRefresh
+            onRefresh = {
+                pullGestureOccurred = true
+                onRefresh()
+            }
         )
 
         Box(
-            modifier = Modifier
-                .pullRefresh(pullRefreshState)
+            modifier = Modifier.pullRefresh(pullRefreshState)
         ) {
-            pullRefreshIndicator(
-                pullRefreshState,
-                pullGestureOccurred && refreshing
-            )
             content(
                 data,
                 refreshing && !pullGestureOccurred
+            )
+
+            PullRefreshIndicator(
+                modifier = Modifier.align(Alignment.TopCenter),
+                refreshing = pullGestureOccurred && refreshing,
+                state = pullRefreshState,
+                contentColor = MaterialTheme.colors.primaryVariant
             )
         }
     }
