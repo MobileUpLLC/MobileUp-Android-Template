@@ -1,0 +1,46 @@
+requiredParams:
+  name: Component
+  description: Creates component with implementation and composable function
+
+widgets:
+  - stringParameter:
+      id: componentPrefix
+      name: Component Prefix
+      help: Prefix of the component and other classes to create
+      constraints:
+        - nonempty
+        - unique
+        - class
+      default: Blank
+
+  - booleanParameter:
+      id: output
+      name: Generate output?
+      help: If true, the output will be generated
+      default: false
+
+globals:
+  - stringParameter:
+        id: componentName
+        value: ${componentPrefix}Component
+
+  - stringParameter:
+      id: prefix
+      value: ${componentPrefix}
+
+recipe:
+  - instantiateAndOpen:
+      from: root/Component.kt.ftl
+      to: ${srcOut}/${componentName}.kt
+
+  - instantiateAndOpen:
+      from: root/RealComponent.kt.ftl
+      to: ${srcOut}/Real${componentName}.kt
+
+  - instantiateAndOpen:
+      from: root/FakeComponent.kt.ftl
+      to: ${srcOut}/Fake${componentName}.kt
+
+  - instantiateAndOpen:
+      from: root/Ui.kt.ftl
+      to: ${srcOut}/${prefix}Ui.kt
