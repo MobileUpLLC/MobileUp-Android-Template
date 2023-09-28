@@ -1,4 +1,4 @@
-package ${packageName}
+package ${packageName}.${path}
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import kotlinx.coroutines.flow.StateFlow

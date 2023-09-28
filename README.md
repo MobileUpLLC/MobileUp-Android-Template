@@ -53,10 +53,8 @@ It consists of concrete features. Each feature has its own package which contain
    `cp git_hooks/prepare-commit-msg .git/hooks/ && chmod 0775 .git/hooks/prepare-commit-msg`
 
 ### Geminio templates - creates boilerplate code
-1. Read installation instruction /root/geminio/SETUP.MD
-2. Create package, right click, new -> Templates.
-3. Component - interface, real and fake implementation, ui, preview.
-4. RouterComponent - similarly, but with childstack.
+1. Read installation instruction root/geminio/SETUP.MD
+2. Read user instruction  root/geminio/HOW_TO_USE.MD
 
 ### Good coding and happy day!🤘
 
