@@ -16,6 +16,7 @@ widgets:
   - stringParameter:
       id: packagePath
       name: Package path in feature package, for example auth.login.google
+      suggest: ${componentPrefix.camelCaseToUnderlines()}
       constraints:
         - nonempty
       default: blank

@@ -9,8 +9,8 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 
 @Composable
 fun ${componentPrefix}Ui(
-    modifier: Modifier = Modifier,
-    component: ${componentName}
+    component: ${componentName},
+    modifier: Modifier = Modifier
 ) {
     val childStack by component.childStack.collectAsState()
 

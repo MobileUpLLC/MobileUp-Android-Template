@@ -6,8 +6,8 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun ${componentPrefix}Ui(
-    modifier: Modifier = Modifier,
-    component: ${componentName}
+    component: ${componentName},
+    modifier: Modifier = Modifier
 ) {
 
 }
