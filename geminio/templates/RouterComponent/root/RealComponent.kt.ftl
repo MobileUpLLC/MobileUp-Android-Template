@@ -1,4 +1,4 @@
-package ${packageName}
+package ${packageName}.${path}
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

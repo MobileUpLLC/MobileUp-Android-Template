@@ -13,6 +13,14 @@ widgets:
         - class
       default: Blank
 
+  - stringParameter:
+      id: packagePath
+      name: Package path in feature package, for example auth.login.google
+      suggest: ${componentPrefix.camelCaseToUnderlines()}
+      constraints:
+        - nonempty
+      default: blank
+
   - booleanParameter:
       id: output
       name: Generate output?
@@ -28,20 +36,23 @@ globals:
       id: prefix
       value: ${componentPrefix}
 
+  - stringParameter:
+      id: path
+      value: ${packagePath}
 
 recipe:
   - instantiateAndOpen:
       from: root/Component.kt.ftl
-      to: ${srcOut}/${componentName}.kt
+      to: ${currentDirOut}/${componentName}.kt
 
   - instantiate:
       from: root/RealComponent.kt.ftl
-      to: ${srcOut}/Real${componentName}.kt
+      to: ${currentDirOut}/Real${componentName}.kt
 
   - instantiate:
       from: root/FakeComponent.kt.ftl
-      to: ${srcOut}/Fake${componentName}.kt
+      to: ${currentDirOut}/Fake${componentName}.kt
 
   - instantiate:
       from: root/Ui.kt.ftl
-      to: ${srcOut}/${prefix}Ui.kt
+      to: ${currentDirOut}/${prefix}Ui.kt
