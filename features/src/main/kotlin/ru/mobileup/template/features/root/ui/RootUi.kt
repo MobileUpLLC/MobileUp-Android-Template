@@ -1,6 +1,6 @@
 package ru.mobileup.template.features.root.ui
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -40,12 +40,12 @@ fun RootUi(
 private fun SystemBarColors() {
     val systemUiController = rememberSystemUiController()
 
-    val statusBarColor = MaterialTheme.colors.surface
+    val statusBarColor = MaterialTheme.colorScheme.surface
     LaunchedEffect(statusBarColor) {
         systemUiController.setStatusBarColor(statusBarColor)
     }
 
-    val navigationBarColor = MaterialTheme.colors.surface
+    val navigationBarColor = MaterialTheme.colorScheme.surface
     LaunchedEffect(navigationBarColor) {
         systemUiController.setNavigationBarColor(navigationBarColor)
     }

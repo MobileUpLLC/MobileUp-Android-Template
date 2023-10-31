@@ -121,8 +121,9 @@ dependencyResolutionManagement {
             val coilVersion = "2.4.0"
             val splashscreenVersion = "1.0.0"
             val accompanistVersion = "0.32.0"
+            val material3Version = "1.1.2"
             library("compose-ui", "androidx.compose.ui:ui:$composeVersion")
-            library("compose-material", "androidx.compose.material:material:$composeVersion")
+            library("compose-material", "androidx.compose.material3:material3:$material3Version")
             library("compose-tooling", "androidx.compose.ui:ui-tooling:$composeVersion")
             library("activity-compose", "androidx.activity:activity-compose:$activityVersion")
             library("activity", "androidx.activity:activity-ktx:$activityVersion")

@@ -3,6 +3,13 @@ package ru.mobileup.template.core.message.ui
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,6 +25,7 @@ import androidx.compose.ui.window.PopupProperties
 import dev.icerock.moko.resources.compose.localized
 import ru.mobileup.template.core.message.domain.Message
 import ru.mobileup.template.core.theme.AppTheme
+import ru.mobileup.template.core.theme.custom.CustomTheme
 
 /**
  * Displays a [Message] as a popup at the bottom of screen.
@@ -34,7 +42,7 @@ fun MessageUi(
     }
     Box(modifier = modifier.fillMaxSize()) {
         visibleMessage?.let {
-            val inverseIsDarkTheme = MaterialTheme.colors.isLight
+            val inverseIsDarkTheme = CustomTheme.colors.isLight
             AppTheme(inverseIsDarkTheme) {
                 MessagePopup(
                     message = it,
@@ -61,8 +69,8 @@ private fun MessagePopup(
     ) {
         Card(
             shape = RoundedCornerShape(8.dp),
-            backgroundColor = MaterialTheme.colors.background,
-            elevation = 3.dp,
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
+            elevation = CardDefaults.cardElevation(3.dp),
             modifier = Modifier
                 .padding(bottom = bottomPadding, start = 8.dp, end = 8.dp)
                 .wrapContentSize()
@@ -78,14 +86,14 @@ private fun MessagePopup(
                     Icon(
                         painter = painterResource(it),
                         contentDescription = null,
-                        tint = MaterialTheme.colors.primary
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
                 Text(
                     modifier = Modifier.weight(1f),
                     text = message.text.localized(),
-                    color = MaterialTheme.colors.onBackground,
-                    style = MaterialTheme.typography.body1
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodyLarge
                 )
                 message.actionTitle?.let {
                     MessageButton(text = it.localized(), onClick = onAction)
@@ -107,7 +115,7 @@ private fun MessageButton(
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.body2
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

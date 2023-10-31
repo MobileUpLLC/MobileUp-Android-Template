@@ -8,6 +8,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,7 +36,6 @@ import ru.mobileup.template.features.R
 import ru.mobileup.template.features.pokemons.domain.DetailedPokemon
 import ru.mobileup.template.features.pokemons.ui.list.PokemonTypeItem
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PokemonDetailsUi(
     component: PokemonDetailsComponent,
@@ -41,7 +46,7 @@ fun PokemonDetailsUi(
 
     Surface(
         modifier = modifier.fillMaxSize(),
-        color = MaterialTheme.colors.background
+        color = MaterialTheme.colorScheme.background
     ) {
         Column(modifier = modifier.fillMaxSize()) {
             IconButton(
@@ -77,7 +82,7 @@ private fun PokemonDetailsContent(
         Text(
             textAlign = TextAlign.Center,
             text = pokemon.name,
-            style = MaterialTheme.typography.h5
+            style = MaterialTheme.typography.headlineSmall
         )
 
         AsyncImage(
@@ -91,7 +96,7 @@ private fun PokemonDetailsContent(
                 .padding(top = 32.dp)
                 .size(200.dp)
                 .clip(CircleShape)
-                .background(color = MaterialTheme.colors.surface)
+                .background(color = MaterialTheme.colorScheme.surface)
         )
 
         Text(
