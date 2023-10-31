@@ -10,7 +10,6 @@ import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.platform.inspectable
 
 @ExperimentalMaterial3Api
-// TODO: Consider whether the state parameter should be replaced with lambdas.
 fun Modifier.pullRefreshIndicatorTransform(
     state: PullRefreshState,
     scale: Boolean = false,

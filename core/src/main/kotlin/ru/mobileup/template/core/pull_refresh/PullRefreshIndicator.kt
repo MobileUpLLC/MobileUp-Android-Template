@@ -41,8 +41,6 @@ import kotlin.math.pow
 
 @Composable
 @ExperimentalMaterial3Api
-// TODO(b/244423199): Consider whether the state parameter should be replaced with lambdas to
-//  enable people to use this indicator with custom pull-to-refresh components.
 fun PullRefreshIndicator(
     refreshing: Boolean,
     state: PullRefreshState,
@@ -58,7 +56,6 @@ fun PullRefreshIndicator(
     // Apply an elevation overlay if needed. Note that we aren't using Surface here, as we do not
     // want its input-blocking behaviour, since the indicator is typically displayed above other
     // (possibly) interactive content.
-
 
     Box(
         modifier = modifier
