@@ -6,6 +6,9 @@ import androidx.compose.runtime.Composable
 import ru.mobileup.template.core.theme.custom.CustomTheme
 import ru.mobileup.template.core.theme.custom.toMaterialColors
 import ru.mobileup.template.core.theme.custom.toMaterialTypography
+import ru.mobileup.template.core.theme.values.AppTypography
+import ru.mobileup.template.core.theme.values.DarkAppColors
+import ru.mobileup.template.core.theme.values.LightAppColors
 
 @Composable
 fun AppTheme(
@@ -24,7 +27,7 @@ fun AppTheme(
         typography = typography
     ) {
         MaterialTheme(
-            colorScheme = colorScheme.toMaterialColors(),
+            colorScheme = colorScheme.toMaterialColors(!darkTheme),
             typography = typography.toMaterialTypography(),
             content = content
         )

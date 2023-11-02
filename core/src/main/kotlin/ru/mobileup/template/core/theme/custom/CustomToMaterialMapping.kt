@@ -5,7 +5,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 
-fun CustomColors.toMaterialColors(): ColorScheme {
+fun CustomColors.toMaterialColors(isLight: Boolean): ColorScheme {
     return if (isLight) {
         lightColorScheme()
     } else {

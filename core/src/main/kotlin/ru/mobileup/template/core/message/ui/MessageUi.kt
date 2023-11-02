@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -46,14 +45,11 @@ fun MessageUi(
     }
     Box(modifier = modifier.fillMaxSize()) {
         visibleMessage?.let {
-            val inverseIsDarkTheme = CustomTheme.colors.isLight
-            AppTheme(inverseIsDarkTheme) {
-                MessagePopup(
-                    message = it,
-                    bottomPadding = bottomPadding + additionalBottomPadding,
-                    onAction = component::onActionClick
-                )
-            }
+            MessagePopup(
+                message = it,
+                bottomPadding = bottomPadding + additionalBottomPadding,
+                onAction = component::onActionClick
+            )
         }
     }
 }
@@ -73,7 +69,7 @@ private fun MessagePopup(
     ) {
         Card(
             shape = RoundedCornerShape(8.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
+            colors = CardDefaults.cardColors(containerColor = CustomTheme.colors.snackbar.background),
             elevation = CardDefaults.cardElevation(3.dp),
             modifier = Modifier
                 .padding(bottom = bottomPadding, start = 8.dp, end = 8.dp)
@@ -90,14 +86,14 @@ private fun MessagePopup(
                     Icon(
                         painter = painterResource(it),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = CustomTheme.colors.snackbar.icon
                     )
                 }
                 Text(
                     modifier = Modifier.weight(1f),
                     text = message.text.localized(),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    style = MaterialTheme.typography.bodyLarge
+                    color = CustomTheme.colors.snackbar.text,
+                    style = CustomTheme.typography.snackbar
                 )
                 message.actionTitle?.let {
                     MessageButton(text = it.localized(), onClick = onAction)
@@ -119,7 +115,7 @@ private fun MessageButton(
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyMedium
+            style = CustomTheme.typography.snackbar
         )
     }
 }

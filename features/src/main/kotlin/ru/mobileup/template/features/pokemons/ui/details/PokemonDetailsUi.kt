@@ -37,6 +37,7 @@ import ru.mobileup.template.core.widget.PullRefreshLceWidget
 import ru.mobileup.template.core.widget.RefreshingProgress
 import ru.mobileup.template.features.R
 import ru.mobileup.template.features.pokemons.domain.DetailedPokemon
+import ru.mobileup.template.features.pokemons.domain.PokemonType
 import ru.mobileup.template.features.pokemons.ui.list.PokemonTypeItem
 
 @Composable
@@ -63,7 +64,10 @@ fun PokemonDetailsUi(
                 onRefresh = component::onRefresh,
                 onRetryClick = component::onRetryClick
             ) { pokemon, refreshing ->
-                PokemonDetailsContent(pokemon)
+                PokemonDetailsContent(
+                    pokemon = pokemon,
+                    onTypeClick = component::onTypeClick
+                )
                 RefreshingProgress(refreshing, modifier = Modifier.padding(top = 4.dp))
             }
         }
@@ -73,6 +77,7 @@ fun PokemonDetailsUi(
 @Composable
 private fun PokemonDetailsContent(
     pokemon: DetailedPokemon,
+    onTypeClick: (PokemonType) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -108,11 +113,16 @@ private fun PokemonDetailsContent(
         )
 
         Row(
-            modifier = Modifier.padding(top = 12.dp),
+            modifier = Modifier
+                .padding(top = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             pokemon.types.forEach {
-                PokemonTypeItem(type = it, isSelected = true)
+                PokemonTypeItem(
+                    type = it,
+                    isSelected = true,
+                    onClick = { onTypeClick(it) }
+                )
             }
         }
 
