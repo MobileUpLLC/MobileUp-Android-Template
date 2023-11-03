@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.pow
 
+// TODO: заменить на реализацию из Material3, когда она появится
 @Composable
 @ExperimentalMaterial3Api
 fun rememberPullRefreshState(

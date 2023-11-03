@@ -14,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import ru.mobileup.template.core.theme.AppTheme
+import ru.mobileup.template.core.theme.custom.CustomTheme
 import ru.mobileup.template.core.utils.dispatchOnBackPressed
 import ru.mobileup.template.core.widget.PullRefreshLceWidget
 import ru.mobileup.template.core.widget.RefreshingProgress
@@ -50,7 +50,7 @@ fun PokemonDetailsUi(
 
     Surface(
         modifier = modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        color = CustomTheme.colors.background.screen
     ) {
         Column(modifier = modifier.fillMaxSize()) {
             IconButton(
@@ -90,7 +90,7 @@ private fun PokemonDetailsContent(
         Text(
             textAlign = TextAlign.Center,
             text = pokemon.name,
-            style = MaterialTheme.typography.headlineSmall
+            style = CustomTheme.typography.body.regular
         )
 
         AsyncImage(
@@ -104,7 +104,7 @@ private fun PokemonDetailsContent(
                 .padding(top = 32.dp)
                 .size(200.dp)
                 .clip(CircleShape)
-                .background(color = MaterialTheme.colorScheme.surface)
+                .background(color = CustomTheme.colors.background.screen)
         )
 
         Text(

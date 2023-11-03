@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.platform.inspectable
 import androidx.compose.ui.unit.Velocity
 
+// TODO: заменить на реализацию из Material3, когда она появится
 @ExperimentalMaterial3Api
 fun Modifier.pullRefresh(
     state: PullRefreshState,

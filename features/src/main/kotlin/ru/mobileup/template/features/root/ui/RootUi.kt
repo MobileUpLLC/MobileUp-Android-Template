@@ -1,6 +1,5 @@
 package ru.mobileup.template.features.root.ui
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -12,6 +11,7 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import ru.mobileup.template.core.message.ui.MessageUi
 import ru.mobileup.template.core.theme.AppTheme
+import ru.mobileup.template.core.theme.custom.CustomTheme
 import ru.mobileup.template.features.pokemons.ui.PokemonsUi
 
 @Composable
@@ -40,12 +40,12 @@ fun RootUi(
 private fun SystemBarColors() {
     val systemUiController = rememberSystemUiController()
 
-    val statusBarColor = MaterialTheme.colorScheme.surface
+    val statusBarColor = CustomTheme.colors.background.screen
     LaunchedEffect(statusBarColor) {
         systemUiController.setStatusBarColor(statusBarColor)
     }
 
-    val navigationBarColor = MaterialTheme.colorScheme.surface
+    val navigationBarColor = CustomTheme.colors.background.screen
     LaunchedEffect(navigationBarColor) {
         systemUiController.setNavigationBarColor(navigationBarColor)
     }

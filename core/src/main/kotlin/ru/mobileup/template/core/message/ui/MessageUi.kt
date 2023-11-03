@@ -69,7 +69,7 @@ private fun MessagePopup(
     ) {
         Card(
             shape = RoundedCornerShape(8.dp),
-            colors = CardDefaults.cardColors(containerColor = CustomTheme.colors.snackbar.background),
+            colors = CardDefaults.cardColors(containerColor = CustomTheme.colors.background.toast),
             elevation = CardDefaults.cardElevation(3.dp),
             modifier = Modifier
                 .padding(bottom = bottomPadding, start = 8.dp, end = 8.dp)
@@ -86,14 +86,14 @@ private fun MessagePopup(
                     Icon(
                         painter = painterResource(it),
                         contentDescription = null,
-                        tint = CustomTheme.colors.snackbar.icon
+                        tint = CustomTheme.colors.icon.primary.invert.default
                     )
                 }
                 Text(
                     modifier = Modifier.weight(1f),
                     text = message.text.localized(),
-                    color = CustomTheme.colors.snackbar.text,
-                    style = CustomTheme.typography.snackbar
+                    color = CustomTheme.colors.text.primary.invert.default,
+                    style = CustomTheme.typography.body.regular
                 )
                 message.actionTitle?.let {
                     MessageButton(text = it.localized(), onClick = onAction)
@@ -115,7 +115,7 @@ private fun MessageButton(
     ) {
         Text(
             text = text,
-            style = CustomTheme.typography.snackbar
+            style = CustomTheme.typography.button.bold
         )
     }
 }

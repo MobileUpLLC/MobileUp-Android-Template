@@ -2,7 +2,6 @@ package ru.mobileup.template.core.widget
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -14,6 +13,7 @@ import androidx.compose.ui.Modifier
 import ru.mobileup.template.core.pull_refresh.PullRefreshIndicator
 import ru.mobileup.template.core.pull_refresh.pullRefresh
 import ru.mobileup.template.core.pull_refresh.rememberPullRefreshState
+import ru.mobileup.template.core.theme.custom.CustomTheme
 import ru.mobileup.template.core.utils.LoadableState
 
 /**
@@ -61,7 +61,7 @@ fun <T : Any> PullRefreshLceWidget(
                 modifier = Modifier.align(Alignment.TopCenter),
                 refreshing = pullGestureOccurred && refreshing,
                 state = pullRefreshState,
-                contentColor = MaterialTheme.colorScheme.secondary
+                contentColor = CustomTheme.colors.icon.primary.default
             )
         }
     }
