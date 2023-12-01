@@ -22,6 +22,8 @@ class FakePokemonDetailsComponent : PokemonDetailsComponent {
         )
     )
 
+    override fun onTypeClick(type: PokemonType) = Unit
+
     override fun onRetryClick() = Unit
 
     override fun onRefresh() = Unit

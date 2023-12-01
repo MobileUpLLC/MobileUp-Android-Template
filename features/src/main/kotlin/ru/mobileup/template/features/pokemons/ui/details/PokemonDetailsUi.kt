@@ -1,13 +1,21 @@
 package ru.mobileup.template.features.pokemons.ui.details
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,14 +31,15 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import ru.mobileup.template.core.theme.AppTheme
+import ru.mobileup.template.core.theme.custom.CustomTheme
 import ru.mobileup.template.core.utils.dispatchOnBackPressed
 import ru.mobileup.template.core.widget.PullRefreshLceWidget
 import ru.mobileup.template.core.widget.RefreshingProgress
 import ru.mobileup.template.features.R
 import ru.mobileup.template.features.pokemons.domain.DetailedPokemon
+import ru.mobileup.template.features.pokemons.domain.PokemonType
 import ru.mobileup.template.features.pokemons.ui.list.PokemonTypeItem
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PokemonDetailsUi(
     component: PokemonDetailsComponent,
@@ -41,7 +50,7 @@ fun PokemonDetailsUi(
 
     Surface(
         modifier = modifier.fillMaxSize(),
-        color = MaterialTheme.colors.background
+        color = CustomTheme.colors.background.screen
     ) {
         Column(modifier = modifier.fillMaxSize()) {
             IconButton(
@@ -55,7 +64,10 @@ fun PokemonDetailsUi(
                 onRefresh = component::onRefresh,
                 onRetryClick = component::onRetryClick
             ) { pokemon, refreshing ->
-                PokemonDetailsContent(pokemon)
+                PokemonDetailsContent(
+                    pokemon = pokemon,
+                    onTypeClick = component::onTypeClick
+                )
                 RefreshingProgress(refreshing, modifier = Modifier.padding(top = 4.dp))
             }
         }
@@ -65,6 +77,7 @@ fun PokemonDetailsUi(
 @Composable
 private fun PokemonDetailsContent(
     pokemon: DetailedPokemon,
+    onTypeClick: (PokemonType) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -77,7 +90,7 @@ private fun PokemonDetailsContent(
         Text(
             textAlign = TextAlign.Center,
             text = pokemon.name,
-            style = MaterialTheme.typography.h5
+            style = CustomTheme.typography.body.regular
         )
 
         AsyncImage(
@@ -91,7 +104,7 @@ private fun PokemonDetailsContent(
                 .padding(top = 32.dp)
                 .size(200.dp)
                 .clip(CircleShape)
-                .background(color = MaterialTheme.colors.surface)
+                .background(color = CustomTheme.colors.background.screen)
         )
 
         Text(
@@ -100,11 +113,16 @@ private fun PokemonDetailsContent(
         )
 
         Row(
-            modifier = Modifier.padding(top = 12.dp),
+            modifier = Modifier
+                .padding(top = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             pokemon.types.forEach {
-                PokemonTypeItem(type = it, isSelected = true)
+                PokemonTypeItem(
+                    type = it,
+                    isSelected = true,
+                    onClick = { onTypeClick(it) }
+                )
             }
         }
 

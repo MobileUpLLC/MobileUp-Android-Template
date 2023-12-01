@@ -1,16 +1,23 @@
 package ru.mobileup.template.core.network
 
-import io.ktor.client.*
-import io.ktor.client.engine.*
-import io.ktor.client.network.sockets.*
-import io.ktor.client.plugins.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import io.ktor.serialization.*
-import io.ktor.utils.io.errors.*
+import io.ktor.client.HttpClientConfig
+import io.ktor.client.engine.HttpClientEngineConfig
+import io.ktor.client.network.sockets.SocketTimeoutException
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.HttpResponseValidator
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpStatusCode
+import io.ktor.serialization.ContentConvertException
+import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.SerializationException
-import ru.mobileup.template.core.error_handling.*
+import ru.mobileup.template.core.error_handling.ApplicationException
+import ru.mobileup.template.core.error_handling.DeserializationException
+import ru.mobileup.template.core.error_handling.NoInternetException
+import ru.mobileup.template.core.error_handling.NoServerResponseException
+import ru.mobileup.template.core.error_handling.ServerException
+import ru.mobileup.template.core.error_handling.UnauthorizedException
+import ru.mobileup.template.core.error_handling.UnknownException
 
 fun <T : HttpClientEngineConfig> HttpClientConfig<T>.setupErrorConverter() {
     expectSuccess = true

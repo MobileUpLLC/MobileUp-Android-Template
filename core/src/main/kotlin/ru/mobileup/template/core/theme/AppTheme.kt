@@ -1,47 +1,35 @@
 package ru.mobileup.template.core.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-
-private val LightColorPalette = lightColors(
-    primary = IndigoA700,
-    primaryVariant = IndigoA700,
-    secondary = Teal200
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
-)
-
-private val DarkColorPalette = darkColors(
-    primary = Indigo400,
-    primaryVariant = Indigo400,
-    secondary = TealA400
-)
+import ru.mobileup.template.core.theme.custom.CustomTheme
+import ru.mobileup.template.core.theme.custom.toMaterialColors
+import ru.mobileup.template.core.theme.custom.toMaterialTypography
+import ru.mobileup.template.core.theme.values.AppTypography
+import ru.mobileup.template.core.theme.values.DarkAppColors
+import ru.mobileup.template.core.theme.values.LightAppColors
 
 @Composable
 fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
+    val colorScheme = if (darkTheme) {
+        DarkAppColors
     } else {
-        LightColorPalette
+        LightAppColors
     }
+    val typography = AppTypography
 
-    MaterialTheme(
-        colors = colors,
-        typography = Typography,
-        shapes = Shapes,
-        content = content
-    )
+    CustomTheme(
+        colors = colorScheme,
+        typography = typography
+    ) {
+        MaterialTheme(
+            colorScheme = colorScheme.toMaterialColors(!darkTheme),
+            typography = typography.toMaterialTypography(),
+            content = content
+        )
+    }
 }
