@@ -1,7 +1,6 @@
 package ru.mobileup.template.features.pokemons
 
 import com.arkivanov.decompose.ComponentContext
-import me.aartikov.replica.algebra.withKey
 import org.koin.core.component.get
 import org.koin.dsl.module
 import ru.mobileup.template.core.ComponentFactory
@@ -32,14 +31,12 @@ fun ComponentFactory.createPokemonListComponent(
     componentContext: ComponentContext,
     onOutput: (PokemonListComponent.Output) -> Unit
 ): PokemonListComponent {
-    val pokemonsByTypeReplica = get<PokemonRepository>().pokemonsByTypeReplica
-    return RealPokemonListComponent(componentContext, onOutput, pokemonsByTypeReplica, get())
+    return RealPokemonListComponent(componentContext, onOutput, get(), get())
 }
 
 fun ComponentFactory.createPokemonDetailsComponent(
     componentContext: ComponentContext,
     pokemonId: PokemonId
 ): PokemonDetailsComponent {
-    val pokemonReplica = get<PokemonRepository>().pokemonByIdReplica.withKey(pokemonId)
-    return RealPokemonDetailsComponent(componentContext, pokemonReplica, get(), get())
+    return RealPokemonDetailsComponent(componentContext, pokemonId, get(), get(), get())
 }

@@ -2,20 +2,24 @@ package ru.mobileup.template.features.pokemons.presentation.details
 
 import com.arkivanov.decompose.ComponentContext
 import dev.icerock.moko.resources.desc.desc
-import me.aartikov.replica.single.Replica
+import me.aartikov.replica.algebra.withKey
 import ru.mobileup.template.core.error_handling.ErrorHandler
 import ru.mobileup.template.core.message.data.MessageService
 import ru.mobileup.template.core.message.domain.Message
 import ru.mobileup.template.core.utils.observe
-import ru.mobileup.template.features.pokemons.domain.DetailedPokemon
+import ru.mobileup.template.features.pokemons.data.PokemonRepository
+import ru.mobileup.template.features.pokemons.domain.PokemonId
 import ru.mobileup.template.features.pokemons.domain.PokemonType
 
 class RealPokemonDetailsComponent(
     componentContext: ComponentContext,
-    private val pokemonReplica: Replica<DetailedPokemon>,
+    pokemonId: PokemonId,
+    pokemonRepository: PokemonRepository,
     private val messageService: MessageService,
     errorHandler: ErrorHandler
 ) : ComponentContext by componentContext, PokemonDetailsComponent {
+
+    private val pokemonReplica = pokemonRepository.pokemonByIdReplica.withKey(pokemonId)
 
     override val pokemonState = pokemonReplica.observe(this, errorHandler)
 
