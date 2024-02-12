@@ -1,4 +1,4 @@
-package ${packageName}.${path}
+package ${packageName}.${packagePath}
 
 interface ${componentName} {
 <#if output == true>

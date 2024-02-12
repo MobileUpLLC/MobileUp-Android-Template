@@ -1,4 +1,4 @@
-package ${packageName}.${path}
+package ${packageName}.${packagePath}
 
 import com.arkivanov.decompose.ComponentContext
 

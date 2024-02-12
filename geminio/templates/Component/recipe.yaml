@@ -15,8 +15,8 @@ widgets:
 
   - stringParameter:
       id: packagePath
-      name: Package path in feature package, for example auth.login.google
-      suggest: ${componentPrefix.camelCaseToUnderlines()}
+      name: Package path in feature package, for example "auth.presentation" or "auth.presentation.login.google"
+      suggest: ${componentPrefix.camelCaseToUnderlines()}.presentation
       constraints:
         - nonempty
       default: blank
@@ -29,30 +29,26 @@ widgets:
 
 globals:
   - stringParameter:
-        id: componentName
-        value: ${componentPrefix}Component
+      id: componentName
+      value: ${componentPrefix}Component
 
   - stringParameter:
-      id: prefix
-      value: ${componentPrefix}
-
-  - stringParameter:
-      id: path
-      value: ${packagePath}
+      id: uiName
+      value: ${componentPrefix}Ui
 
 recipe:
   - instantiateAndOpen:
       from: root/Component.kt.ftl
       to: ${currentDirOut}/${componentName}.kt
 
-  - instantiateAndOpen:
+  - instantiate:
       from: root/RealComponent.kt.ftl
       to: ${currentDirOut}/Real${componentName}.kt
 
-  - instantiateAndOpen:
+  - instantiate:
       from: root/FakeComponent.kt.ftl
       to: ${currentDirOut}/Fake${componentName}.kt
 
-  - instantiateAndOpen:
+  - instantiate:
       from: root/Ui.kt.ftl
-      to: ${currentDirOut}/${prefix}Ui.kt
+      to: ${currentDirOut}/${uiName}.kt

@@ -1,11 +1,12 @@
-package ${packageName}.${path}
+package ${packageName}.${packagePath}
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
-import ru.mobileup.template.core.utils.toStateFlow
 import com.arkivanov.decompose.router.stack.childStack
+import ru.mobileup.template.core.utils.toStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.serialization.Serializable
 
 class Real${componentName}(
     componentContext: ComponentContext,
@@ -16,8 +17,9 @@ class Real${componentName}(
 
     private val navigation = StackNavigation<ChildConfig>()
 
-    override val childStack = childStack(
+    override val childStack: StateFlow<ChildStack<*, ${componentName}.Child>>  = childStack(
         source = navigation,
+        serializer = ChildConfig.serializer(),
         initialConfiguration = ChildConfig.Default,
         handleBackButton = true,
         childFactory = ::createChild
@@ -31,9 +33,10 @@ class Real${componentName}(
         ChildConfig.Default -> ${componentName}.Child.Default
     }
 
-    sealed interface ChildConfig : Parcelable {
+    @Serializable
+    private sealed interface ChildConfig {
 
-        @Parcelize
+        @Serializable
         data object Default : ChildConfig
     }
 

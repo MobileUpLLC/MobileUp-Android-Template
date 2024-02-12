@@ -1,11 +1,12 @@
-package ${packageName}.${path}
+package ${packageName}.${packagePath}
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import ru.mobileup.template.core.theme.AppTheme
 
 @Composable
-fun ${componentPrefix}Ui(
+fun ${uiName}(
     component: ${componentName},
     modifier: Modifier = Modifier
 ) {
@@ -15,5 +16,7 @@ fun ${componentPrefix}Ui(
 @Preview(showSystemUi = true)
 @Composable
 private fun Preview() {
-    ${componentPrefix}Ui(component = Fake${componentName}())
+    AppTheme {
+        ${uiName}(component = Fake${componentName}())
+    }
 }

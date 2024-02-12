@@ -1,4 +1,4 @@
-package ${packageName}.${path}
+package ${packageName}.${packagePath}
 
 import ru.mobileup.template.core.utils.createFakeChildStackStateFlow
 
