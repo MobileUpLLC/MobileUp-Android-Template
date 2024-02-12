@@ -1,7 +1,7 @@
-package ru.mobileup.template.features.pokemons.ui
+package ru.mobileup.template.features.pokemons.presentation
 
 import ru.mobileup.template.core.utils.createFakeChildStackStateFlow
-import ru.mobileup.template.features.pokemons.ui.list.FakePokemonListComponent
+import ru.mobileup.template.features.pokemons.presentation.list.FakePokemonListComponent
 
 class FakePokemonsComponent : PokemonsComponent {
 

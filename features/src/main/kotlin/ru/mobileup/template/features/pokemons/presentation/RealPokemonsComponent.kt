@@ -1,4 +1,4 @@
-package ru.mobileup.template.features.pokemons.ui
+package ru.mobileup.template.features.pokemons.presentation
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -10,7 +10,7 @@ import ru.mobileup.template.core.utils.toStateFlow
 import ru.mobileup.template.features.pokemons.createPokemonDetailsComponent
 import ru.mobileup.template.features.pokemons.createPokemonListComponent
 import ru.mobileup.template.features.pokemons.domain.PokemonId
-import ru.mobileup.template.features.pokemons.ui.list.PokemonListComponent
+import ru.mobileup.template.features.pokemons.presentation.list.PokemonListComponent
 
 class RealPokemonsComponent(
     componentContext: ComponentContext,

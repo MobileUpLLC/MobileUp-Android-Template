@@ -12,8 +12,8 @@ import ru.mobileup.template.core.debug_tools.RealDebugTools
 import ru.mobileup.template.core.error_handling.ErrorHandler
 import ru.mobileup.template.core.message.data.MessageService
 import ru.mobileup.template.core.message.data.MessageServiceImpl
-import ru.mobileup.template.core.message.ui.MessageComponent
-import ru.mobileup.template.core.message.ui.RealMessageComponent
+import ru.mobileup.template.core.message.presentation.MessageComponent
+import ru.mobileup.template.core.message.presentation.RealMessageComponent
 import ru.mobileup.template.core.network.NetworkApiFactory
 import ru.mobileup.template.core.network.createOkHttpEngine
 import ru.mobileup.template.core.permissions.PermissionService

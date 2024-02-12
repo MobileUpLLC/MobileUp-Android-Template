@@ -1,9 +1,9 @@
-package ru.mobileup.template.features.pokemons.ui
+package ru.mobileup.template.features.pokemons.presentation
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import kotlinx.coroutines.flow.StateFlow
-import ru.mobileup.template.features.pokemons.ui.details.PokemonDetailsComponent
-import ru.mobileup.template.features.pokemons.ui.list.PokemonListComponent
+import ru.mobileup.template.features.pokemons.presentation.details.PokemonDetailsComponent
+import ru.mobileup.template.features.pokemons.presentation.list.PokemonListComponent
 
 interface PokemonsComponent {
 

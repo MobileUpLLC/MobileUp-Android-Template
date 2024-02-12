@@ -1,4 +1,4 @@
-package ru.mobileup.template.features.pokemons.ui.details
+package ru.mobileup.template.features.pokemons.presentation.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -38,7 +38,7 @@ import ru.mobileup.template.core.widget.RefreshingProgress
 import ru.mobileup.template.features.R
 import ru.mobileup.template.features.pokemons.domain.DetailedPokemon
 import ru.mobileup.template.features.pokemons.domain.PokemonType
-import ru.mobileup.template.features.pokemons.ui.list.PokemonTypeItem
+import ru.mobileup.template.features.pokemons.presentation.list.PokemonTypeItem
 
 @Composable
 fun PokemonDetailsUi(

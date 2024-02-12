@@ -1,8 +1,8 @@
-package ru.mobileup.template.features.root.ui
+package ru.mobileup.template.features.root.presentation
 
-import ru.mobileup.template.core.message.ui.FakeMessageComponent
+import ru.mobileup.template.core.message.presentation.FakeMessageComponent
 import ru.mobileup.template.core.utils.createFakeChildStackStateFlow
-import ru.mobileup.template.features.pokemons.ui.FakePokemonsComponent
+import ru.mobileup.template.features.pokemons.presentation.FakePokemonsComponent
 
 class FakeRootComponent : RootComponent {
 

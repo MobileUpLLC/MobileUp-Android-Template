@@ -10,12 +10,12 @@ import ru.mobileup.template.features.pokemons.data.PokemonApi
 import ru.mobileup.template.features.pokemons.data.PokemonRepository
 import ru.mobileup.template.features.pokemons.data.PokemonRepositoryImpl
 import ru.mobileup.template.features.pokemons.domain.PokemonId
-import ru.mobileup.template.features.pokemons.ui.PokemonsComponent
-import ru.mobileup.template.features.pokemons.ui.RealPokemonsComponent
-import ru.mobileup.template.features.pokemons.ui.details.PokemonDetailsComponent
-import ru.mobileup.template.features.pokemons.ui.details.RealPokemonDetailsComponent
-import ru.mobileup.template.features.pokemons.ui.list.PokemonListComponent
-import ru.mobileup.template.features.pokemons.ui.list.RealPokemonListComponent
+import ru.mobileup.template.features.pokemons.presentation.PokemonsComponent
+import ru.mobileup.template.features.pokemons.presentation.RealPokemonsComponent
+import ru.mobileup.template.features.pokemons.presentation.details.PokemonDetailsComponent
+import ru.mobileup.template.features.pokemons.presentation.details.RealPokemonDetailsComponent
+import ru.mobileup.template.features.pokemons.presentation.list.PokemonListComponent
+import ru.mobileup.template.features.pokemons.presentation.list.RealPokemonListComponent
 
 val pokemonsModule = module {
     single<PokemonApi> { get<NetworkApiFactory>().unauthorizedKtorfit.create() }

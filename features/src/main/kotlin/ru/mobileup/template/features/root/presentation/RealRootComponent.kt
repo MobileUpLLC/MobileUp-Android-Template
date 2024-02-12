@@ -1,4 +1,4 @@
-package ru.mobileup.template.features.root.ui
+package ru.mobileup.template.features.root.presentation
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext

@@ -1,4 +1,4 @@
-package ru.mobileup.template.features.root.ui
+package ru.mobileup.template.features.root.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -9,10 +9,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import ru.mobileup.template.core.message.ui.MessageUi
+import ru.mobileup.template.core.message.presentation.MessageUi
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.theme.custom.CustomTheme
-import ru.mobileup.template.features.pokemons.ui.PokemonsUi
+import ru.mobileup.template.features.pokemons.presentation.PokemonsUi
 
 @Composable
 fun RootUi(

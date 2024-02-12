@@ -1,4 +1,4 @@
-package ru.mobileup.template.core.message.ui
+package ru.mobileup.template.core.message.presentation
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnCreate

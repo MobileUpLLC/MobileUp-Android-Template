@@ -1,4 +1,4 @@
-package ru.mobileup.template.features.pokemons.ui
+package ru.mobileup.template.features.pokemons.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import ru.mobileup.template.core.theme.AppTheme
-import ru.mobileup.template.features.pokemons.ui.details.PokemonDetailsUi
-import ru.mobileup.template.features.pokemons.ui.list.PokemonListUi
+import ru.mobileup.template.features.pokemons.presentation.details.PokemonDetailsUi
+import ru.mobileup.template.features.pokemons.presentation.list.PokemonListUi
 
 @Composable
 fun PokemonsUi(

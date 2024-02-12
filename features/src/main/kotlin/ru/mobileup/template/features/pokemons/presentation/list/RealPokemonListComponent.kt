@@ -1,4 +1,4 @@
-package ru.mobileup.template.features.pokemons.ui.list
+package ru.mobileup.template.features.pokemons.presentation.list
 
 import android.os.Parcelable
 import com.arkivanov.decompose.ComponentContext

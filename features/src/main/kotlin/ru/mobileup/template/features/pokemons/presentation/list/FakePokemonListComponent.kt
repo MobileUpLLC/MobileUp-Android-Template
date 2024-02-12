@@ -1,4 +1,4 @@
-package ru.mobileup.template.features.pokemons.ui.list
+package ru.mobileup.template.features.pokemons.presentation.list
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import ru.mobileup.template.core.utils.LoadableState

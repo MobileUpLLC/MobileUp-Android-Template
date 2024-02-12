@@ -12,7 +12,7 @@ import ru.mobileup.template.core.activity.ActivityProvider
 import ru.mobileup.template.core.koin
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.features.root.createRootComponent
-import ru.mobileup.template.features.root.ui.RootUi
+import ru.mobileup.template.features.root.presentation.RootUi
 
 // Note: rootComponent survives configuration changes due to "android:configChanges" setting in the manifest.
 class MainActivity : ComponentActivity() {

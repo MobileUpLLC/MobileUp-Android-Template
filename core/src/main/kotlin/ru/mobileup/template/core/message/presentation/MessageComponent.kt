@@ -1,4 +1,4 @@
-package ru.mobileup.template.core.message.ui
+package ru.mobileup.template.core.message.presentation
 
 import kotlinx.coroutines.flow.StateFlow
 import ru.mobileup.template.core.message.domain.Message

@@ -1,4 +1,4 @@
-package ru.mobileup.template.core.message.ui
+package ru.mobileup.template.core.message.presentation
 
 import dev.icerock.moko.resources.desc.Raw
 import dev.icerock.moko.resources.desc.StringDesc

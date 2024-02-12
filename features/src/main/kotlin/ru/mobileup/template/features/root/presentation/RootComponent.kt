@@ -1,9 +1,9 @@
-package ru.mobileup.template.features.root.ui
+package ru.mobileup.template.features.root.presentation
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import kotlinx.coroutines.flow.StateFlow
-import ru.mobileup.template.core.message.ui.MessageComponent
-import ru.mobileup.template.features.pokemons.ui.PokemonsComponent
+import ru.mobileup.template.core.message.presentation.MessageComponent
+import ru.mobileup.template.features.pokemons.presentation.PokemonsComponent
 
 /**
  * A root of a Decompose component tree.

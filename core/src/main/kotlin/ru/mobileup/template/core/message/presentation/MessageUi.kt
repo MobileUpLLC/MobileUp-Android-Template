@@ -1,4 +1,4 @@
-package ru.mobileup.template.core.message.ui
+package ru.mobileup.template.core.message.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
