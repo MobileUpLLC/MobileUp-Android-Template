@@ -4,7 +4,6 @@ import me.aartikov.replica.client.ReplicaClient
 import me.aartikov.replica.keyed.KeyedPhysicalReplica
 import me.aartikov.replica.keyed.KeyedReplicaSettings
 import me.aartikov.replica.single.ReplicaSettings
-import ru.mobileup.template.core.network.NetworkApiFactory
 import ru.mobileup.template.features.pokemons.data.dto.toDomain
 import ru.mobileup.template.features.pokemons.domain.DetailedPokemon
 import ru.mobileup.template.features.pokemons.domain.Pokemon
@@ -14,10 +13,8 @@ import kotlin.time.Duration.Companion.seconds
 
 class PokemonRepositoryImpl(
     replicaClient: ReplicaClient,
-    networkApiFactory: NetworkApiFactory,
+    api: PokemonApi
 ) : PokemonRepository {
-
-    val api = networkApiFactory.unauthorizedKtorfit.create<PokemonApi>()
 
     override val pokemonsByTypeReplica: KeyedPhysicalReplica<PokemonTypeId, List<Pokemon>> =
         replicaClient.createKeyedReplica(
