@@ -53,7 +53,7 @@ dependencyResolutionManagement {
             library("coroutines-android", "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
             // Architecture
-            val decomposeVersion = "2.0.2"
+            val decomposeVersion = "2.2.2"
             library("decompose-core", "com.arkivanov.decompose:decompose:$decomposeVersion")
             library("decompose-compose", "com.arkivanov.decompose:extensions-compose-jetpack:$decomposeVersion")
             bundle("decompose", listOf("decompose-core", "decompose-compose"))

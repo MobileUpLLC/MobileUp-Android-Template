@@ -1,11 +1,10 @@
 package ru.mobileup.template.features.root.ui
 
-import android.os.Parcelable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 import ru.mobileup.template.core.ComponentFactory
 import ru.mobileup.template.core.createMessageComponent
 import ru.mobileup.template.core.utils.toStateFlow
@@ -21,6 +20,7 @@ class RealRootComponent(
     override val childStack = childStack(
         source = navigation,
         initialConfiguration = ChildConfig.Pokemons,
+        serializer = ChildConfig.serializer(),
         handleBackButton = true,
         childFactory = ::createChild
     ).toStateFlow(lifecycle)
@@ -40,9 +40,10 @@ class RealRootComponent(
         }
     }
 
-    sealed interface ChildConfig : Parcelable {
+    @Serializable
+    sealed interface ChildConfig {
 
-        @Parcelize
-        object Pokemons : ChildConfig
+        @Serializable
+        data object Pokemons : ChildConfig
     }
 }
