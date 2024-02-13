@@ -5,9 +5,9 @@ pluginManagement {
         mavenCentral()
     }
 
-    val kotlinVersion = "1.9.10"
+    val kotlinVersion = "1.9.22"
     val androidPluginVersion = "8.1.1"
-    val kspVersion = "1.9.10-1.0.13"
+    val kspVersion = "1.9.22-1.0.17"
     val ktorfitVersion = "1.7.0"
     val mokoResourcesVersion = "0.23.0"
     val moduleGraphVersion = "1.3.3"
@@ -115,13 +115,13 @@ dependencyResolutionManagement {
             library("android-desugar", "com.android.tools:desugar_jdk_libs:$androidDesugarVersion")
 
             // Android UI
-            val composeVersion = "1.5.1"
-            version("composeCompiler", "1.5.3")
+            val composeVersion = "1.6.1"
+            version("composeCompiler", "1.5.9")
             val activityVersion = "1.7.2"
             val coilVersion = "2.4.0"
             val splashscreenVersion = "1.0.0"
             val accompanistVersion = "0.32.0"
-            val material3Version = "1.1.2"
+            val material3Version = "1.2.0"
             library("compose-ui", "androidx.compose.ui:ui:$composeVersion")
             library("compose-material", "androidx.compose.material3:material3:$material3Version")
             library("compose-tooling", "androidx.compose.ui:ui-tooling:$composeVersion")
