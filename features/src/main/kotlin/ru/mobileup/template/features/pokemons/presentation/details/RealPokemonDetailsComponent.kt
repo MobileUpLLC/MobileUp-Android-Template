@@ -2,7 +2,7 @@ package ru.mobileup.template.features.pokemons.presentation.details
 
 import com.arkivanov.decompose.ComponentContext
 import dev.icerock.moko.resources.desc.desc
-import me.aartikov.replica.algebra.withKey
+import me.aartikov.replica.algebra.normal.withKey
 import ru.mobileup.template.core.error_handling.ErrorHandler
 import ru.mobileup.template.core.message.data.MessageService
 import ru.mobileup.template.core.message.domain.Message

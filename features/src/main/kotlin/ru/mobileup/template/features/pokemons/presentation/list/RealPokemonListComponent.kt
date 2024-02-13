@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.arkivanov.decompose.ComponentContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.parcelize.Parcelize
-import me.aartikov.replica.algebra.withKey
+import me.aartikov.replica.algebra.normal.withKey
 import me.aartikov.replica.keyed.keepPreviousData
 import ru.mobileup.template.core.error_handling.ErrorHandler
 import ru.mobileup.template.core.utils.observe
