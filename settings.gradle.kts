@@ -8,7 +8,7 @@ pluginManagement {
     val kotlinVersion = "1.9.22"
     val androidPluginVersion = "8.1.1"
     val kspVersion = "1.9.22-1.0.17"
-    val ktorfitVersion = "1.7.0"
+    val ktorfitVersion = "1.12.0"
     val mokoResourcesVersion = "0.23.0"
     val moduleGraphVersion = "1.3.3"
     val detektVersion = "1.23.1"
@@ -59,8 +59,8 @@ dependencyResolutionManagement {
             bundle("decompose", listOf("decompose-core", "decompose-compose"))
 
             // Network
-            val ktorVersion = "2.3.4"
-            val ktorfitVersion = "1.7.0"
+            val ktorVersion = "2.3.6"
+            val ktorfitVersion = "1.12.0"
             library("ktor-core", "io.ktor:ktor-client-core:$ktorVersion")
             library("ktor-auth", "io.ktor:ktor-client-auth:$ktorVersion")
             library("ktor-serialization", "io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
