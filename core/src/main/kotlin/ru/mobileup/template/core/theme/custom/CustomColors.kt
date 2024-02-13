@@ -17,28 +17,20 @@ data class BackgroundColors(
 )
 
 data class TextColors(
-    val primary: PrimaryColor
+    val primary: Color,
+    val secondary: Color,
+    val invert: Color
 )
 
 data class IconColors(
-    val primary: PrimaryColor
+    val primary: Color,
+    val secondary: Color,
+    val invert: Color
 )
 
 data class ButtonColors(
-    val primary: PrimaryColor
-)
-
-data class PrimaryColor(
-    val default: Color,
-    val pressed: Color = default,
-    val disabled: Color = default,
-    val invert: InvertColor = InvertColor(default = default)
-)
-
-data class InvertColor(
-    val default: Color,
-    val pressed: Color = default,
-    val disabled: Color = default
+    val primary: Color,
+    val secondary: Color
 )
 
 val LocalCustomColors = staticCompositionLocalOf<CustomColors?> { null }

@@ -61,7 +61,7 @@ fun <T : Any> PullRefreshLceWidget(
                 modifier = Modifier.align(Alignment.TopCenter),
                 refreshing = pullGestureOccurred && refreshing,
                 state = pullRefreshState,
-                contentColor = CustomTheme.colors.icon.primary.default
+                contentColor = CustomTheme.colors.icon.primary
             )
         }
     }

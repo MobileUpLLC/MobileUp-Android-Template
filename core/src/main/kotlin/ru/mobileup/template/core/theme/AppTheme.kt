@@ -23,7 +23,7 @@ fun AppTheme(
         typography = typography
     ) {
         MaterialTheme(
-            colorScheme = colorScheme.toMaterialColors(!darkTheme),
+            colorScheme = colorScheme.toMaterialColors(),
             typography = typography.toMaterialTypography(),
             content = content
         )

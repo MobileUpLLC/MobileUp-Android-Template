@@ -95,13 +95,13 @@ private fun MessagePopup(
                     Icon(
                         painter = painterResource(it),
                         contentDescription = null,
-                        tint = CustomTheme.colors.icon.primary.invert.default
+                        tint = CustomTheme.colors.icon.invert
                     )
                 }
                 Text(
                     modifier = Modifier.weight(1f),
                     text = message.text.localized(),
-                    color = CustomTheme.colors.text.primary.invert.default,
+                    color = CustomTheme.colors.text.invert,
                     style = CustomTheme.typography.body.regular
                 )
                 message.actionTitle?.let {

@@ -29,8 +29,8 @@ fun PokemonTypeItem(
         enabled = onClick != null,
         shape = RoundedCornerShape(48.dp),
         color = when (isSelected) {
-            true -> CustomTheme.colors.button.primary.default
-            else -> CustomTheme.colors.background.screen
+            true -> CustomTheme.colors.button.primary
+            else -> CustomTheme.colors.button.secondary
         },
         shadowElevation = 6.dp
     ) {
@@ -38,9 +38,9 @@ fun PokemonTypeItem(
             text = type.name,
             style = CustomTheme.typography.body.regular,
             color = if (isSelected) {
-                CustomTheme.colors.text.primary.invert.default
+                CustomTheme.colors.text.invert
             } else {
-                CustomTheme.colors.text.primary.default
+                CustomTheme.colors.text.primary
             },
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
         )
