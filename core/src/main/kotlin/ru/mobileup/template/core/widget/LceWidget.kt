@@ -1,5 +1,6 @@
 package ru.mobileup.template.core.widget
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.compose.localized
@@ -19,15 +20,16 @@ fun <T : Any> LceWidget(
     val data = state.data
     val error = state.error
 
-    when {
-        data != null -> content(data, loading)
+    Box(modifier) {
+        when {
+            data != null -> content(data, loading)
 
-        loading -> FullscreenCircularProgress(modifier)
+            loading -> FullscreenCircularProgress()
 
-        error != null -> ErrorPlaceholder(
-            errorMessage = error.localized(),
-            onRetryClick = onRetryClick,
-            modifier = modifier
-        )
+            error != null -> ErrorPlaceholder(
+                errorMessage = error.localized(),
+                onRetryClick = onRetryClick
+            )
+        }
     }
 }
