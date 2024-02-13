@@ -1,6 +1,5 @@
 package ru.mobileup.template.core.utils
 
-import android.os.Parcelable
 import androidx.compose.runtime.State
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
@@ -9,10 +8,10 @@ import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.essenty.statekeeper.StateKeeperOwner
-import com.arkivanov.essenty.statekeeper.consume
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.serialization.KSerializer
 import me.aartikov.replica.decompose.coroutineScope
 
 /**
@@ -37,9 +36,9 @@ fun <T : Any> Value<T>.toStateFlow(lifecycle: Lifecycle): StateFlow<T> {
 
     if (lifecycle.state != Lifecycle.State.DESTROYED) {
         val observer = { value: T -> state.value = value }
-        subscribe(observer)
+        val cancellation = observe(observer)
         lifecycle.doOnDestroy {
-            unsubscribe(observer)
+            cancellation.cancel()
         }
     }
 
@@ -70,11 +69,12 @@ private class CoroutineScopeWrapper(val scope: CoroutineScope) : InstanceKeeper.
 /**
  * A helper function to save and restore component state.
  */
-inline fun <reified T : Parcelable> StateKeeperOwner.persistent(
+inline fun <T : Any> StateKeeperOwner.persistent(
     key: String = "PersistentState",
+    serializer: KSerializer<T>,
     noinline save: () -> T,
     restore: (T) -> Unit
 ) {
-    stateKeeper.consume<T>(key)?.run(restore)
-    stateKeeper.register(key, save)
+    stateKeeper.consume(key, serializer)?.run(restore)
+    stateKeeper.register(key, serializer, save)
 }
