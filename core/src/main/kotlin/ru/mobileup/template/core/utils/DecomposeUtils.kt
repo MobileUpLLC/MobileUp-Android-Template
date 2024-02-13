@@ -1,7 +1,9 @@
 package ru.mobileup.template.core.utils
 
 import androidx.compose.runtime.State
+import com.arkivanov.decompose.Child
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
@@ -26,6 +28,20 @@ fun <T : Any> createFakeChildStack(instance: T): ChildStack<*, T> {
 
 fun <T : Any> createFakeChildStackStateFlow(instance: T): StateFlow<ChildStack<*, T>> {
     return MutableStateFlow(createFakeChildStack(instance))
+}
+
+/**
+ * Creates a [ChildSlot] with given [configuration] and [instance]. Should be used to create a slot for Jetpack Compose preview.
+ */
+fun <C : Any, T : Any> createFakeChildSlot(configuration: C, instance: T): StateFlow<ChildSlot<C, T>> {
+    return MutableStateFlow(
+        ChildSlot(
+            Child.Created(
+                configuration = configuration,
+                instance = instance
+            )
+        )
+    )
 }
 
 /**
