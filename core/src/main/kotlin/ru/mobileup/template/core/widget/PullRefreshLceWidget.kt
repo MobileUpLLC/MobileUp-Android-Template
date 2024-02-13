@@ -14,17 +14,17 @@ import ru.mobileup.template.core.pull_refresh.PullRefreshIndicator
 import ru.mobileup.template.core.pull_refresh.pullRefresh
 import ru.mobileup.template.core.pull_refresh.rememberPullRefreshState
 import ru.mobileup.template.core.theme.custom.CustomTheme
-import ru.mobileup.template.core.utils.LoadableState
+import ru.mobileup.template.core.utils.AbstractLoadableState
 
 /**
- * Displays Replica state ([LoadableState]) with pull-to-refresh functionality.
+ * Displays Replica state ([AbstractLoadableState]) with pull-to-refresh functionality.
  *
  * Note: a value of refreshing in [content] is true only when data is refreshing and pull gesture didn't occur.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T : Any> PullRefreshLceWidget(
-    state: LoadableState<T>,
+    state: AbstractLoadableState<T>,
     onRefresh: () -> Unit,
     onRetryClick: () -> Unit,
     modifier: Modifier = Modifier,

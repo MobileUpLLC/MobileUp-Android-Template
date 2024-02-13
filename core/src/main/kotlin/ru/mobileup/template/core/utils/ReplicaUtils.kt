@@ -14,13 +14,25 @@ import ru.mobileup.template.core.error_handling.ErrorHandler
 import ru.mobileup.template.core.error_handling.errorMessage
 
 /**
+ * Common interface for [LoadableState] and [PagedState]
+ */
+interface AbstractLoadableState<out T : Any> {
+
+    val loading: Boolean
+
+    val data: T?
+
+    val error: StringDesc?
+}
+
+/**
  * An analogue of [Loadable] but with localized error message.
  */
 data class LoadableState<T : Any>(
-    val loading: Boolean = false,
-    val data: T? = null,
-    val error: StringDesc? = null
-)
+    override val loading: Boolean = false,
+    override val data: T? = null,
+    override val error: StringDesc? = null
+) : AbstractLoadableState<T>
 
 /**
  * Observes [Replica] and handles errors by [ErrorHandler].
@@ -58,4 +70,19 @@ fun <T : Any> Loadable<T>.toLoadableState(): LoadableState<T> {
         data = data,
         error = error?.exception?.errorMessage
     )
+}
+
+fun <T : Any, R : Any> StateFlow<LoadableState<T>>.mapData(
+    componentContext: ComponentContext,
+    transform: (T) -> R?
+): StateFlow<LoadableState<R>> {
+    return componentContext.computed(this) { value ->
+        value.mapData { transform(it) }
+    }
+}
+
+fun <T : Any, R : Any> LoadableState<T>.mapData(
+    transform: (T) -> R?
+): LoadableState<R> {
+    return LoadableState(loading, data?.let { transform(it) }, error)
 }
