@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -42,7 +44,9 @@ fun PokemonListUi(
     val selectedTypeId by component.selectedTypeId.collectAsState()
 
     Surface(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .navigationBarsPadding(),
         color = CustomTheme.colors.background.screen
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -83,7 +87,7 @@ private fun PokemonTypesRow(
         color = CustomTheme.colors.background.screen,
         shadowElevation = 4.dp
     ) {
-        Column {
+        Column(Modifier.statusBarsPadding()) {
             Text(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp),
                 text = stringResource(R.string.pokemons_select_type),

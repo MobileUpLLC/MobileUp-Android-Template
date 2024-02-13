@@ -10,6 +10,7 @@ import ru.mobileup.template.core.theme.custom.PrimaryColor
 import ru.mobileup.template.core.theme.custom.TextColors
 
 val LightAppColors = CustomColors(
+    isLight = true,
     background = BackgroundColors(
         screen = Color.White,
         toast = Color.Black

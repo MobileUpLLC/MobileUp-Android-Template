@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
@@ -29,6 +30,8 @@ import dev.icerock.moko.resources.compose.localized
 import ru.mobileup.template.core.message.domain.Message
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.theme.custom.CustomTheme
+import ru.mobileup.template.core.utils.navigationBarsWithImePadding
+import kotlin.math.roundToInt
 
 /**
  * Displays a [Message] as a popup at the bottom of screen.
@@ -40,14 +43,19 @@ fun MessageUi(
     bottomPadding: Dp
 ) {
     val visibleMessage by component.visibleMessage.collectAsState()
-    val additionalBottomPadding = with(LocalDensity.current) {
-        LocalMessageOffsets.current.values.maxOrNull()?.toDp() ?: 0.dp
-    }
-    Box(modifier = modifier.fillMaxSize()) {
+
+    val bottomPaddingPx = with(LocalDensity.current) { bottomPadding.toPx().roundToInt() }
+    val additionalBottomPaddingPx = ((LocalMessageOffsets.current.values.maxOrNull() ?: 0))
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .navigationBarsWithImePadding()
+    ) {
         visibleMessage?.let {
             MessagePopup(
                 message = it,
-                bottomPadding = bottomPadding + additionalBottomPadding,
+                bottomPaddingPx = bottomPaddingPx + additionalBottomPaddingPx,
                 onAction = component::onActionClick
             )
         }
@@ -58,9 +66,10 @@ fun MessageUi(
 private fun MessagePopup(
     message: Message,
     onAction: () -> Unit,
-    bottomPadding: Dp
+    bottomPaddingPx: Int
 ) {
     Popup(
+        offset = IntOffset(0, -bottomPaddingPx),
         alignment = Alignment.BottomCenter,
         properties = PopupProperties(
             dismissOnBackPress = false,
@@ -72,7 +81,7 @@ private fun MessagePopup(
             colors = CardDefaults.cardColors(containerColor = CustomTheme.colors.background.toast),
             elevation = CardDefaults.cardElevation(3.dp),
             modifier = Modifier
-                .padding(bottom = bottomPadding, start = 8.dp, end = 8.dp)
+                .padding(start = 8.dp, end = 8.dp)
                 .wrapContentSize()
         ) {
             Row(
