@@ -18,31 +18,26 @@ class ServerException(cause: Throwable?, override val message: String? = null) :
     ApplicationException(cause)
 
 /**
- * Data transfer error
- */
-abstract class TransportException(cause: Throwable?) : ApplicationException(cause)
-
-/**
  * Failed to connect to the server and the problem is most likely on the client
  */
-class NoInternetException(cause: Throwable?) : TransportException(cause)
+class NoInternetException(cause: Throwable?) : ApplicationException(cause)
 
 /**
  * Failed to connect to the server and the problem is most likely on the server
  */
-class NoServerResponseException(cause: Throwable?) : TransportException(cause)
+class ServerUnavailableException(cause: Throwable?) : ApplicationException(cause)
 
 /**
  *  Problems parsing json or lack of fields
  */
-class DeserializationException(cause: Throwable?) : TransportException(cause)
+class DeserializationException(cause: Throwable?) : ApplicationException(cause)
 
 /**
  * Indicated that the client and server cannot agree on the desired level of security.
  * The problem may be on the server - the certificate has expired.
- * The problem may be on the client - verification of the date and time of collection is required.
+ * The problem may be on the client - verification of the date and time is required.
  */
-class SSLHandshakeException(cause: Throwable?) : TransportException(cause)
+class SSLHandshakeException(cause: Throwable?) : ApplicationException(cause)
 
 /**
  * Could not find app for action
