@@ -157,7 +157,7 @@ dependencyResolutionManagement {
 
             // Debug tools
             val chuckerVersion = "4.0.0"
-            val hyperionVersion = "0.9.37"
+            val hyperionVersion = "0.9.38"
             val hyperionAddonsVersion = "0.3.3"
             library("chucker", "com.github.chuckerteam.chucker:library:$chuckerVersion")
             library("hyperion-core", "com.willowtreeapps.hyperion:hyperion-core:$hyperionVersion")
