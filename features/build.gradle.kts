@@ -1,34 +1,29 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("plugin.serialization")
-    kotlin("plugin.parcelize")
-    id("io.gitlab.arturbosch.detekt")
-    id("ru.mobileup.module-graph")
-    id("com.google.devtools.ksp")
-    id("de.jensklingenberg.ktorfit")
+    alias(libs.plugins.convetion.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.ktorfit)
+    alias(libs.plugins.module.graph)
 }
 
 android {
-    val minSdkVersion: Int by rootProject.extra
-    val targetSdkVersion: Int by rootProject.extra
+    val minSdkVersion = libs.versions.minSdk.get().toInt()
+    val targetSdkVersion = libs.versions.targetSdk.get().toInt()
+    val compileSdkVersion = libs.versions.compileSdk.get().toInt()
 
-    compileSdk = targetSdkVersion
+    compileSdk = compileSdkVersion
 
     defaultConfig {
         minSdk = minSdkVersion
-        targetSdk = targetSdkVersion
+        testOptions.targetSdk = targetSdkVersion
+        lint.targetSdk = targetSdkVersion
     }
 
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
     }
 
     buildFeatures {
@@ -39,7 +34,7 @@ android {
         kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 
-    packagingOptions {
+    packaging {
         resources.excludes += "META-INF/*"
     }
     namespace = "ru.mobileup.template.features"
@@ -59,7 +54,7 @@ dependencies {
     // UI
     implementation(libs.bundles.compose)
     implementation(libs.bundles.accompanist)
-    implementation(libs.coil)
+    implementation(libs.bundles.coil)
 
     // DI
     implementation(libs.koin)

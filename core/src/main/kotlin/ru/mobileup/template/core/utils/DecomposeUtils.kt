@@ -52,7 +52,7 @@ fun <T : Any> Value<T>.toStateFlow(lifecycle: Lifecycle): StateFlow<T> {
 
     if (lifecycle.state != Lifecycle.State.DESTROYED) {
         val observer = { value: T -> state.value = value }
-        val cancellation = observe(observer)
+        val cancellation = subscribe(observer)
         lifecycle.doOnDestroy {
             cancellation.cancel()
         }

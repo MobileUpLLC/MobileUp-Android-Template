@@ -82,7 +82,7 @@ fun <T : Any> BottomSheet(
             shape = RectangleShape,
             containerColor = CustomTheme.colors.background.screen,
             scrimColor = Color.Black.copy(alpha = 0.4f),
-            windowInsets = WindowInsets(0, 0, 0, 0),
+            contentWindowInsets = { WindowInsets(0, 0, 0, 0) },
             dragHandle = null,
             content = {
                 Column(

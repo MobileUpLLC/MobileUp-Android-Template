@@ -1,0 +1,137 @@
+[versions]
+minSdk = "26"
+compileSdk = "34"
+targetSdk = "34"
+versionCode = "1"
+versionName = "1.0.0"
+
+# Used in build-logic/com/buildlogic/CommonComposeAndroid.kt/configureAndroidCompose
+composeCompiler = "1.5.10"
+
+kotlin = "2.0.20"
+androidGradlePlugin = "8.7.2"
+ksp = "2.0.21-1.0.27"
+ktorfit = "2.2.0"
+mokoResources = "0.24.3"
+moduleGraph = "1.3.3"
+detekt = "1.23.6"
+dateTime = "0.6.1"
+coroutines = "1.9.0"
+decompose = "3.2.2"
+ktor = "3.0.1"
+replica = "1.3.1-alpha1"
+koin = "4.0.0"
+kermit = "2.0.4"
+composeBom = "2024.10.01"
+activity = "1.9.3"
+coil = "3.0.2"
+splashscreen = "1.0.1"
+accompanist = "0.36.0"
+chucker = "4.0.0"
+hyperion = "0.9.38"
+hyperionAddons = "0.3.3"
+
+[libraries]
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "dateTime" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+
+decompose-core = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
+decompose-compose = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
+
+ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-android = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktorfit-lib = { module = "de.jensklingenberg.ktorfit:ktorfit-lib", version.ref = "ktorfit" }
+ktorfit-ksp = { module = "de.jensklingenberg.ktorfit:ktorfit-ksp", version.ref = "ktorfit" }
+
+replica-core = { module = "com.github.aartikov:replica-core", version.ref = "replica" }
+replica-algebra = { module = "com.github.aartikov:replica-algebra", version.ref = "replica" }
+replica-android-network = { module = "com.github.aartikov:replica-android-network", version.ref = "replica" }
+replica-decompose = { module = "com.github.aartikov:replica-decompose", version.ref = "replica" }
+replica-devtools = { module = "com.github.aartikov:replica-devtools", version.ref = "replica" }
+
+koin = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+logger-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+
+# Used in build-logic/DetektPlugin
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+
+# Used in build-logic/com/buildlogic/CommonComposeAndroid.kt/configureAndroidCompose
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-material = { module = "androidx.compose.material3:material3" }
+compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
+
+coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+
+splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
+
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
+
+moko-resources = { module = "dev.icerock.moko:resources", version.ref = "mokoResources" }
+moko-resourcesCompose = { module = "dev.icerock.moko:resources-compose", version.ref = "mokoResources" }
+
+chucker = { module = "com.github.chuckerteam.chucker:library", version.ref = "chucker" }
+hyperion-core = { module = "com.willowtreeapps.hyperion:hyperion-core", version.ref = "hyperion" }
+hyperion-recorder = { module = "com.willowtreeapps.hyperion:hyperion-recorder", version.ref = "hyperion" }
+hyperion-crash = { module = "com.willowtreeapps.hyperion:hyperion-crash", version.ref = "hyperion" }
+hyperion-disk = { module = "com.willowtreeapps.hyperion:hyperion-disk", version.ref = "hyperion" }
+hyperion-addons-logs = { module = "me.nemiron.hyperion:logs", version.ref = "hyperionAddons" }
+hyperion-addons-networkEmulation = { module = "me.nemiron.hyperion:network-emulation", version.ref = "hyperionAddons" }
+hyperion-addons-chucker = { module = "me.nemiron.hyperion:chucker", version.ref = "hyperionAddons" }
+
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+detekt-gradle-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+
+[bundles]
+decompose = ["decompose-core", "decompose-compose"]
+replica = ["replica-core", "replica-algebra", "replica-android-network", "replica-decompose"]
+compose = ["compose-ui", "compose-material", "compose-tooling", "activity-compose"]
+accompanist = ["accompanist-systemuicontroller", "accompanist-swiperefresh"]
+ktor = [
+    "ktor-core",
+    "ktor-auth",
+    "ktor-serialization",
+    "ktor-content-negotiation",
+    "ktor-logging",
+    "ktor-android"
+]
+hyperion = [
+    "hyperion-core",
+    "hyperion-recorder",
+    "hyperion-crash",
+    "hyperion-disk",
+    "hyperion-addons-logs",
+    "hyperion-addons-networkEmulation",
+    "hyperion-addons-chucker"
+]
+coil = [
+    "coil",
+    "coil-okhttp"
+]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+module-graph = { id = "ru.mobileup.module-graph", version.ref = "moduleGraph" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
+moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "mokoResources" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+#Convention plugins
+convetion-library = { id = "convention.android.library", version = "unspecified" }
+convetion-detekt = { id = "convention.detekt", version = "unspecified" }
+convetion-lint = { id = "convention.lint", version = "unspecified" }
