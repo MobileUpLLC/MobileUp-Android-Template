@@ -8,7 +8,6 @@ internal fun Project.configureAndroidCompose(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) = with(commonExtension) {
     buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
 
     dependencies {
         add("implementation", platform(libs.compose.bom))

@@ -5,9 +5,6 @@ targetSdk = "34"
 versionCode = "1"
 versionName = "1.0.0"
 
-# Used in build-logic/com/buildlogic/CommonComposeAndroid.kt/configureAndroidCompose
-composeCompiler = "1.5.10"
-
 kotlin = "2.0.20"
 androidGradlePlugin = "8.7.2"
 ksp = "2.0.21-1.0.27"
