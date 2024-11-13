@@ -35,7 +35,11 @@ android {
     }
 
     packaging {
-        resources.excludes += "META-INF/*"
+        resources.excludes += setOf(
+            "/META-INF/{AL2.0,LGPL2.1}",
+            "/META-INF/INDEX.LIST",
+            "/META-INF/io.netty.versions.properties"
+        )
     }
     namespace = "ru.mobileup.template.features"
 }
