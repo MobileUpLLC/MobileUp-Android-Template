@@ -10,7 +10,7 @@ class LintPlugin : Plugin<Project> {
             lint {
                 abortOnError = true
                 warningsAsErrors = false
-                checkDependencies = false
+                checkDependencies = true
                 lintConfig = rootProject.file("code_quality/lint/lint-config.xml")
             }
         }
