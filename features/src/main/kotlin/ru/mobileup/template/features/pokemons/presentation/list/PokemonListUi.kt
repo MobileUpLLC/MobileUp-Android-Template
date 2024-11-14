@@ -3,6 +3,7 @@ package ru.mobileup.template.features.pokemons.presentation.list
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -113,10 +114,25 @@ private fun PokemonTypesRow(
 }
 
 @Composable
+private fun SomeComposable(
+    condition: Boolean,
+    modifier: Modifier = Modifier
+) {
+    Box(modifier) {
+        Column {
+            if (condition) {
+                Text("")
+                Text("")
+            }
+        }
+    }
+}
+
+@Composable
 private fun PokemonListContent(
     pokemons: List<Pokemon>,
     onPokemonClick: (PokemonId) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -155,7 +171,7 @@ private fun PokemonItem(
 
 @Preview(showSystemUi = true)
 @Composable
-fun PokemonListUiPreview() {
+private fun PokemonListUiPreview() {
     AppTheme {
         PokemonListUi(FakePokemonListComponent())
     }

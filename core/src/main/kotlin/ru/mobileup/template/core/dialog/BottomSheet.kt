@@ -28,7 +28,7 @@ fun <T : Any> BottomSheet(
     dialogControl: DialogControl<*, T>,
     modifier: Modifier = Modifier,
     skipPartiallyExpanded: Boolean = false,
-    onHideAnimationFinished: (() -> Unit)? = null,
+    onHideAnimationFinish: (() -> Unit)? = null,
     content: @Composable ColumnScope.(T) -> Unit
 ) {
     val dismissableByUser by dialogControl.dismissableByUser.collectAsState()
@@ -62,7 +62,7 @@ fun <T : Any> BottomSheet(
             currentComponent
         } else {
             sheetState.hide() // suspends until animation finished
-            onHideAnimationFinished?.invoke()
+            onHideAnimationFinish?.invoke()
             null
         }
     }

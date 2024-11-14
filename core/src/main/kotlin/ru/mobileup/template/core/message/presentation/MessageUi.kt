@@ -39,8 +39,8 @@ import kotlin.math.roundToInt
 @Composable
 fun MessageUi(
     component: MessageComponent,
-    modifier: Modifier = Modifier,
-    bottomPadding: Dp
+    bottomPadding: Dp,
+    modifier: Modifier = Modifier
 ) {
     val visibleMessage by component.visibleMessage.collectAsState()
 
@@ -131,8 +131,8 @@ private fun MessageButton(
 
 @Preview(showSystemUi = true)
 @Composable
-fun MessageUiPreview() {
+private fun MessageUiPreview() {
     AppTheme {
-        MessageUi(FakeMessageComponent(), Modifier, 40.dp)
+        MessageUi(FakeMessageComponent(), 40.dp)
     }
 }

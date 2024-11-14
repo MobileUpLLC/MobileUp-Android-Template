@@ -49,7 +49,7 @@ fun ErrorPlaceholder(
 
 @Preview
 @Composable
-fun ErrorPlaceholderPreview() {
+private fun ErrorPlaceholderPreview() {
     AppTheme {
         ErrorPlaceholder(
             errorMessage = "Error message",
