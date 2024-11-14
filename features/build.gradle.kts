@@ -9,34 +9,6 @@ plugins {
 }
 
 android {
-    val minSdkVersion = libs.versions.minSdk.get().toInt()
-    val targetSdkVersion = libs.versions.targetSdk.get().toInt()
-    val compileSdkVersion = libs.versions.compileSdk.get().toInt()
-
-    compileSdk = compileSdkVersion
-
-    defaultConfig {
-        minSdk = minSdkVersion
-        testOptions.targetSdk = targetSdkVersion
-        lint.targetSdk = targetSdkVersion
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    packaging {
-        resources.excludes += setOf(
-            "/META-INF/{AL2.0,LGPL2.1}",
-            "/META-INF/INDEX.LIST",
-            "/META-INF/io.netty.versions.properties"
-        )
-    }
     namespace = "ru.mobileup.template.features"
 }
 

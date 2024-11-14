@@ -18,7 +18,11 @@ class AndroidLibraryPlugin : Plugin<Project> {
         extensions.configure<LibraryExtension> {
             configureAndroidCompose(this)
             configureKotlinAndroid(this)
-            packaging.resources.excludes += "META-INF/*"
+            packaging.resources.excludes += setOf(
+                "/META-INF/{AL2.0,LGPL2.1}",
+                "/META-INF/INDEX.LIST",
+                "/META-INF/io.netty.versions.properties"
+            )
         }
     }
 }
