@@ -5,7 +5,7 @@ targetSdk = "34"
 versionCode = "1"
 versionName = "1.0.0"
 
-kotlin = "2.0.20"
+kotlin = "2.0.21"
 androidGradlePlugin = "8.7.2"
 ksp = "2.0.21-1.0.27"
 ktorfit = "2.2.0"
@@ -122,7 +122,6 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 module-graph = { id = "ru.mobileup.module-graph", version.ref = "moduleGraph" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
 moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "mokoResources" }
