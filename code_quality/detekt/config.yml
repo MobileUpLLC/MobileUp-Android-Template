@@ -361,30 +361,6 @@ style:
   WildcardImport:
     active: false
 
-compose:
-  ReusedModifierInstance:
-    active: false
-  UnnecessaryEventHandlerParameter:
-    active: true
-  ComposableEventParameterNaming:
-    active: false
-  ComposableParametersOrdering:
-    active: false
-  ModifierHeightWithText:
-    active: true
-  MissingModifierDefaultValue:
-    active: false
-  PublicComposablePreview:
-    active: false
-  TopLevelComposableFunctions:
-    active: true
-    allowInObjects: false
-  ComposableFunctionName:
-    active: false
-  ConditionCouldBeLifted:
-    active: true
-    ignoreCallsWithArgumentNames: [ 'modifier', 'contentAlignment' ]
-
 Compose:
   ComposableAnnotationNaming:
     active: true
