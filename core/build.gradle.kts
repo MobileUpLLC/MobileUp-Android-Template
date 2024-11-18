@@ -1,46 +1,16 @@
 plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("plugin.serialization")
-    kotlin("plugin.parcelize")
-    id("io.gitlab.arturbosch.detekt")
-    id("com.google.devtools.ksp")
-    id("de.jensklingenberg.ktorfit")
+    alias(libs.plugins.convetion.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.ktorfit)
 }
 
 android {
-    val minSdkVersion: Int by rootProject.extra
-    val targetSdkVersion: Int by rootProject.extra
-
-    compileSdk = targetSdkVersion
-
-    defaultConfig {
-        minSdk = minSdkVersion
-        targetSdk = minSdkVersion
-    }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
-    }
-
     buildFeatures {
-        compose = true
+        buildConfig = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
-
-    packagingOptions {
-        resources.excludes += "META-INF/*"
-    }
     namespace = "ru.mobileup.template.core"
 }
 
