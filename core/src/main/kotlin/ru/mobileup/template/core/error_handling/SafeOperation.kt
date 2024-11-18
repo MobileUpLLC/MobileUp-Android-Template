@@ -32,13 +32,13 @@ fun CoroutineScope.safeLaunch(
     errorHandler: ErrorHandler,
     showError: Boolean = true,
     onErrorHandled: ((e: Exception) -> Unit)? = null,
-    block: suspend () -> Unit
+    block: suspend CoroutineScope.() -> Unit
 ): Job {
     return launch {
         try {
             block()
         } catch (e: CancellationException) {
-            // do nothing
+            throw e
         } catch (e: Exception) {
             errorHandler.handleError(e, showError)
             onErrorHandled?.invoke(e)
@@ -54,13 +54,13 @@ fun CoroutineScope.safeLaunchRetryable(
     onErrorHandled: ((e: Exception) -> Unit)? = null,
     retryActionTitle: StringDesc = StringDesc.Resource(R.string.common_retry),
     retryAction: () -> Unit,
-    block: suspend () -> Unit
+    block: suspend CoroutineScope.() -> Unit
 ): Job {
     return launch {
         try {
             block()
         } catch (e: CancellationException) {
-            // do nothing
+            throw e
         } catch (e: Exception) {
             errorHandler.handleErrorRetryable(
                 exception = e,
