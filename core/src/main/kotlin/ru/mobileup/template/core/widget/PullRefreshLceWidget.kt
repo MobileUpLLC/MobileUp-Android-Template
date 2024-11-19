@@ -1,7 +1,9 @@
 package ru.mobileup.template.core.widget
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -10,9 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import ru.mobileup.template.core.pull_refresh.PullRefreshIndicator
-import ru.mobileup.template.core.pull_refresh.pullRefresh
-import ru.mobileup.template.core.pull_refresh.rememberPullRefreshState
 import ru.mobileup.template.core.theme.custom.CustomTheme
 import ru.mobileup.template.core.utils.AbstractLoadableState
 
@@ -41,28 +40,26 @@ fun <T : Any> PullRefreshLceWidget(
             if (!refreshing) pullGestureOccurred = false
         }
 
-        val pullRefreshState = rememberPullRefreshState(
-            refreshing = pullGestureOccurred && refreshing,
+        val pullRefreshState = rememberPullToRefreshState()
+        val isRefreshing = pullGestureOccurred && refreshing
+
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
             onRefresh = {
                 pullGestureOccurred = true
                 onRefresh()
-            }
-        )
-
-        Box(
-            modifier = Modifier.pullRefresh(pullRefreshState)
+            },
+            state = pullRefreshState,
+            indicator = {
+                PullToRefreshDefaults.Indicator(
+                    state = pullRefreshState,
+                    isRefreshing = isRefreshing,
+                    color = CustomTheme.colors.icon.primary,
+                    modifier = Modifier.align(Alignment.TopCenter),
+                )
+            },
         ) {
-            content(
-                data,
-                refreshing && !pullGestureOccurred
-            )
-
-            PullRefreshIndicator(
-                modifier = Modifier.align(Alignment.TopCenter),
-                refreshing = pullGestureOccurred && refreshing,
-                state = pullRefreshState,
-                contentColor = CustomTheme.colors.icon.primary
-            )
+            content(data, refreshing && !pullGestureOccurred)
         }
     }
 }
