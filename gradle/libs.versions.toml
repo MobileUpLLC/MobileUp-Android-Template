@@ -27,7 +27,6 @@ accompanist = "0.36.0"
 chucker = "4.0.0"
 hyperion = "0.9.38"
 hyperionAddons = "0.3.3"
-appKODE = "1.4.0"
 composeRules = "0.4.18"
 
 [libraries]
@@ -58,7 +57,6 @@ logger-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
 # Used in build-logic/DetektPlugin
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
-detekt-appKODE = { module = "ru.kode:detekt-rules-compose", version.ref = "appKODE" }
 detekt-compose-rules = { module = "io.nlopez.compose.rules:detekt", version.ref = "composeRules" }
 
 # Used in build-logic/com/buildlogic/CommonComposeAndroid.kt/configureAndroidCompose

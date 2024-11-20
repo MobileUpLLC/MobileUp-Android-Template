@@ -28,7 +28,6 @@ class DetektPlugin : Plugin<Project> {
 
         dependencies {
             detektPlugins(libs.detekt.formatting)
-            detektPlugins(libs.detekt.appKODE)
             detektPlugins(libs.detekt.compose.rules)
         }
 

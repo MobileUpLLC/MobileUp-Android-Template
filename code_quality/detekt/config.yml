@@ -361,30 +361,6 @@ style:
   WildcardImport:
     active: false
 
-compose:
-  ReusedModifierInstance:
-    active: false
-  UnnecessaryEventHandlerParameter:
-    active: true
-  ComposableEventParameterNaming:
-    active: false
-  ComposableParametersOrdering:
-    active: false
-  ModifierHeightWithText:
-    active: true
-  MissingModifierDefaultValue:
-    active: false
-  PublicComposablePreview:
-    active: false
-  TopLevelComposableFunctions:
-    active: true
-    allowInObjects: false
-  ComposableFunctionName:
-    active: false
-  ConditionCouldBeLifted:
-    active: true
-    ignoreCallsWithArgumentNames: [ 'modifier', 'contentAlignment' ]
-
 Compose:
   ComposableAnnotationNaming:
     active: true
@@ -464,13 +440,13 @@ Compose:
   ModifierWithoutDefault:
     active: true
   MultipleEmitters:
-    active: true
+    active: false
     # -- You can optionally add your own composables here that will count as content emitters
     # contentEmitters: MyComposable,MyOtherComposable
     # -- You can add composables here that you don't want to count as content emitters (e.g. custom dialogs or modals)
     # contentEmittersDenylist: MyNonEmitterComposable
   MutableParams:
-    active: true
+    active: false
   MutableStateAutoboxing:
     active: true
   MutableStateParam:
