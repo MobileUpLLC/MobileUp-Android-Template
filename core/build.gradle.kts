@@ -36,6 +36,8 @@ dependencies {
     implementation(libs.bundles.ktor)
     implementation(libs.ktorfit.lib)
 
+    implementation(libs.security.crypto)
+
     // Architecture
     implementation(libs.bundles.decompose)
     implementation(libs.bundles.replica)
