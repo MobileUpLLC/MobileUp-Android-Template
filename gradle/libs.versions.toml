@@ -28,6 +28,7 @@ chucker = "4.0.0"
 hyperion = "0.9.38"
 hyperionAddons = "0.3.3"
 composeRules = "0.4.18"
+form = "1.0.0"
 
 [libraries]
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "dateTime" }
@@ -51,6 +52,8 @@ replica-algebra = { module = "com.github.aartikov:replica-algebra", version.ref 
 replica-android-network = { module = "com.github.aartikov:replica-android-network", version.ref = "replica" }
 replica-decompose = { module = "com.github.aartikov:replica-decompose", version.ref = "replica" }
 replica-devtools = { module = "com.github.aartikov:replica-devtools", version.ref = "replica" }
+
+form-validation = { module = "ru.mobileup:kmm-form-validation", version.ref = "form" }
 
 koin = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 logger-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
