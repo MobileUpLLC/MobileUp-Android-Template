@@ -40,7 +40,7 @@ fun EmptyPlaceholder(
 
 @Preview
 @Composable
-fun EmptyPlaceholderPreview() {
+private fun EmptyPlaceholderPreview() {
     AppTheme {
         EmptyPlaceholder(description = "Description")
     }

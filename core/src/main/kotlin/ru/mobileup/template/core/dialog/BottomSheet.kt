@@ -34,9 +34,9 @@ fun <T : Any> BottomSheet(
     dialogControl: DialogControl<*, T>,
     modifier: Modifier = Modifier,
     skipPartiallyExpanded: Boolean = false,
-    onHideAnimationFinished: (() -> Unit)? = null,
+    onHideAnimationFinish: (() -> Unit)? = null,
     shape: Shape = RectangleShape,
-    content: @Composable ColumnScope.(T) -> Unit,
+    content: @Composable ColumnScope.(T) -> Unit
 ) {
     val dismissableByUser by dialogControl.dismissableByUser.collectAsState()
 
@@ -68,7 +68,7 @@ fun <T : Any> BottomSheet(
                     } catch (e: CancellationException) {
                         // do nothing
                     }
-                    onHideAnimationFinished?.invoke()
+                    onHideAnimationFinish?.invoke()
                     null
                 }
             }

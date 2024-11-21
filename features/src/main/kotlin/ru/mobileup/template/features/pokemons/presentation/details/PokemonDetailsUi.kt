@@ -56,7 +56,7 @@ fun PokemonDetailsUi(
             .systemBarsPadding(),
         color = CustomTheme.colors.background.screen
     ) {
-        Column(modifier = modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize()) {
             IconButton(
                 onClick = { dispatchOnBackPressed(context) }
             ) {
@@ -146,7 +146,7 @@ private fun PokemonDetailsContent(
 
 @Preview(showSystemUi = true)
 @Composable
-fun PokemonDetailsUiPreview() {
+private fun PokemonDetailsUiPreview() {
     AppTheme {
         PokemonDetailsUi(FakePokemonDetailsComponent())
     }

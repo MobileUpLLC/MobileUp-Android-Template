@@ -49,7 +49,7 @@ fun PokemonTypeItem(
 
 @Preview
 @Composable
-fun PokemonTypeItemPreview() {
+private fun PokemonTypeItemPreview() {
     var isSelected by remember { mutableStateOf(false) }
     AppTheme {
         PokemonTypeItem(
