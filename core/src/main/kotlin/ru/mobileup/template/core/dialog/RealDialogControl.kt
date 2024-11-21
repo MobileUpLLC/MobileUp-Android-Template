@@ -44,7 +44,7 @@ private class RealDialogControl<C : Any, T : Any>(
     private val dialogNavigation = SlotNavigation<C>()
 
     override val dialogSlot: StateFlow<ChildSlot<C, T>> =
-        componentContext.childSlot<C, T>(
+        componentContext.childSlot<ComponentContext, C, T>(
             source = dialogNavigation,
             handleBackButton = false,
             serializer = serializer,

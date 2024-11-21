@@ -56,6 +56,9 @@ It consists of concrete features. Each feature has its own package which contain
 1. Read installation instruction root/geminio/SETUP.MD
 2. Read user instruction  root/geminio/HOW_TO_USE.MD
 
+### Compose detekt rules docs
+https://mrmans0n.github.io/compose-rules/
+
 ### Good coding and happy day!🤘
 
 ## License

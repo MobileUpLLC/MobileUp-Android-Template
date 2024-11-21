@@ -1,24 +1,25 @@
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    kotlin("plugin.serialization")
-    kotlin("plugin.parcelize")
-    id("io.gitlab.arturbosch.detekt")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.convetion.lint)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
-    val minSdkVersion: Int by rootProject.extra
-    val targetSdkVersion: Int by rootProject.extra
+    val minSdkVersion = libs.versions.minSdk.get().toInt()
+    val targetSdkVersion = libs.versions.targetSdk.get().toInt()
+    val compileSdkVersion = libs.versions.compileSdk.get().toInt()
 
     namespace = "ru.mobileup.template"
-    compileSdk = targetSdkVersion
+    compileSdk = compileSdkVersion
 
     defaultConfig {
         applicationId = "ru.mobileup.template"
         minSdk = minSdkVersion
         targetSdk = targetSdkVersion
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
     }
 
     signingConfigs {
@@ -62,7 +63,6 @@ android {
     }
 
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -73,20 +73,18 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
-
-    packagingOptions {
-        resources.excludes += "META-INF/*"
+    packaging {
+        resources.excludes += setOf(
+            "/META-INF/{AL2.0,LGPL2.1}",
+            "/META-INF/INDEX.LIST",
+            "/META-INF/io.netty.versions.properties"
+        )
     }
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.android.desugar)
-
     // Modules
     implementation(project(":core"))
     implementation(project(":features"))

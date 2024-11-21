@@ -29,14 +29,12 @@ fun Modifier.noOverlapByMessage(): Modifier = composed {
             localMessageOffsets.remove(key)
         }
     }
-    then(
-        onGloballyPositioned { layoutCoordinates ->
-            if (layoutCoordinates.isAttached) {
-                val y = layoutCoordinates.positionInWindow().y
-                val rootHeight = layoutCoordinates.findRootCoordinates().size.height
-                val offset = (rootHeight - bottomInset - y).toInt().coerceAtLeast(0)
-                localMessageOffsets[key] = offset
-            }
+    onGloballyPositioned { layoutCoordinates ->
+        if (layoutCoordinates.isAttached) {
+            val y = layoutCoordinates.positionInWindow().y
+            val rootHeight = layoutCoordinates.findRootCoordinates().size.height
+            val offset = (rootHeight - bottomInset - y).toInt().coerceAtLeast(0)
+            localMessageOffsets[key] = offset
         }
-    )
+    }
 }
