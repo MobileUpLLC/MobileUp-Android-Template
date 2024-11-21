@@ -17,6 +17,7 @@ import ru.mobileup.template.core.utils.LocalSystemBarsSettings
 import ru.mobileup.template.core.utils.accumulate
 import ru.mobileup.template.features.pokemons.presentation.PokemonsUi
 
+@Suppress("ModifierReused")
 @Composable
 fun RootUi(
     component: RootComponent,
@@ -73,7 +74,7 @@ private fun SystemBarsColors() {
 
 @Preview(showSystemUi = true)
 @Composable
-fun RootUiPreview() {
+private fun RootUiPreview() {
     AppTheme {
         RootUi(FakeRootComponent())
     }
