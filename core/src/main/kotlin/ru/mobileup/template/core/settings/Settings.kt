@@ -23,4 +23,6 @@ interface Settings {
     suspend fun putFloat(key: String, value: Float)
 
     suspend fun remove(key: String)
+
+    suspend fun clear()
 }

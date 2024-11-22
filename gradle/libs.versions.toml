@@ -30,7 +30,7 @@ hyperion = "0.9.38"
 hyperionAddons = "0.3.3"
 composeRules = "0.4.18"
 form = "1.0.0"
-securityCrypto = "1.0.0"
+securityCrypto = "1.1.0-alpha06"
 
 [libraries]
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "dateTime" }
@@ -72,6 +72,7 @@ compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
 
 security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
+security-crypto-ktx = { module = "androidx.security:security-crypto-ktx", version.ref = "securityCrypto" }
 
 coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
