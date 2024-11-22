@@ -42,6 +42,8 @@ dependencies {
     api(libs.moko.resources)
     implementation(libs.moko.resourcesCompose)
 
+    implementation(libs.form.validation)
+
     // Debugging
     debugImplementation(libs.chucker)
     debugImplementation(libs.bundles.hyperion)
