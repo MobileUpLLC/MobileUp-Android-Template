@@ -2,6 +2,7 @@ package ru.mobileup.template.core.theme.values
 
 import androidx.compose.ui.graphics.Color
 import ru.mobileup.template.core.theme.custom.BackgroundColors
+import ru.mobileup.template.core.theme.custom.BorderColors
 import ru.mobileup.template.core.theme.custom.ButtonColors
 import ru.mobileup.template.core.theme.custom.CustomColors
 import ru.mobileup.template.core.theme.custom.IconColors
@@ -26,6 +27,9 @@ val LightAppColors = CustomColors(
     button = ButtonColors(
         primary = Color(0xFF6750A4),
         secondary = Color(0xFFFFFFFF),
+    ),
+    border = BorderColors(
+        primary = Color(0xFF000000),
     )
 )
 
