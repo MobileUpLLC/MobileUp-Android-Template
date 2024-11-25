@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.theme.custom.CustomTheme
+import ru.mobileup.template.core.widget.button.AppButtonDefaults.ButtonType
 
 @Composable
 fun AppButton(
@@ -34,7 +35,7 @@ fun AppButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
-    colors: ButtonColors = AppButtonDefaults.buttonColors(buttonType, isEnabled),
+    colors: ButtonColors = AppButtonDefaults.buttonColors(buttonType),
     border: BorderStroke = AppButtonDefaults.buttonBorder(buttonType, isEnabled),
     shape: Shape = AppButtonDefaults.buttonShape,
     contentPadding: PaddingValues = AppButtonDefaults.contentPadding,
@@ -61,7 +62,7 @@ fun AppButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
-    colors: ButtonColors = AppButtonDefaults.buttonColors(buttonType, isEnabled),
+    colors: ButtonColors = AppButtonDefaults.buttonColors(buttonType),
     border: BorderStroke = AppButtonDefaults.buttonBorder(buttonType, isEnabled),
     progressIndicatorColor: Color = AppButtonDefaults.progressIndicatorColor(buttonType),
     shape: Shape = AppButtonDefaults.buttonShape,
@@ -88,7 +89,6 @@ fun AppButton(
         } else {
             Text(
                 text = text,
-                color = AppButtonDefaults.buttonTextColor(buttonType, isEnabled),
                 style = AppButtonDefaults.textStyle,
                 textAlign = TextAlign.Center
             )

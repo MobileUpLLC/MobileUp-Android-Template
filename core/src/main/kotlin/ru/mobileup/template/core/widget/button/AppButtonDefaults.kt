@@ -13,12 +13,13 @@ import androidx.compose.ui.unit.dp
 import ru.mobileup.template.core.theme.custom.CustomTheme
 
 @Immutable
-enum class ButtonType {
-    Primary, Secondary
-}
-
-@Immutable
 object AppButtonDefaults {
+
+    @Immutable
+    enum class ButtonType {
+        Primary,
+        Secondary
+    }
 
     @Stable
     val buttonShape = RoundedCornerShape(28.dp)
@@ -33,29 +34,40 @@ object AppButtonDefaults {
 
     @Stable
     @Composable
-    fun buttonColors(buttonType: ButtonType, isEnabled: Boolean): ButtonColors = ButtonColors(
-        containerColor = buttonBackgroundColor(buttonType, isEnabled),
-        contentColor = buttonTextColor(buttonType, isEnabled),
-        disabledContainerColor = buttonBackgroundColor(buttonType, isEnabled),
-        disabledContentColor = buttonTextColor(buttonType, isEnabled)
+    fun buttonColors(buttonType: ButtonType): ButtonColors = ButtonColors(
+        containerColor = containerColor(buttonType),
+        contentColor = contentColor(buttonType),
+        disabledContainerColor = disabledContainerColor(buttonType),
+        disabledContentColor = disabledContentColor(buttonType),
     )
 
     @Stable
     @Composable
-    fun buttonBackgroundColor(
-        buttonType: ButtonType,
-        isEnabled: Boolean,
-    ): Color = when (buttonType) {
+    fun containerColor(buttonType: ButtonType): Color = when (buttonType) {
         ButtonType.Primary -> CustomTheme.colors.button.primary
         ButtonType.Secondary -> CustomTheme.colors.button.secondary
-    }.copy(alpha = if (isEnabled) 1f else 0.4f)
+    }
 
     @Stable
     @Composable
-    fun buttonTextColor(buttonType: ButtonType, isEnabled: Boolean): Color = when (buttonType) {
+    fun contentColor(buttonType: ButtonType): Color = when (buttonType) {
         ButtonType.Primary -> CustomTheme.colors.text.invert
         ButtonType.Secondary -> CustomTheme.colors.text.primary
-    }.copy(alpha = if (isEnabled) 1f else 0.4f)
+    }
+
+    @Stable
+    @Composable
+    fun disabledContainerColor(buttonType: ButtonType): Color = when (buttonType) {
+        ButtonType.Primary -> CustomTheme.colors.button.primaryDisabled
+        ButtonType.Secondary -> CustomTheme.colors.button.secondaryDisabled
+    }
+
+    @Stable
+    @Composable
+    fun disabledContentColor(buttonType: ButtonType): Color = when (buttonType) {
+        ButtonType.Primary -> CustomTheme.colors.text.invertDisabled
+        ButtonType.Secondary -> CustomTheme.colors.text.primaryDisabled
+    }
 
     @Stable
     @Composable
