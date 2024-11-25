@@ -2,8 +2,8 @@ package ru.mobileup.template.core.widget.text_field
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +27,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -35,7 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
@@ -43,19 +43,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.localized
 import dev.icerock.moko.resources.desc.desc
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.emptyFlow
 import ru.mobileup.kmm_form_validation.control.InputControl
-import ru.mobileup.kmm_form_validation.options.KeyboardOptions
+import ru.mobileup.kmm_form_validation.options.KeyboardOptions as KmmKeyboardOptions
 import ru.mobileup.kmm_form_validation.toCompose
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.theme.custom.CustomTheme
-import androidx.compose.foundation.text.KeyboardOptions as ComposeKeyboardOptions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.TextStyle
 import ru.mobileup.kmm_form_validation.options.VisualTransformation as KmmVisualTransformation
 
+@Suppress("ModifierNotUsedAtRoot")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppTextField(
@@ -67,15 +69,22 @@ fun AppTextField(
     supportingText: String? = null,
     errorText: String? = null,
     headerText: String? = null,
+    prefix: String? = null,
+    suffix: String? = null,
     isError: Boolean = false,
     minLines: Int = 1,
     maxLines: Int = Int.MAX_VALUE,
     singleLine: Boolean = minLines == 1,
-    keyboardOptions: ComposeKeyboardOptions = ComposeKeyboardOptions.Default,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = AppTextFieldDefaults.defaultKeyboardActions,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    keyboardActions: KeyboardActions? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    shape: Shape = AppTextFieldDefaults.shape,
+    colors: TextFieldColors = AppTextFieldDefaults.colors,
+    textStyle: TextStyle = AppTextFieldDefaults.textStyle,
+    labelStyle: TextStyle = AppTextFieldDefaults.labelStyle,
     hasFocus: Boolean = false,
+    border: BorderStroke = AppTextFieldDefaults.border(isError, hasFocus),
     scrollToItEvent: Flow<Unit> = emptyFlow(),
     moveCursorEvent: Flow<Int> = emptyFlow(),
     label: String? = null,
@@ -84,7 +93,6 @@ fun AppTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     val focusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
 
     if (hasFocus) {
         SideEffect {
@@ -118,7 +126,7 @@ fun AppTextField(
     }
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .animateContentSize()
             .bringIntoViewRequester(bringIntoViewRequester)
     ) {
@@ -132,11 +140,8 @@ fun AppTextField(
         }
 
         TextField(
-            modifier = Modifier
-                .border(
-                    border = AppTextFieldDefaults.borderStroke(isError, hasFocus),
-                    shape = AppTextFieldDefaults.shape
-                )
+            modifier = modifier
+                .border(border = border, shape = shape)
                 .focusRequester(focusRequester)
                 .onFocusChanged { onFocusChange(it.isFocused) },
             value = currentTextFieldValue,
@@ -147,11 +152,9 @@ fun AppTextField(
             },
             enabled = isEnabled,
             readOnly = !isEnabled,
-            textStyle = AppTextFieldDefaults.textStyle,
+            textStyle = textStyle,
             keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions ?: KeyboardActions(
-                onDone = { focusManager.clearFocus() }
-            ),
+            keyboardActions = keyboardActions,
             singleLine = singleLine,
             maxLines = maxLines,
             minLines = minLines,
@@ -159,19 +162,29 @@ fun AppTextField(
             interactionSource = interactionSource,
             label = label?.let {
                 {
-                    Text(text = it, style = AppTextFieldDefaults.labelStyle)
+                    Text(text = it, style = labelStyle)
                 }
             },
             placeholder = placeholder?.let {
                 {
-                    Text(text = it, style = AppTextFieldDefaults.textStyle)
+                    Text(text = it, style = textStyle)
+                }
+            },
+            prefix = prefix?.let {
+                {
+                    Text(text = it, style = textStyle)
+                }
+            },
+            suffix = suffix?.let {
+                {
+                    Text(text = it, style = textStyle)
                 }
             },
             leadingIcon = leadingIcon,
             trailingIcon = trailingIcon,
-            shape = AppTextFieldDefaults.shape,
+            shape = shape,
             isError = isError,
-            colors = AppTextFieldDefaults.textFieldColors,
+            colors = colors,
         )
 
         Crossfade(
@@ -198,14 +211,24 @@ fun AppTextField(
 fun AppTextField(
     inputControl: InputControl,
     modifier: Modifier = Modifier,
-    label: String? = null,
-    placeholder: String? = null,
     minLines: Int = 1,
     maxLines: Int = Int.MAX_VALUE,
+    keyboardActions: KeyboardActions = AppTextFieldDefaults.defaultKeyboardActions,
+    colors: TextFieldColors = AppTextFieldDefaults.colors,
+    textStyle: TextStyle = AppTextFieldDefaults.textStyle,
+    labelStyle: TextStyle = AppTextFieldDefaults.labelStyle,
+    border: BorderStroke = AppTextFieldDefaults.border(
+        isError = inputControl.error.value != null,
+        hasFocus = inputControl.hasFocus.value
+    ),
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     visualTransformation: KmmVisualTransformation? = null,
-    keyboardActions: KeyboardActions? = null,
+    label: String? = null,
+    placeholder: String? = null,
     supportingText: String? = null,
     headerText: String? = null,
+    prefix: String? = null,
+    suffix: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
@@ -223,6 +246,8 @@ fun AppTextField(
         supportingText = supportingText,
         headerText = headerText,
         errorText = error?.localized(),
+        prefix = prefix,
+        suffix = suffix,
         isEnabled = enabled,
         onTextChange = inputControl::onTextChanged,
         onFocusChange = inputControl::onFocusChanged,
@@ -230,7 +255,7 @@ fun AppTextField(
         keyboardOptions = inputControl.keyboardOptions.toCompose(),
         keyboardActions = keyboardActions,
         visualTransformation = (visualTransformation
-            ?: KmmVisualTransformation.None).toCompose(),
+            ?: inputControl.visualTransformation).toCompose(),
         hasFocus = hasFocus,
         scrollToItEvent = inputControl.scrollToItEvent,
         moveCursorEvent = inputControl.moveCursorEvent,
@@ -238,6 +263,11 @@ fun AppTextField(
         maxLines = maxLines,
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
+        colors = colors,
+        textStyle = textStyle,
+        labelStyle = labelStyle,
+        border = border,
+        interactionSource = interactionSource,
     )
 }
 
@@ -251,40 +281,40 @@ private val NullableTextRangeSaver = listSaver<TextRange?, Int>(
     restore = { TextRange(it[0], it[1]) }
 )
 
+@Preview(showBackground = true)
 @Composable
-@Preview(showSystemUi = true)
-@OptIn(DelicateCoroutinesApi::class)
 private fun AppTextFieldPreview() {
-    val inputControl = InputControl(GlobalScope)
-    val inputControl2 = InputControl(
-        coroutineScope = GlobalScope,
-        initialText = "Some text",
-        keyboardOptions = KeyboardOptions()
-    ).apply {
-        error.value = "Error".desc()
+    val scope = rememberCoroutineScope()
+    val inputControl = InputControl(scope).apply {
+        requestFocus()
     }
-    val inputControl6 = InputControl(
-        coroutineScope = GlobalScope,
+    val inputControl2 = InputControl(
+        coroutineScope = scope,
         initialText = "Some text",
-        keyboardOptions = KeyboardOptions()
+        keyboardOptions = KmmKeyboardOptions()
     ).apply {
         error.value = "Error".desc()
     }
     val inputControl3 = InputControl(
-        coroutineScope = GlobalScope,
+        coroutineScope = scope,
         initialText = "Some text",
-        keyboardOptions = KeyboardOptions()
+        keyboardOptions = KmmKeyboardOptions()
     ).apply {
         enabled.value = false
     }
-    val inputControl4 = InputControl(GlobalScope)
-    val inputControl5 = InputControl(GlobalScope)
+    val inputControl4 = InputControl(scope)
+    val inputControl5 = InputControl(scope)
+    val inputControl6 = InputControl(
+        coroutineScope = scope,
+        initialText = "Some text",
+        keyboardOptions = KmmKeyboardOptions()
+    ).apply {
+        error.value = "Error".desc()
+    }
 
     AppTheme {
         Column(
-            modifier = Modifier
-                .background(CustomTheme.colors.background.screen)
-                .padding(8.dp),
+            modifier = Modifier.padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             AppTextField(
@@ -307,15 +337,13 @@ private fun AppTextFieldPreview() {
                     )
                 }
             )
-
             AppTextField(
                 modifier = Modifier.fillMaxWidth(),
                 inputControl = inputControl,
                 label = "Заголовок",
                 placeholder = "Текст",
-                supportingText = "Supporting"
+                supportingText = "Supporting",
             )
-
             AppTextField(
                 modifier = Modifier.fillMaxWidth(),
                 inputControl = inputControl4,
@@ -324,26 +352,22 @@ private fun AppTextFieldPreview() {
                 minLines = 3,
                 maxLines = 3,
             )
-
             AppTextField(
                 modifier = Modifier.fillMaxWidth(),
                 inputControl = inputControl6,
                 label = "Заголовок",
                 placeholder = "Текст"
             )
-
             AppTextField(
                 modifier = Modifier.fillMaxWidth(),
                 inputControl = inputControl3,
                 label = "Заголовок",
                 placeholder = "Текст"
             )
-
             AppTextField(
                 modifier = Modifier.fillMaxWidth(),
                 inputControl = inputControl5,
                 placeholder = "000 000 00 00",
-                label = "Phone",
             )
         }
     }

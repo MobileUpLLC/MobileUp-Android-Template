@@ -1,7 +1,6 @@
 package ru.mobileup.template.core.widget.button
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.theme.custom.CustomTheme
-import ru.mobileup.template.core.widget.button.AppButtonDefaults.ButtonType
 
 @Composable
 fun AppButton(
@@ -35,8 +33,8 @@ fun AppButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
-    colors: ButtonColors = AppButtonDefaults.buttonColors(buttonType),
-    border: BorderStroke = AppButtonDefaults.buttonBorder(buttonType, isEnabled),
+    colors: ButtonColors = AppButtonDefaults.colors(buttonType),
+    border: BorderStroke = AppButtonDefaults.border(buttonType, isEnabled),
     shape: Shape = AppButtonDefaults.buttonShape,
     contentPadding: PaddingValues = AppButtonDefaults.contentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
@@ -62,8 +60,8 @@ fun AppButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
-    colors: ButtonColors = AppButtonDefaults.buttonColors(buttonType),
-    border: BorderStroke = AppButtonDefaults.buttonBorder(buttonType, isEnabled),
+    colors: ButtonColors = AppButtonDefaults.colors(buttonType),
+    border: BorderStroke = AppButtonDefaults.border(buttonType, isEnabled),
     progressIndicatorColor: Color = AppButtonDefaults.progressIndicatorColor(buttonType),
     shape: Shape = AppButtonDefaults.buttonShape,
     contentPadding: PaddingValues = PaddingValues(16.dp),
@@ -96,14 +94,12 @@ fun AppButton(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun AppButtonPreview() {
     AppTheme {
         Column(
-            modifier = Modifier
-                .background(color = Color.Gray)
-                .padding(8.dp),
+            modifier = Modifier.padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             AppButton(

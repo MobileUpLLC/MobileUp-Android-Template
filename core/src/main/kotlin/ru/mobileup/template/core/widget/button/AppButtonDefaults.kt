@@ -2,7 +2,7 @@ package ru.mobileup.template.core.widget.button
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -13,16 +13,16 @@ import androidx.compose.ui.unit.dp
 import ru.mobileup.template.core.theme.custom.CustomTheme
 
 @Immutable
+enum class ButtonType {
+    Primary,
+    Secondary
+}
+
+@Immutable
 object AppButtonDefaults {
 
-    @Immutable
-    enum class ButtonType {
-        Primary,
-        Secondary
-    }
-
     @Stable
-    val buttonShape = RoundedCornerShape(28.dp)
+    val buttonShape = CircleShape
 
     @Stable
     val contentPadding = PaddingValues(16.dp)
@@ -34,7 +34,7 @@ object AppButtonDefaults {
 
     @Stable
     @Composable
-    fun buttonColors(buttonType: ButtonType): ButtonColors = ButtonColors(
+    fun colors(buttonType: ButtonType): ButtonColors = ButtonColors(
         containerColor = containerColor(buttonType),
         contentColor = contentColor(buttonType),
         disabledContainerColor = disabledContainerColor(buttonType),
@@ -78,7 +78,7 @@ object AppButtonDefaults {
 
     @Stable
     @Composable
-    fun buttonBorder(buttonType: ButtonType, isEnabled: Boolean): BorderStroke = when (buttonType) {
+    fun border(buttonType: ButtonType, isEnabled: Boolean): BorderStroke = when (buttonType) {
         ButtonType.Secondary -> BorderStroke(
             1.dp,
             CustomTheme.colors.border.primary.copy(alpha = if (isEnabled) 1f else 0.4f)
