@@ -7,7 +7,7 @@ class ParsedType(
     val type: FakesType,
     val appliedGenerics: List<ParsedType> = listOf()
 ) {
-    val isParametrized get() = appliedGenerics.isNotEmpty()
+    val isParameterized get() = appliedGenerics.isNotEmpty()
     val nameInFile get() = type.nameInFile
 
     fun asTypeName(): TypeName {
@@ -23,7 +23,7 @@ class ParsedType(
     override fun toString(): String {
         return buildString {
             append(type.nameInFile)
-            if (isParametrized) {
+            if (isParameterized) {
                 append("<")
                 append(appliedGenerics.joinToString(separator = ", "))
                 append(">")

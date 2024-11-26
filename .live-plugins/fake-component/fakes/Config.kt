@@ -22,11 +22,13 @@ object Config {
     ) = "Component" in interfaceName
 
     // TODO: change ...template into your project path
-    private const val LoadableStatePackage = "ru.mobileup.template.core.utils.LoadableState"
-    private const val PagedStatePackage = "ru.mobileup.template.core.utils.PagedState"
+    private const val AppPackage = "ru.mobileup.template"
+    private const val LoadableStatePackage = "$AppPackage.core.utils.LoadableState"
+    private const val PagedStatePackage = "$AppPackage.core.utils.PagedState"
+    private const val StandardDialogControlPackage = "$AppPackage.core.dialog.standard.StandardDialogControl"
     private const val InputControlPackage = "ru.mobileup.kmm_form_validation.control.InputControl"
     private const val CheckControlPackage = "ru.mobileup.kmm_form_validation.control.CheckControl"
-    private const val StandardDialogControlPackage = "ru.mobileup.ai_drawing.core.dialog.standard.StandardDialogControl"
+    private const val FakeStandardDialogControlPackage = "$AppPackage.core.dialog.standard.fakeStandardDialogControl"
 
     val providers = listOf(
         withTopType<Unit>() provide "Unit",
@@ -93,7 +95,7 @@ object Config {
         withTopType(StandardDialogControlPackage) provide { type ->
 
             packageResolver.addImportIfNotRegistered(
-                FqName("ru.mobileup.ai_drawing.core.dialog.standard.fakeStandardDialogControl")
+                FqName(FakeStandardDialogControlPackage)
             )
 
             result("fakeStandardDialogControl()")
