@@ -20,6 +20,7 @@ import org.jetbrains.kotlin.idea.KotlinFileType
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
 import liveplugin.show
+import fakes.Config
 
 class CreateFakeComponentIntention : PsiElementBaseIntentionAction() {
     override fun isAvailable(
@@ -32,7 +33,7 @@ class CreateFakeComponentIntention : PsiElementBaseIntentionAction() {
         if (klass !is KtClass) return false
         if (klass.parent !is KtFile) return false
 
-        return klass.isInterface() && klass.name?.contains("Component") == true
+        return klass.isInterface() && klass.name?.let(Config::isComponent) == true
     }
 
     override fun getFamilyName() = "CreateFakeComponentIntention"
