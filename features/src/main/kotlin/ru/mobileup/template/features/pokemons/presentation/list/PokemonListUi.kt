@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -132,7 +132,7 @@ private fun PokemonListContent(
             )
 
             if (pokemon !== pokemons.lastOrNull()) {
-                Divider()
+                HorizontalDivider()
             }
         }
     }
