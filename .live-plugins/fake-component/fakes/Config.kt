@@ -21,15 +21,6 @@ object Config {
         interfaceName: String
     ) = "Component" in interfaceName
 
-    // TODO: change ...template into your project path
-    private const val AppPackage = "ru.mobileup.template"
-    private const val LoadableStatePackage = "$AppPackage.core.utils.LoadableState"
-    private const val PagedStatePackage = "$AppPackage.core.utils.PagedState"
-    private const val StandardDialogControlPackage = "$AppPackage.core.dialog.standard.StandardDialogControl"
-    private const val InputControlPackage = "ru.mobileup.kmm_form_validation.control.InputControl"
-    private const val CheckControlPackage = "ru.mobileup.kmm_form_validation.control.CheckControl"
-    private const val FakeStandardDialogControlPackage = "$AppPackage.core.dialog.standard.fakeStandardDialogControl"
-
     val providers = listOf(
         withTopType<Unit>() provide "Unit",
 
@@ -84,12 +75,10 @@ object Config {
         withTopType(InputControlPackage, CheckControlPackage) provide { type ->
 
             packageResolver.addImportIfNotRegistered(
-                FqName("kotlinx.coroutines.GlobalScope")
+                FqName(GlobalScopePackage)
             )
 
-            result(
-                "${type.nameInFile}(GlobalScope)"
-            )
+            result("${type.nameInFile}(GlobalScope)")
         },
 
         withTopType(StandardDialogControlPackage) provide { type ->
