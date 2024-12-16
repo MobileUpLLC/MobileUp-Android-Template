@@ -37,6 +37,8 @@ dependencies {
     implementation(libs.bundles.ktor)
     implementation(libs.ktorfit.lib)
 
+    implementation(libs.form.validation)
+
     // Architecture
     implementation(libs.bundles.decompose)
     implementation(libs.bundles.replica)

@@ -36,11 +36,16 @@ dependencies {
     implementation(libs.bundles.ktor)
     implementation(libs.ktorfit.lib)
 
+    implementation(libs.security.crypto)
+    implementation(libs.security.crypto.ktx)
+
     // Architecture
     implementation(libs.bundles.decompose)
     implementation(libs.bundles.replica)
     api(libs.moko.resources)
     implementation(libs.moko.resourcesCompose)
+
+    implementation(libs.form.validation)
 
     // Debugging
     debugImplementation(libs.chucker)

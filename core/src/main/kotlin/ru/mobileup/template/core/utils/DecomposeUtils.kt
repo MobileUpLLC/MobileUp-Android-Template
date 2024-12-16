@@ -5,6 +5,7 @@ import com.arkivanov.decompose.Child
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.stack.ChildStack
+import com.arkivanov.decompose.router.stack.StackNavigator
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.arkivanov.essenty.lifecycle.Lifecycle
@@ -33,7 +34,10 @@ fun <T : Any> createFakeChildStackStateFlow(instance: T): StateFlow<ChildStack<*
 /**
  * Creates a [ChildSlot] with given [configuration] and [instance]. Should be used to create a slot for Jetpack Compose preview.
  */
-fun <C : Any, T : Any> createFakeChildSlot(configuration: C, instance: T): StateFlow<ChildSlot<C, T>> {
+fun <C : Any, T : Any> createFakeChildSlot(
+    configuration: C,
+    instance: T,
+): StateFlow<ChildSlot<C, T>> {
     return MutableStateFlow(
         ChildSlot(
             Child.Created(
@@ -89,8 +93,32 @@ inline fun <T : Any> StateKeeperOwner.persistent(
     key: String = "PersistentState",
     serializer: KSerializer<T>,
     noinline save: () -> T,
-    restore: (T) -> Unit
+    restore: (T) -> Unit,
 ) {
     stateKeeper.consume(key, serializer)?.run(restore)
     stateKeeper.register(key, serializer, save)
 }
+
+/**
+ * Pushes a new configuration onto the navigation stack safely.
+ *
+ * This method ensures that the given configuration is removed from the stack first (if it exists),
+ * and then re-added to ensure it appears at the top of the stack. This avoids duplicate entries
+ * for the same configuration and ensures it is effectively "re-pushed" to the stack.
+ *
+ * @param configuration the configuration to push onto the stack.
+ * @param onComplete called when the navigation is finished (either synchronously or asynchronously).
+ */
+fun <C : Any> StackNavigator<C>.safePush(configuration: C, onComplete: () -> Unit = {}) {
+    navigate(
+        transformer = { it - configuration + configuration },
+        onComplete = { _, _ -> onComplete() }
+    )
+}
+
+/**
+ * Retrieves the first child of type [C] from the child stack.
+ * It will return `null` if no matching child is found.
+ */
+inline fun <reified C : Any> ChildStack<*, *>.getChild(): C? =
+    items.map { it.instance }.filterIsInstance<C>().lastOrNull()
