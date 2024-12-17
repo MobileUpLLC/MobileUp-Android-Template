@@ -32,7 +32,7 @@ fun CoroutineScope.safeLaunch(
     errorHandler: ErrorHandler,
     showError: Boolean = true,
     onErrorHandled: ((e: Exception) -> Unit)? = null,
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend () -> Unit
 ): Job {
     return launch {
         try {
@@ -54,7 +54,7 @@ fun CoroutineScope.safeLaunchRetryable(
     onErrorHandled: ((e: Exception) -> Unit)? = null,
     retryActionTitle: StringDesc = StringDesc.Resource(R.string.common_retry),
     retryAction: () -> Unit,
-    block: suspend CoroutineScope.() -> Unit
+    block: suspend () -> Unit
 ): Job {
     return launch {
         try {

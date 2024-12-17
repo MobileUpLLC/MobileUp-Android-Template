@@ -57,14 +57,13 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import ru.mobileup.kmm_form_validation.options.VisualTransformation as KmmVisualTransformation
 
-@Suppress("ModifierNotUsedAtRoot")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppTextField(
     text: String,
     onTextChange: (String) -> Unit,
-    onFocusChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    onFocusChange: (Boolean) -> Unit = {},
     isEnabled: Boolean = true,
     supportingText: String? = null,
     errorText: String? = null,
@@ -126,7 +125,7 @@ fun AppTextField(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .animateContentSize()
             .bringIntoViewRequester(bringIntoViewRequester)
     ) {
@@ -140,7 +139,8 @@ fun AppTextField(
         }
 
         TextField(
-            modifier = modifier
+            modifier = Modifier
+                .fillMaxWidth()
                 .border(border = border, shape = shape)
                 .focusRequester(focusRequester)
                 .onFocusChanged { onFocusChange(it.isFocused) },
@@ -217,11 +217,8 @@ fun AppTextField(
     colors: TextFieldColors = AppTextFieldDefaults.colors,
     textStyle: TextStyle = AppTextFieldDefaults.textStyle,
     labelStyle: TextStyle = AppTextFieldDefaults.labelStyle,
-    border: BorderStroke = AppTextFieldDefaults.border(
-        isError = inputControl.error.value != null,
-        hasFocus = inputControl.hasFocus.value
-    ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    border: BorderStroke? = null,
     visualTransformation: KmmVisualTransformation? = null,
     label: String? = null,
     placeholder: String? = null,
@@ -266,7 +263,10 @@ fun AppTextField(
         colors = colors,
         textStyle = textStyle,
         labelStyle = labelStyle,
-        border = border,
+        border = border ?: AppTextFieldDefaults.border(
+            isError = error != null,
+            hasFocus = hasFocus
+        ),
         interactionSource = interactionSource,
     )
 }
