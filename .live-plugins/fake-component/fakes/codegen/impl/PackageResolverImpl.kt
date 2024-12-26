@@ -41,7 +41,8 @@ class PackageResolverImpl(
     override fun resolveByNameInFile(
         name: String
     ): FakesType {
-        val firstName = name.split(".").first()
+        val clearType = name.replace("?", "")
+        val firstName = clearType.split(".").first()
 
         for (import in imports) {
             if (import.nameInFile == firstName) {
@@ -50,7 +51,8 @@ class PackageResolverImpl(
         }
 
         return FakesType(
-            fqName = currentFileFqName.child(Name.identifier(name))
+            fqName = currentFileFqName.child(Name.identifier(clearType)),
+            nullable = name.contains("?")
         )
     }
 }

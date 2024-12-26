@@ -1,18 +1,23 @@
 package fakes.codegen.api.typing
 
+import com.squareup.kotlinpoet.ClassName
 import fakes.packageFor
 import fakes.packageName
-import com.squareup.kotlinpoet.ClassName
 import org.jetbrains.kotlin.name.FqName
 
 data class FakesType(
     val fqName: FqName,
-    val alias: String? = null
+    val alias: String? = null,
+    val nullable: Boolean = false
 ) {
     companion object {
-        inline fun <reified T> of(alias: String? = null) = FakesType(
+        inline fun <reified T> of(
+            alias: String? = null,
+            nullable: Boolean = false
+        ) = FakesType(
             fqName = FqName(packageFor<T>()),
-            alias = alias
+            alias = alias,
+            nullable = nullable
         )
     }
 

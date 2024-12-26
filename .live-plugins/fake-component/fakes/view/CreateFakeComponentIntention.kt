@@ -1,7 +1,5 @@
 package fakes.view
 
-import fakes.Config
-import fakes.codegen.impl.generateFake
 import com.intellij.codeInsight.actions.OptimizeImportsProcessor
 import com.intellij.codeInsight.actions.ReformatCodeProcessor
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction
@@ -16,11 +14,11 @@ import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiFileFactory
+import fakes.Config
+import fakes.codegen.impl.generateFake
 import org.jetbrains.kotlin.idea.KotlinFileType
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
-import liveplugin.show
-import fakes.Config
 
 class CreateFakeComponentIntention : PsiElementBaseIntentionAction() {
     override fun isAvailable(

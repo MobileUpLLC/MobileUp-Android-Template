@@ -2,7 +2,6 @@ package fakes.codegen.api.rules.common
 
 import fakes.codegen.api.rules.ProvidingRule
 
-
 infix fun ProvidingRule.and(
     rule: ProvidingRule
 ) = ProvidingRule { type ->

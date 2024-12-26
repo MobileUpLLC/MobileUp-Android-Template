@@ -17,7 +17,7 @@ class ParsedType(
 
         return className.parameterizedBy(
             *appliedGenerics.map { it.asTypeName() }.toTypedArray()
-        )
+        ).copy(nullable = type.nullable)
     }
 
     override fun toString(): String {

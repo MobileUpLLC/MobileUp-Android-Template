@@ -1,9 +1,8 @@
 package fakes.codegen.impl
 
+import com.squareup.kotlinpoet.*
 import fakes.Config
 import fakes.codegen.api.typing.parseType
-import fakes.packageName
-import com.squareup.kotlinpoet.*
 import org.jetbrains.kotlin.idea.searching.usages.getDefaultImports
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
@@ -37,6 +36,9 @@ fun generateFake(
     val resultClass = TypeSpec
         .classBuilder(
             name = fakeName
+        )
+        .addModifiers(
+            KModifier.INTERNAL
         )
         .addSuperinterface(
             ClassName(
@@ -73,7 +75,14 @@ fun generateFake(
         val returnType = function.typeReference?.text ?: "Unit"
 
         val name = function.name ?: continue
+
         val parsedReturnType = packageResolver.parseType(returnType)
+
+        // Function params
+        val params = function.valueParameters.map {
+            it.name!! to packageResolver.parseType(it.typeReference?.text!!)
+        }
+
         val default = processor.process(parsedReturnType)
 
         resultClass.addFunction(
@@ -81,17 +90,43 @@ fun generateFake(
                 .builder(name)
                 .returns(parsedReturnType.asTypeName())
                 .addCode("return ${default.codeBlock}")
+                .addParameters(
+                    params.map { (name, parsedType) ->
+                        ParameterSpec
+                            .builder(name, parsedType.asTypeName())
+                            .build()
+                    }
+                )
                 .addModifiers(KModifier.OVERRIDE)
                 .build()
         )
     }
 
+    // Add imports that are required for adding mocks
     for (import in packageResolver.addedImports) {
         val className = import.asClassName()
         resultFile.addImport(
             className.packageName,
             className.simpleNames
         )
+    }
+
+    // Nested classes and interfaces
+    body.declarations.filterIsInstance<KtClass>().forEach {
+        resultFile.addImport(
+            file.packageFqName.asString(),
+            "${klass.name}.${it.name}"
+        )
+    }
+
+    klass.containingKtFile.containingDirectory?.let {
+        it.files.forEach {
+            (it as KtFile).children
+                .filterIsInstance<KtClass>()
+                .forEach {
+                    println(it.name)
+                }
+        }
     }
 
     return resultFile

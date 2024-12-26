@@ -88,6 +88,17 @@ object Config {
             )
 
             result("fakeStandardDialogControl()")
-        }
+        },
+
+        withTopType(SimpleDialogControl) provide { type ->
+
+            val dialogValueDefault = process(type.appliedGenerics[0])
+
+            packageResolver.addImportIfNotRegistered(
+                FqName(FakeSimpleDialogControl)
+            )
+
+            result("fakeSimpleDialogControl(${dialogValueDefault.codeBlock})")
+        },
     )
 }
