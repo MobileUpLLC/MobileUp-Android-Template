@@ -4,6 +4,7 @@ import com.squareup.kotlinpoet.*
 import fakes.Config
 import fakes.codegen.api.typing.parseType
 import org.jetbrains.kotlin.idea.searching.usages.getDefaultImports
+import org.jetbrains.kotlin.lexer.KtModifierKeywordToken
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
 
@@ -36,9 +37,6 @@ fun generateFake(
     val resultClass = TypeSpec
         .classBuilder(
             name = fakeName
-        )
-        .addModifiers(
-            KModifier.INTERNAL
         )
         .addSuperinterface(
             ClassName(
@@ -87,17 +85,18 @@ fun generateFake(
 
         resultClass.addFunction(
             FunSpec
-                .builder(name)
-                .returns(parsedReturnType.asTypeName())
-                .addCode("return ${default.codeBlock}")
-                .addParameters(
-                    params.map { (name, parsedType) ->
-                        ParameterSpec
-                            .builder(name, parsedType.asTypeName())
-                            .build()
-                    }
-                )
-                .addModifiers(KModifier.OVERRIDE)
+                .builder(name).apply {
+                    returns(parsedReturnType.asTypeName())
+                    addCode("return ${default.codeBlock}")
+                    addParameters(
+                        params.map { (name, parsedType) ->
+                            ParameterSpec
+                                .builder(name, parsedType.asTypeName())
+                                .build()
+                        }
+                    )
+                    addModifiers(KModifier.OVERRIDE)
+                }
                 .build()
         )
     }

@@ -43,16 +43,17 @@ class PackageResolverImpl(
     ): FakesType {
         val clearType = name.replace("?", "")
         val firstName = clearType.split(".").first()
+        val nullable = name.contains("?")
 
         for (import in imports) {
             if (import.nameInFile == firstName) {
-                return import
+                return import.copy(nullable = nullable)
             }
         }
 
         return FakesType(
             fqName = currentFileFqName.child(Name.identifier(clearType)),
-            nullable = name.contains("?")
+            nullable = nullable
         )
     }
 }

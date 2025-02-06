@@ -13,7 +13,7 @@ class ParsedType(
     fun asTypeName(): TypeName {
         val className = type.asClassName()
 
-        if (appliedGenerics.isEmpty()) return className
+        if (appliedGenerics.isEmpty()) return className.copy(nullable = type.nullable)
 
         return className.parameterizedBy(
             *appliedGenerics.map { it.asTypeName() }.toTypedArray()
