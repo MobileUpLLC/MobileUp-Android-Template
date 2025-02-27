@@ -4,6 +4,8 @@ import fakes.codegen.api.rules.ProvidingRule
 import fakes.codegen.api.typing.ParsedType
 import com.squareup.kotlinpoet.CodeBlock
 
+class CannotProvideDefaultException : Exception()
+
 fun interface DefaultValueProvider {
     fun Processor.provide(type: ParsedType): ProcessingResult?
 }

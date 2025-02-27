@@ -1,6 +1,5 @@
-package fakes.codegen.impl
+package fakes.codegen.impl.services.package_resolver
 
-import fakes.codegen.api.PackageResolver
 import fakes.codegen.api.typing.FakesType
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name

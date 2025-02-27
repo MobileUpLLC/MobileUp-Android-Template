@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# docs: https://git-scm.com/docs/githooks#_prepare_commit_msg
+# docs-images: https://git-scm.com/docs/githooks#_prepare_commit_msg
 
 # 1 - commit message file
 # 2 - commit source (message / template / merge / squash / commit)

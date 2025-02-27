@@ -14,13 +14,15 @@ import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiFileFactory
-import fakes.Config
+import fakes.codegen.config.PluginConfig
 import fakes.codegen.impl.generateFake
 import org.jetbrains.kotlin.idea.KotlinFileType
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
 
-class CreateFakeComponentIntention : PsiElementBaseIntentionAction() {
+class CreateFakeComponentIntention(
+    private val pluginConfig: PluginConfig
+) : PsiElementBaseIntentionAction() {
     override fun isAvailable(
         project: Project,
         editor: Editor?,
@@ -31,7 +33,7 @@ class CreateFakeComponentIntention : PsiElementBaseIntentionAction() {
         if (klass !is KtClass) return false
         if (klass.parent !is KtFile) return false
 
-        return klass.isInterface() && klass.name?.let(Config::isComponent) == true
+        return klass.isInterface() && klass.name?.let(pluginConfig::isComponent) == true
     }
 
     override fun getFamilyName() = "CreateFakeComponentIntention"
@@ -47,11 +49,11 @@ class CreateFakeComponentIntention : PsiElementBaseIntentionAction() {
         if (klass !is KtClass) return
 
         val ktFile = klass.parent as? KtFile ?: return
-        val className = Config.getFakeComponentName(klass.name ?: return)
+        val className = pluginConfig.getFakeComponentName(klass.name ?: return)
         val resultFileName = "$className.kt"
 
         val generatedCode = try {
-            generateFake(klass)
+            generateFake(klass, pluginConfig)
         } catch (t: Throwable) {
             Messages.showInfoMessage(
                 project,

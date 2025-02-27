@@ -1,20 +1,22 @@
 package fakes.codegen.impl
 
 import com.squareup.kotlinpoet.*
-import fakes.Config
 import fakes.codegen.api.typing.parseType
+import fakes.codegen.config.PluginConfig
+import fakes.codegen.impl.services.child_resolver.tryCreateChildResolver
+import fakes.codegen.impl.services.package_resolver.PackageResolverImpl
 import org.jetbrains.kotlin.idea.searching.usages.getDefaultImports
-import org.jetbrains.kotlin.lexer.KtModifierKeywordToken
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
 
 fun generateFake(
-    klass: KtClass
+    klass: KtClass,
+    pluginConfig: PluginConfig
 ): String {
     val file = klass.parent as? KtFile ?: throw RuntimeException("Component must be top-class")
     val name = klass.name ?: throw RuntimeException("Class must have name")
 
-    val fakeName = Config.getFakeComponentName(name)
+    val fakeName = pluginConfig.getFakeComponentName(name)
 
     val body = klass.body ?: return "class $fakeName : $name"
 
@@ -28,7 +30,20 @@ fun generateFake(
         )
     }
 
-    val processor = ProcessorImpl(packageResolver)
+    val childResolver = tryCreateChildResolver(
+        ktClass = klass,
+        packageResolver = packageResolver,
+        pluginConfig = pluginConfig
+    )
+
+    val processor = ProcessorImpl(
+        componentInterfaceName = name,
+        services = buildList {
+            childResolver?.let(::add)
+            add(packageResolver)
+        },
+        pluginConfig = pluginConfig
+    )
 
     val resultFile = FileSpec.builder(
         packageName = file.packageFqName.asString(),
@@ -116,16 +131,6 @@ fun generateFake(
             file.packageFqName.asString(),
             "${klass.name}.${it.name}"
         )
-    }
-
-    klass.containingKtFile.containingDirectory?.let {
-        it.files.forEach {
-            (it as KtFile).children
-                .filterIsInstance<KtClass>()
-                .forEach {
-                    println(it.name)
-                }
-        }
     }
 
     return resultFile

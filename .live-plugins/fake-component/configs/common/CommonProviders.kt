@@ -1,5 +1,6 @@
-package fakes
+package configs.common
 
+import fakes.codegen.config.PluginConfig
 import fakes.codegen.api.provide
 import fakes.codegen.api.result
 import fakes.codegen.api.rules.common.or
@@ -7,21 +8,15 @@ import fakes.codegen.api.rules.common.typeRealNameMatches
 import fakes.codegen.api.rules.common.withTopType
 import fakes.codegen.api.typing.FakesType
 import fakes.codegen.api.typing.ParsedType
+import fakes.codegen.impl.services.child_resolver.childResolver
+import fakes.codegen.impl.services.package_resolver.packageResolver
+import fakes.fqName
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.jetbrains.kotlin.name.FqName
 
-object Config {
-
-    fun getFakeComponentName(
-        interfaceName: String
-    ) = "Fake$interfaceName"
-
-    fun isComponent(
-        interfaceName: String
-    ) = "Component" in interfaceName
-
-    val providers = listOf(
+val PluginConfig.commonProviders
+    get() = listOf(
         withTopType<Unit>() provide "Unit",
 
         withTopType<Byte>() provide 0.toByte(),
@@ -100,5 +95,19 @@ object Config {
 
             result("fakeSimpleDialogControl(${dialogValueDefault.codeBlock})")
         },
+
+        withTopType(ChildStack) provide { type ->
+
+            packageResolver.addImportIfNotRegistered(
+                FqName(CreateFakeChildStack)
+            )
+
+            val sealedInterfaceName = childResolver.sealedInterfaceName
+            val child = childResolver.children.first()
+            val fakeComponent = process(child.parameterType).codeBlock
+
+            result(
+                "createFakeChildStack($componentInterfaceName.$sealedInterfaceName.${child.name}($fakeComponent))"
+            )
+        },
     )
-}

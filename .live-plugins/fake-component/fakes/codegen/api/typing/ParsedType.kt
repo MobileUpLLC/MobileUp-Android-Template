@@ -1,6 +1,7 @@
 package fakes.codegen.api.typing
 
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.STAR
 import com.squareup.kotlinpoet.TypeName
 
 class ParsedType(
@@ -11,6 +12,9 @@ class ParsedType(
     val nameInFile get() = type.nameInFile
 
     fun asTypeName(): TypeName {
+
+        if (type.realName == "*") return STAR
+
         val className = type.asClassName()
 
         if (appliedGenerics.isEmpty()) return className.copy(nullable = type.nullable)

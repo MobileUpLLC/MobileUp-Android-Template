@@ -1,8 +1,8 @@
 package fakes.codegen.api.typing
 
-import fakes.codegen.impl.PackageResolverImpl
+import fakes.codegen.impl.services.package_resolver.PackageResolver
 
-fun PackageResolverImpl.parseType(
+fun PackageResolver.parseType(
     typeString: String
 ): ParsedType {
     val (type, generics) = takeTypeAndGenerics(typeString)
@@ -33,6 +33,7 @@ fun takeTypeAndGenerics(type: String): Pair<String, List<String>?> {
                 }
                 openedBrackets--
             }
+
             char == '<' -> {
                 if (openedBrackets == 0) {
                     generics.add(StringBuilder())

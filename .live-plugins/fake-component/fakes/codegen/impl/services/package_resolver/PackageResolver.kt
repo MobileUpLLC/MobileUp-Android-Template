@@ -1,9 +1,12 @@
-package fakes.codegen.api
+package fakes.codegen.impl.services.package_resolver
 
+import fakes.codegen.api.Processor
+import fakes.codegen.api.Service
+import fakes.codegen.api.getService
 import fakes.codegen.api.typing.FakesType
 import org.jetbrains.kotlin.name.FqName
 
-interface PackageResolver {
+interface PackageResolver : Service {
 
     val addedImports: List<FakesType>
 
@@ -20,3 +23,5 @@ interface PackageResolver {
         name: String
     ): FakesType
 }
+
+val Processor.packageResolver get() = getService<PackageResolver>()
