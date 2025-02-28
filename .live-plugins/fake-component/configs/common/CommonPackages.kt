@@ -3,13 +3,13 @@ package configs.common
 import fakes.codegen.config.PluginConfig
 
 // Local
-val PluginConfig.LoadableStatePackage
+val PluginConfig.LoadableState
     get() = "$appPackage.core.utils.LoadableState"
-val PluginConfig.PagedStatePackage
+val PluginConfig.PagedState
     get() = "$appPackage.core.utils.PagedState"
-val PluginConfig.StandardDialogControlPackage
+val PluginConfig.StandardDialogControl
     get() = "$appPackage.core.dialog.standard.StandardDialogControl"
-val PluginConfig.FakeStandardDialogControlPackage
+val PluginConfig.FakeStandardDialogControl
     get() = "$appPackage.core.dialog.standard.fakeStandardDialogControl"
 val PluginConfig.SimpleDialogControl
     get() = "$appPackage.core.dialog.simple.SimpleDialogControl"
@@ -19,7 +19,7 @@ val PluginConfig.CreateFakeChildStack
     get() = "$appPackage.core.utils.createFakeChildStack"
 
 // Libs
-val InputControlPackage = "ru.mobileup.kmm_form_validation.control.InputControl"
-val CheckControlPackage = "ru.mobileup.kmm_form_validation.control.CheckControl"
-val GlobalScopePackage = "kotlinx.coroutines.GlobalScope"
+val InputControl = "ru.mobileup.kmm_form_validation.control.InputControl"
+val CheckControl = "ru.mobileup.kmm_form_validation.control.CheckControl"
+val GlobalScope = "kotlinx.coroutines.GlobalScope"
 val ChildStack = "com.arkivanov.decompose.router.stack.ChildStack"

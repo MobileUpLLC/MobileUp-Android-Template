@@ -61,25 +61,25 @@ val PluginConfig.commonProviders
             result("$realName()")
         },
 
-        withTopType(LoadableStatePackage, PagedStatePackage) provide { type ->
+        withTopType(LoadableState, PagedState) provide { type ->
             val stateDataDefault = process(type.appliedGenerics[0])
 
             result("${type.nameInFile}(data = ${stateDataDefault.codeBlock})")
         },
 
-        withTopType(InputControlPackage, CheckControlPackage) provide { type ->
+        withTopType(InputControl, CheckControl) provide { type ->
 
             packageResolver.addImportIfNotRegistered(
-                FqName(GlobalScopePackage)
+                FqName(GlobalScope)
             )
 
             result("${type.nameInFile}(GlobalScope)")
         },
 
-        withTopType(StandardDialogControlPackage) provide { type ->
+        withTopType(StandardDialogControl) provide { type ->
 
             packageResolver.addImportIfNotRegistered(
-                FqName(FakeStandardDialogControlPackage)
+                FqName(FakeStandardDialogControl)
             )
 
             result("fakeStandardDialogControl()")
