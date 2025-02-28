@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# docs: https://git-scm.com/docs/githooks#_pre_commit
+# docs-images: https://git-scm.com/docs/githooks#_pre_commit
 
 echo "Running detekt check..."
 OUTPUT_DETEKT="/tmp/detekt-$(date +%s)"
