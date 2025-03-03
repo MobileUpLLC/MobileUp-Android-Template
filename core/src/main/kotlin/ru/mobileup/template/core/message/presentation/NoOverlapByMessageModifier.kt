@@ -22,7 +22,7 @@ val LocalMessageOffsets = staticCompositionLocalOf { mutableStateMapOf<String, I
 fun Modifier.noOverlapByMessage(): Modifier = composed {
     val key = remember { UUID.randomUUID().toString() }
     val localMessageOffsets = LocalMessageOffsets.current
-    val bottomInset = with(LocalDensity.current) { navigationBarsWithImePaddingDp().toPx() }
+    val bottomInset = with(LocalDensity.current) { navigationBarsWithImePaddingDp.toPx() }
 
     DisposableEffect(Unit) {
         onDispose {

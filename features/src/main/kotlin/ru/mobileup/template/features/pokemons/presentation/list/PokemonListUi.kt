@@ -6,15 +6,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,24 +40,27 @@ import ru.mobileup.template.features.pokemons.domain.PokemonTypeId
 @Composable
 fun PokemonListUi(
     component: PokemonListComponent,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val pokemonsState by component.pokemonsState.collectAsState()
     val selectedTypeId by component.selectedTypeId.collectAsState()
 
-    Surface(
-        modifier = modifier
-            .fillMaxSize()
-            .navigationBarsPadding(),
-        color = CustomTheme.colors.background.screen
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        topBar = {
             PokemonTypesRow(
                 types = component.types,
                 selectedTypeId = selectedTypeId,
                 onTypeClick = component::onTypeClick
             )
-
+        },
+        contentWindowInsets = WindowInsets.safeDrawing
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = paddingValues.calculateTopPadding())
+        ) {
             PullRefreshLceWidget(
                 state = pokemonsState,
                 onRefresh = component::onRefresh,
@@ -64,7 +69,11 @@ fun PokemonListUi(
                 if (pokemons.isNotEmpty()) {
                     PokemonListContent(
                         pokemons = pokemons,
-                        onPokemonClick = component::onPokemonClick
+                        onPokemonClick = component::onPokemonClick,
+                        contentPadding = PaddingValues(
+                            top = 12.dp,
+                            bottom = 12.dp + paddingValues.calculateBottomPadding()
+                        )
                     )
                 } else {
                     EmptyPlaceholder(description = stringResource(R.string.pokemons_empty_description))
@@ -80,7 +89,7 @@ private fun PokemonTypesRow(
     types: List<PokemonType>,
     selectedTypeId: PokemonTypeId,
     onTypeClick: (PokemonTypeId) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
@@ -117,10 +126,11 @@ private fun PokemonListContent(
     pokemons: List<Pokemon>,
     onPokemonClick: (PokemonId) -> Unit,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(vertical = 12.dp)
+        contentPadding = contentPadding
     ) {
         items(
             items = pokemons,
@@ -142,7 +152,7 @@ private fun PokemonListContent(
 private fun PokemonItem(
     pokemon: Pokemon,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         modifier = modifier

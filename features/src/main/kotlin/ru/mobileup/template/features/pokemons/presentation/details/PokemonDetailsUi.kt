@@ -5,9 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -15,7 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -45,24 +46,27 @@ import ru.mobileup.template.features.pokemons.presentation.list.PokemonTypeItem
 @Composable
 fun PokemonDetailsUi(
     component: PokemonDetailsComponent,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val pokemonState by component.pokemonState.collectAsState()
     val context = LocalContext.current
 
-    Surface(
-        modifier = modifier
-            .fillMaxSize()
-            .systemBarsPadding(),
-        color = CustomTheme.colors.background.screen
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        topBar = {
             IconButton(
+                modifier = Modifier.statusBarsPadding(),
                 onClick = { dispatchOnBackPressed(context) }
             ) {
                 Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
             }
-
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = paddingValues.calculateTopPadding())
+        ) {
             PullRefreshLceWidget(
                 state = pokemonState,
                 onRefresh = component::onRefresh,
@@ -82,13 +86,14 @@ fun PokemonDetailsUi(
 private fun PokemonDetailsContent(
     pokemon: DetailedPokemon,
     onTypeClick: (PokemonType) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 24.dp),
+            .padding(horizontal = 16.dp, vertical = 24.dp)
+            .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

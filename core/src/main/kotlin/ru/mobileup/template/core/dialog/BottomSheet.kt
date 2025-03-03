@@ -1,9 +1,7 @@
 package ru.mobileup.template.core.dialog
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
@@ -25,7 +23,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.mobileup.template.core.theme.custom.CustomTheme
-import ru.mobileup.template.core.utils.navigationBarsWithImePaddingDp
 import kotlin.coroutines.cancellation.CancellationException
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,10 +30,10 @@ import kotlin.coroutines.cancellation.CancellationException
 fun <T : Any> BottomSheet(
     dialogControl: DialogControl<*, T>,
     modifier: Modifier = Modifier,
-    skipPartiallyExpanded: Boolean = false,
+    skipPartiallyExpanded: Boolean = true,
     onHideAnimationFinish: (() -> Unit)? = null,
     shape: Shape = RectangleShape,
-    content: @Composable ColumnScope.(T) -> Unit
+    content: @Composable ColumnScope.(T) -> Unit,
 ) {
     val dismissableByUser by dialogControl.dismissableByUser.collectAsState()
 
@@ -77,9 +74,8 @@ fun <T : Any> BottomSheet(
 
     val component = delayedComponent
     if (component != null) {
-        val navigationBarWithImePadding = navigationBarsWithImePaddingDp()
         ModalBottomSheet(
-            modifier = modifier,
+            modifier = modifier.statusBarsPadding(),
             onDismissRequest = {
                 if (dismissableByUser) dialogControl.dismiss()
             },
@@ -90,14 +86,9 @@ fun <T : Any> BottomSheet(
             shape = shape,
             containerColor = CustomTheme.colors.background.screen,
             scrimColor = Color.Black.copy(alpha = 0.4f),
-            contentWindowInsets = { WindowInsets(0, 0, 0, 0) },
             dragHandle = null,
             content = {
-                Column(
-                    Modifier.padding(bottom = navigationBarWithImePadding)
-                ) {
-                    content(component)
-                }
+                content(component)
             }
         )
     }
