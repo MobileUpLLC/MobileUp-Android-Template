@@ -24,4 +24,3 @@ object ExampleConfig : PluginConfig {
         addAll(commonProviders)
     }
 }
-
