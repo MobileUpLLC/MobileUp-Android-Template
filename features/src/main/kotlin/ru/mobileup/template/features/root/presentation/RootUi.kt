@@ -9,13 +9,15 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import ru.mobileup.template.core.message.presentation.MessageUi
 import ru.mobileup.template.core.theme.AppTheme
+import ru.mobileup.template.core.utils.ConfigureSystemBars
+import ru.mobileup.template.core.utils.LocalSystemBarsSettings
+import ru.mobileup.template.core.utils.accumulate
 import ru.mobileup.template.features.pokemons.presentation.PokemonsUi
 
-@Suppress("ModifierReused")
 @Composable
 fun RootUi(
     component: RootComponent,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val childStack by component.childStack.collectAsState()
 
@@ -27,9 +29,16 @@ fun RootUi(
 
     MessageUi(
         component = component.messageComponent,
-        modifier = modifier,
         bottomPadding = 16.dp
     )
+
+    SystemBarsColors()
+}
+
+@Composable
+private fun SystemBarsColors() {
+    val systemBarsSettings = LocalSystemBarsSettings.current.accumulate()
+    ConfigureSystemBars(systemBarsSettings)
 }
 
 @Preview(showSystemUi = true)

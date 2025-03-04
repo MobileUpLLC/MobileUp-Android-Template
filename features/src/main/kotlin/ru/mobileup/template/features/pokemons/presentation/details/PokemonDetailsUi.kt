@@ -52,32 +52,30 @@ fun PokemonDetailsUi(
     val context = LocalContext.current
 
     Scaffold(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .statusBarsPadding(),
         topBar = {
             IconButton(
-                modifier = Modifier.statusBarsPadding(),
                 onClick = { dispatchOnBackPressed(context) }
             ) {
                 Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
             }
         }
     ) { paddingValues ->
-        Column(
+        PullRefreshLceWidget(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = paddingValues.calculateTopPadding())
-        ) {
-            PullRefreshLceWidget(
-                state = pokemonState,
-                onRefresh = component::onRefresh,
-                onRetryClick = component::onRetryClick
-            ) { pokemon, refreshing ->
-                PokemonDetailsContent(
-                    pokemon = pokemon,
-                    onTypeClick = component::onTypeClick
-                )
-                RefreshingProgress(refreshing, modifier = Modifier.padding(top = 4.dp))
-            }
+                .padding(top = paddingValues.calculateTopPadding()),
+            state = pokemonState,
+            onRefresh = component::onRefresh,
+            onRetryClick = component::onRetryClick
+        ) { pokemon, refreshing ->
+            PokemonDetailsContent(
+                pokemon = pokemon,
+                onTypeClick = component::onTypeClick
+            )
+            RefreshingProgress(refreshing, modifier = Modifier.padding(top = 4.dp))
         }
     }
 }

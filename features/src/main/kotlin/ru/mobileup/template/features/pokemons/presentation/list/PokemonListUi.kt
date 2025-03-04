@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -54,32 +52,26 @@ fun PokemonListUi(
                 onTypeClick = component::onTypeClick
             )
         },
-        contentWindowInsets = WindowInsets.safeDrawing
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = paddingValues.calculateTopPadding())
-        ) {
-            PullRefreshLceWidget(
-                state = pokemonsState,
-                onRefresh = component::onRefresh,
-                onRetryClick = component::onRetryClick
-            ) { pokemons, refreshing ->
-                if (pokemons.isNotEmpty()) {
-                    PokemonListContent(
-                        pokemons = pokemons,
-                        onPokemonClick = component::onPokemonClick,
-                        contentPadding = PaddingValues(
-                            top = 12.dp,
-                            bottom = 12.dp + paddingValues.calculateBottomPadding()
-                        )
+        PullRefreshLceWidget(
+            modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
+            state = pokemonsState,
+            onRefresh = component::onRefresh,
+            onRetryClick = component::onRetryClick
+        ) { pokemons, refreshing ->
+            if (pokemons.isNotEmpty()) {
+                PokemonListContent(
+                    pokemons = pokemons,
+                    onPokemonClick = component::onPokemonClick,
+                    contentPadding = PaddingValues(
+                        top = 12.dp,
+                        bottom = 12.dp + paddingValues.calculateBottomPadding()
                     )
-                } else {
-                    EmptyPlaceholder(description = stringResource(R.string.pokemons_empty_description))
-                }
-                RefreshingProgress(refreshing)
+                )
+            } else {
+                EmptyPlaceholder(description = stringResource(R.string.pokemons_empty_description))
             }
+            RefreshingProgress(refreshing)
         }
     }
 }
