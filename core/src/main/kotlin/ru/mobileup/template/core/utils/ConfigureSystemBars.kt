@@ -3,7 +3,6 @@ package ru.mobileup.template.core.utils
 import android.os.Build
 import android.view.Window
 import androidx.activity.compose.LocalActivity
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -25,46 +24,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.util.lerp
 import androidx.core.view.WindowInsetsControllerCompat
+import ru.mobileup.template.core.theme.custom.CustomTheme
 import android.graphics.Color as AndroidColor
 
 private enum class NavBarPosition {
     Bottom, Left, Right, None
 }
 
-private val DefaultLightScrim = AndroidColor.argb(0xe6, 0xFF, 0xFF, 0xFF)
-private val DefaultDarkScrim = AndroidColor.argb(0x80, 0x1b, 0x1b, 0x1b)
-
 /**
- * Configures system bar colors and contrast enforcement while adapting to different navigation modes.
+ * Configures system bar colors while adapting to different navigation modes.
  *
- * This function dynamically adjusts the system bars (status bar and navigation bar) based on the current navigation mode,
- * ensuring correct background colors and enforcing contrast settings when necessary.
+ * This function dynamically adjusts the system bars (status bar and navigation bar)
+ * based on the current navigation mode, ensuring correct background colors.
  *
  * Supports screen rotation and correctly handles the navigation bar in both portrait and landscape orientations.
  *
  * **Usage:**
  * Call this function **after** the main content, not before it.
- *
- * ✅ **Correct Usage:**
- * ```
- * @Composable
- * fun Content() {
- *     Scaffold { ... }
- *     ConfigureSystemBars()
- * }
- * ```
- * ❌ **Incorrect Usage:**
- * ```
- * @Composable
- * fun Content() {
- *     ConfigureSystemBars()
- *     Scaffold { ... }
- * }
- * ```
  */
 @Suppress("ModifierMissing")
 @Composable
@@ -74,7 +56,8 @@ fun ConfigureSystemBars(settings: SystemBarsSettings) {
     val density = LocalDensity.current
     val layoutDirection = LocalLayoutDirection.current
     val window = LocalActivity.current?.window
-    val isDarkTheme = isSystemInDarkTheme()
+    val backgroundColor = CustomTheme.colors.background.screen
+    val isLightTheme = CustomTheme.colors.isLight
     val isGestureNavigation by remember {
         derivedStateOf {
             systemGestures.run {
@@ -92,19 +75,39 @@ fun ConfigureSystemBars(settings: SystemBarsSettings) {
             }
         }
     }
+    val defaultSystemBarColor = remember(backgroundColor) {
+        val luminance = backgroundColor.luminance()
+        val alpha = lerp(start = 0.5f, stop = 0.9f, fraction = luminance)
+        backgroundColor.copy(alpha = alpha)
+    }
+    val statusBarColor = remember(settings, defaultSystemBarColor) {
+        settings.statusBarColor.takeOrElse { defaultSystemBarColor }
+    }
+    val navBarColor = remember(settings, defaultSystemBarColor, isGestureNavigation) {
+        if (isGestureNavigation) {
+            Color.Transparent
+        } else {
+            settings.navigationBarColor.takeOrElse { defaultSystemBarColor }
+        }
+    }
 
     window?.let {
-        LaunchedEffect(settings) {
+        LaunchedEffect(Unit) {
+            @Suppress("DEPRECATION")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                window.isNavigationBarContrastEnforced = false
+            } else {
+                window.navigationBarColor = AndroidColor.TRANSPARENT
+                window.statusBarColor = AndroidColor.TRANSPARENT
+            }
+        }
+
+        LaunchedEffect(settings, isLightTheme) {
             updateSystemBarIconColors(
                 window = window,
-                isStatusBarIconsDark = settings.isStatusBarIconsDark,
-                isNavigationBarIconsDark = settings.isNavigationBarIconsDark
-            )
-            updateNavigationBarColor(
-                window = window,
-                navigationBarColor = settings.navigationBarColor,
-                isNavigationBarContrastEnforced = settings.isNavigationBarContrastEnforced,
-                isDarkTheme = isDarkTheme
+                isLightTheme = isLightTheme,
+                statusBarIconsColor = settings.statusBarIconsColor,
+                navBarIconsColor = settings.navigationBarIconsColor
             )
         }
     }
@@ -116,72 +119,54 @@ fun ConfigureSystemBars(settings: SystemBarsSettings) {
                 .fillMaxWidth()
                 .windowInsetsTopHeight(WindowInsets.statusBars)
                 .drawBehind {
-                    drawRect(settings.statusBarColor)
+                    drawRect(statusBarColor)
                 }
         )
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val navBarModifier = remember(navBarPosition) {
-                when (navBarPosition) {
-                    NavBarPosition.Bottom -> Modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .windowInsetsBottomHeight(navigationBars)
+        val navBarModifier = remember(navBarPosition) {
+            when (navBarPosition) {
+                NavBarPosition.Bottom -> Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .windowInsetsBottomHeight(navigationBars)
 
-                    NavBarPosition.Left -> Modifier
-                        .align(Alignment.CenterStart)
-                        .fillMaxHeight()
-                        .windowInsetsStartWidth(navigationBars)
+                NavBarPosition.Left -> Modifier
+                    .align(Alignment.CenterStart)
+                    .fillMaxHeight()
+                    .windowInsetsStartWidth(navigationBars)
 
-                    NavBarPosition.Right -> Modifier
-                        .align(Alignment.CenterEnd)
-                        .fillMaxHeight()
-                        .windowInsetsEndWidth(navigationBars)
+                NavBarPosition.Right -> Modifier
+                    .align(Alignment.CenterEnd)
+                    .fillMaxHeight()
+                    .windowInsetsEndWidth(navigationBars)
 
-                    NavBarPosition.None -> Modifier
-                }
+                NavBarPosition.None -> Modifier
             }
-
-            Box(
-                navBarModifier.drawBehind {
-                    drawRect(
-                        if (isGestureNavigation) Color.Transparent else settings.navigationBarColor
-                    )
-                }
-            )
         }
+
+        Box(
+            navBarModifier.drawBehind {
+                drawRect(navBarColor)
+            }
+        )
     }
 }
 
 private fun updateSystemBarIconColors(
     window: Window,
-    isStatusBarIconsDark: Boolean,
-    isNavigationBarIconsDark: Boolean,
-) {
-    WindowInsetsControllerCompat(window, window.decorView).apply {
-        isAppearanceLightStatusBars = isStatusBarIconsDark
-        isAppearanceLightNavigationBars = isNavigationBarIconsDark
-    }
-}
-
-@Suppress("DEPRECATION")
-private fun updateNavigationBarColor(
-    window: Window,
-    navigationBarColor: Color,
-    isNavigationBarContrastEnforced: Boolean,
-    isDarkTheme: Boolean,
-) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        window.isNavigationBarContrastEnforced = isNavigationBarContrastEnforced
+    isLightTheme: Boolean,
+    statusBarIconsColor: SystemBarIconsColor,
+    navBarIconsColor: SystemBarIconsColor,
+) = WindowInsetsControllerCompat(window, window.decorView).run {
+    isAppearanceLightStatusBars = if (statusBarIconsColor.isSpecified) {
+        statusBarIconsColor == SystemBarIconsColor.Dark
     } else {
-        window.navigationBarColor = if (isNavigationBarContrastEnforced) {
-            if (navigationBarColor != Color.Transparent) {
-                navigationBarColor.toArgb()
-            } else {
-                if (isDarkTheme) DefaultDarkScrim else DefaultLightScrim
-            }
-        } else {
-            navigationBarColor.toArgb()
-        }
+        isLightTheme
+    }
+
+    isAppearanceLightNavigationBars = if (navBarIconsColor.isSpecified) {
+        navBarIconsColor == SystemBarIconsColor.Dark
+    } else {
+        isLightTheme
     }
 }

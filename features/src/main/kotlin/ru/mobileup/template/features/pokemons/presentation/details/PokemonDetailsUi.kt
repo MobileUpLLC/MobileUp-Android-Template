@@ -2,9 +2,11 @@ package ru.mobileup.template.features.pokemons.presentation.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -52,14 +54,21 @@ fun PokemonDetailsUi(
     val context = LocalContext.current
 
     Scaffold(
-        modifier = modifier
-            .fillMaxSize()
-            .statusBarsPadding(),
+        modifier = modifier.fillMaxSize(),
         topBar = {
-            IconButton(
-                onClick = { dispatchOnBackPressed(context) }
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
             ) {
-                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                IconButton(
+                    onClick = { dispatchOnBackPressed(context) }
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = null
+                    )
+                }
             }
         }
     ) { paddingValues ->

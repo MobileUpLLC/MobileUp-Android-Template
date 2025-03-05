@@ -20,6 +20,7 @@ fun RootUi(
     modifier: Modifier = Modifier,
 ) {
     val childStack by component.childStack.collectAsState()
+    val systemBarsSettings = LocalSystemBarsSettings.current.accumulate()
 
     Children(childStack, modifier) { child ->
         when (val instance = child.instance) {
@@ -32,12 +33,6 @@ fun RootUi(
         bottomPadding = 16.dp
     )
 
-    SystemBarsColors()
-}
-
-@Composable
-private fun SystemBarsColors() {
-    val systemBarsSettings = LocalSystemBarsSettings.current.accumulate()
     ConfigureSystemBars(systemBarsSettings)
 }
 

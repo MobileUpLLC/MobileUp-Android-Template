@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.max
 
@@ -21,37 +23,72 @@ val LocalSystemBarsSettings = staticCompositionLocalOf {
     mutableStateListOf<SystemBarsSettings>()
 }
 
-data class SystemBarsSettings(
-    val statusBarColor: Color = Color.Transparent,
-    val navigationBarColor: Color = Color.Transparent,
-    val isStatusBarIconsDark: Boolean = true,
-    val isNavigationBarIconsDark: Boolean = true,
-    val isNavigationBarContrastEnforced: Boolean = true,
-)
+enum class SystemBarIconsColor {
+    Light, Dark, Unspecified;
 
-fun List<SystemBarsSettings>.accumulate(): SystemBarsSettings =
-    if (isEmpty()) SystemBarsSettings() else last()
+    @Stable
+    inline val isSpecified: Boolean get() = this != Unspecified
+
+    inline fun takeOrElse(block: () -> SystemBarIconsColor): SystemBarIconsColor =
+        if (isSpecified) this else block()
+}
+
+/**
+ * Represents the configuration settings for system bars, including status bar and navigation bar colors,
+ * as well as icon colors for each.
+ *
+ * @property statusBarColor The color of the status bar. If set to [Color.Unspecified], the primary background
+ * color from the theme is used, and an alpha value is applied dynamically based on its luminance.
+ * @property navigationBarColor The color of the navigation bar. If set to [Color.Unspecified], the primary
+ * background color from the theme is used, and an alpha value is applied dynamically based on its luminance.
+ * @property statusBarIconsColor The color scheme for the status bar icons. If set to [SystemBarIconsColor.Unspecified],
+ * the value is determined based on the app's theme: dark icons for light themes, light icons for dark themes.
+ * @property navigationBarIconsColor The color scheme for the navigation bar icons. If set to [SystemBarIconsColor.Unspecified],
+ * the value is determined based on the app's theme: dark icons for light themes, light icons for dark themes.
+ */
+data class SystemBarsSettings(
+    val statusBarColor: Color,
+    val navigationBarColor: Color,
+    val statusBarIconsColor: SystemBarIconsColor,
+    val navigationBarIconsColor: SystemBarIconsColor,
+) {
+    companion object {
+        val DEFAULT = SystemBarsSettings(
+            statusBarColor = Color.Unspecified,
+            navigationBarColor = Color.Unspecified,
+            statusBarIconsColor = SystemBarIconsColor.Unspecified,
+            navigationBarIconsColor = SystemBarIconsColor.Unspecified,
+        )
+    }
+}
+
+fun List<SystemBarsSettings>.accumulate() = fold(SystemBarsSettings.DEFAULT) { acc, settings ->
+    SystemBarsSettings(
+        statusBarColor = settings.statusBarColor.takeOrElse(acc::statusBarColor),
+        navigationBarColor = settings.navigationBarColor.takeOrElse(acc::navigationBarColor),
+        statusBarIconsColor = settings.statusBarIconsColor.takeOrElse(acc::statusBarIconsColor),
+        navigationBarIconsColor = settings.navigationBarIconsColor.takeOrElse(acc::navigationBarIconsColor),
+    )
+}
 
 @Composable
 fun SystemBars(
-    statusBarColor: Color = Color.Transparent,
-    navigationBarColor: Color = Color.Transparent,
-    isStatusBarIconsDark: Boolean = true,
-    isNavigationBarIconsDark: Boolean = true,
-    isNavigationBarContrastEnforced: Boolean = true,
+    statusBarColor: Color = Color.Unspecified,
+    navigationBarColor: Color = Color.Unspecified,
+    statusBarIconsColor: SystemBarIconsColor = SystemBarIconsColor.Unspecified,
+    navigationBarIconsColor: SystemBarIconsColor = SystemBarIconsColor.Unspecified,
 ) {
     val newSystemBarsSettings = SystemBarsSettings(
         statusBarColor = statusBarColor,
         navigationBarColor = navigationBarColor,
-        isStatusBarIconsDark = isStatusBarIconsDark,
-        isNavigationBarIconsDark = isNavigationBarIconsDark,
-        isNavigationBarContrastEnforced = isNavigationBarContrastEnforced
+        statusBarIconsColor = statusBarIconsColor,
+        navigationBarIconsColor = navigationBarIconsColor,
     )
     val systemBarsSettings = LocalSystemBarsSettings.current
 
-    DisposableEffect(systemBarsSettings) {
+    DisposableEffect(newSystemBarsSettings) {
         systemBarsSettings.add(newSystemBarsSettings)
-        onDispose { systemBarsSettings.removeAt(systemBarsSettings.lastIndex) }
+        onDispose { systemBarsSettings.remove(newSystemBarsSettings) }
     }
 }
 
