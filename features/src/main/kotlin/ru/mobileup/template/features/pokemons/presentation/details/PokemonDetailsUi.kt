@@ -2,12 +2,15 @@ package ru.mobileup.template.features.pokemons.presentation.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -15,7 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -45,35 +48,43 @@ import ru.mobileup.template.features.pokemons.presentation.list.PokemonTypeItem
 @Composable
 fun PokemonDetailsUi(
     component: PokemonDetailsComponent,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val pokemonState by component.pokemonState.collectAsState()
     val context = LocalContext.current
 
-    Surface(
-        modifier = modifier
-            .fillMaxSize()
-            .systemBarsPadding(),
-        color = CustomTheme.colors.background.screen
-    ) {
-        Column(modifier = Modifier.fillMaxSize()) {
-            IconButton(
-                onClick = { dispatchOnBackPressed(context) }
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        topBar = {
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
             ) {
-                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                IconButton(
+                    onClick = { dispatchOnBackPressed(context) }
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = null
+                    )
+                }
             }
-
-            PullRefreshLceWidget(
-                state = pokemonState,
-                onRefresh = component::onRefresh,
-                onRetryClick = component::onRetryClick
-            ) { pokemon, refreshing ->
-                PokemonDetailsContent(
-                    pokemon = pokemon,
-                    onTypeClick = component::onTypeClick
-                )
-                RefreshingProgress(refreshing, modifier = Modifier.padding(top = 4.dp))
-            }
+        }
+    ) { paddingValues ->
+        PullRefreshLceWidget(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = paddingValues.calculateTopPadding()),
+            state = pokemonState,
+            onRefresh = component::onRefresh,
+            onRetryClick = component::onRetryClick
+        ) { pokemon, refreshing ->
+            PokemonDetailsContent(
+                pokemon = pokemon,
+                onTypeClick = component::onTypeClick
+            )
+            RefreshingProgress(refreshing, modifier = Modifier.padding(top = 4.dp))
         }
     }
 }
@@ -82,13 +93,14 @@ fun PokemonDetailsUi(
 private fun PokemonDetailsContent(
     pokemon: DetailedPokemon,
     onTypeClick: (PokemonType) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 24.dp),
+            .padding(horizontal = 16.dp, vertical = 24.dp)
+            .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

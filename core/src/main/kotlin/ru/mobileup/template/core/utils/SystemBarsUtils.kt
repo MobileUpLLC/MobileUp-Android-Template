@@ -1,79 +1,113 @@
 package ru.mobileup.template.core.utils
 
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.mutableStateMapOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.max
-import java.util.UUID
 
-val LocalSystemBarsSettings =
-    staticCompositionLocalOf { mutableStateMapOf<String, SystemBarsSettings>() }
+val LocalSystemBarsSettings = staticCompositionLocalOf {
+    mutableStateListOf<SystemBarsSettings>()
+}
 
+enum class SystemBarIconsColor {
+    Light, Dark, Unspecified;
+
+    @Stable
+    inline val isSpecified: Boolean get() = this != Unspecified
+
+    inline fun takeOrElse(block: () -> SystemBarIconsColor): SystemBarIconsColor =
+        if (isSpecified) this else block()
+}
+
+/**
+ * Represents the configuration settings for system bars, including status bar and navigation bar colors,
+ * as well as icon colors for each.
+ *
+ * @property statusBarColor The color of the status bar. If set to [Color.Unspecified], the primary background
+ * color from the theme is used, and an alpha value is applied dynamically based on its luminance.
+ * @property navigationBarColor The color of the navigation bar. If set to [Color.Unspecified], the primary
+ * background color from the theme is used, and an alpha value is applied dynamically based on its luminance.
+ * @property statusBarIconsColor The color scheme for the status bar icons. If set to [SystemBarIconsColor.Unspecified],
+ * the value is determined based on the app's theme: dark icons for light themes, light icons for dark themes.
+ * @property navigationBarIconsColor The color scheme for the navigation bar icons. If set to [SystemBarIconsColor.Unspecified],
+ * the value is determined based on the app's theme: dark icons for light themes, light icons for dark themes.
+ */
 data class SystemBarsSettings(
-    val transparentNavigationBar: Boolean,
-    val lightStatusBarIcons: Boolean
-)
-
-@Composable
-fun SystemBars(
-    transparentNavigationBar: Boolean = false,
-    lightStatusBarIcons: Boolean = false
+    val statusBarColor: Color,
+    val navigationBarColor: Color,
+    val statusBarIconsColor: SystemBarIconsColor,
+    val navigationBarIconsColor: SystemBarIconsColor,
 ) {
-    val key = remember { UUID.randomUUID().toString() }
-    val systemBarsSettings = SystemBarsSettings(transparentNavigationBar, lightStatusBarIcons)
-    val systemBarsSettingsMap = LocalSystemBarsSettings.current
-
-    DisposableEffect(systemBarsSettings) {
-        systemBarsSettingsMap[key] = systemBarsSettings
-        onDispose { systemBarsSettingsMap.remove(key) }
+    companion object {
+        val DEFAULT = SystemBarsSettings(
+            statusBarColor = Color.Unspecified,
+            navigationBarColor = Color.Unspecified,
+            statusBarIconsColor = SystemBarIconsColor.Unspecified,
+            navigationBarIconsColor = SystemBarIconsColor.Unspecified,
+        )
     }
 }
 
-@Composable
-fun Map<String, SystemBarsSettings>.accumulate(): SystemBarsSettings {
-    return SystemBarsSettings(
-        transparentNavigationBar = values.any { it.transparentNavigationBar },
-        lightStatusBarIcons = values.any { it.lightStatusBarIcons }
+fun List<SystemBarsSettings>.accumulate() = fold(SystemBarsSettings.DEFAULT) { acc, settings ->
+    SystemBarsSettings(
+        statusBarColor = settings.statusBarColor.takeOrElse(acc::statusBarColor),
+        navigationBarColor = settings.navigationBarColor.takeOrElse(acc::navigationBarColor),
+        statusBarIconsColor = settings.statusBarIconsColor.takeOrElse(acc::statusBarIconsColor),
+        navigationBarIconsColor = settings.navigationBarIconsColor.takeOrElse(acc::navigationBarIconsColor),
     )
+}
+
+@Composable
+fun SystemBars(
+    statusBarColor: Color = Color.Unspecified,
+    navigationBarColor: Color = Color.Unspecified,
+    statusBarIconsColor: SystemBarIconsColor = SystemBarIconsColor.Unspecified,
+    navigationBarIconsColor: SystemBarIconsColor = SystemBarIconsColor.Unspecified,
+) {
+    val newSystemBarsSettings = SystemBarsSettings(
+        statusBarColor = statusBarColor,
+        navigationBarColor = navigationBarColor,
+        statusBarIconsColor = statusBarIconsColor,
+        navigationBarIconsColor = navigationBarIconsColor,
+    )
+    val systemBarsSettings = LocalSystemBarsSettings.current
+
+    DisposableEffect(newSystemBarsSettings) {
+        systemBarsSettings.add(newSystemBarsSettings)
+        onDispose { systemBarsSettings.remove(newSystemBarsSettings) }
+    }
 }
 
 fun Modifier.systemBarsWithImePadding() = systemBarsPadding().imePadding()
 
 fun Modifier.navigationBarsWithImePadding() = navigationBarsPadding().imePadding()
 
-@Composable
-fun statusBarsPaddingDp(): Dp {
-    return WindowInsets.statusBars.only(WindowInsetsSides.Top)
-        .asPaddingValues().calculateTopPadding()
-}
+val statusBarsPaddingDp: Dp
+    @Composable
+    get() = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
 
-@Composable
-fun navigationBarsPaddingDp(): Dp {
-    return WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)
-        .asPaddingValues().calculateBottomPadding()
-}
+val navigationBarsPaddingDp: Dp
+    @Composable
+    get() = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
-@Composable
-fun navigationBarsWithImePaddingDp(): Dp {
-    val navigationBarPaddingDp = WindowInsets.navigationBars.only(WindowInsetsSides.Bottom)
-        .asPaddingValues().calculateBottomPadding()
+val imePaddingDp: Dp
+    @Composable
+    get() = WindowInsets.ime.asPaddingValues().calculateBottomPadding()
 
-    val imePaddingDp = WindowInsets.ime.only(WindowInsetsSides.Bottom)
-        .asPaddingValues().calculateBottomPadding()
-
-    return max(navigationBarPaddingDp, imePaddingDp)
-}
+val navigationBarsWithImePaddingDp: Dp
+    @Composable
+    get() = max(navigationBarsPaddingDp, imePaddingDp)

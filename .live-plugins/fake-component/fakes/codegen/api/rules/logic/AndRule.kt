@@ -11,5 +11,3 @@ private class AndRule(
         return first.canProvide(type) && second.canProvide(type)
     }
 }
-
-

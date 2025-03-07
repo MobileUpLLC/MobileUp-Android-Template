@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.name.Name
 
 class PackageResolverImpl(
     private val currentFileFqName: FqName
-): PackageResolver {
+) : PackageResolver {
 
     private val imports = mutableListOf<FakesType>()
     private val _addedImports = mutableListOf<FakesType>()
