@@ -12,15 +12,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.max
+import androidx.compose.ui.util.fastFold
+import androidx.compose.ui.util.fastMap
+import java.util.UUID
 
 val LocalSystemBarsSettings = staticCompositionLocalOf {
-    mutableStateListOf<SystemBarsSettings>()
+    mutableStateListOf<Pair<String, SystemBarsSettings>>()
 }
 
 enum class SystemBarIconsColor {
@@ -62,7 +66,9 @@ data class SystemBarsSettings(
     }
 }
 
-fun List<SystemBarsSettings>.accumulate() = fold(SystemBarsSettings.DEFAULT) { acc, settings ->
+fun List<Pair<String, SystemBarsSettings>>.accumulate() = fastMap { it.second }.fastFold(
+    SystemBarsSettings.DEFAULT
+) { acc, settings ->
     SystemBarsSettings(
         statusBarColor = settings.statusBarColor.takeOrElse(acc::statusBarColor),
         navigationBarColor = settings.navigationBarColor.takeOrElse(acc::navigationBarColor),
@@ -78,6 +84,7 @@ fun SystemBars(
     statusBarIconsColor: SystemBarIconsColor = SystemBarIconsColor.Unspecified,
     navigationBarIconsColor: SystemBarIconsColor = SystemBarIconsColor.Unspecified,
 ) {
+    val key = remember { UUID.randomUUID().toString() }
     val newSystemBarsSettings = SystemBarsSettings(
         statusBarColor = statusBarColor,
         navigationBarColor = navigationBarColor,
@@ -87,8 +94,9 @@ fun SystemBars(
     val systemBarsSettings = LocalSystemBarsSettings.current
 
     DisposableEffect(newSystemBarsSettings) {
-        systemBarsSettings.add(newSystemBarsSettings)
-        onDispose { systemBarsSettings.remove(newSystemBarsSettings) }
+        val config = key to newSystemBarsSettings
+        systemBarsSettings.add(config)
+        onDispose { systemBarsSettings.remove(config) }
     }
 }
 
