@@ -232,7 +232,7 @@ fun AppTextField(
     val hasFocus by inputControl.hasFocus.collectAsState()
     val error by inputControl.error.collectAsState()
     val enabled by inputControl.enabled.collectAsState()
-    val text by inputControl.text.collectAsState()
+    val text by inputControl.value.collectAsState()
 
     AppTextField(
         modifier = modifier,
@@ -246,8 +246,8 @@ fun AppTextField(
         prefix = prefix,
         suffix = suffix,
         isEnabled = enabled,
-        onTextChange = inputControl::onTextChanged,
-        onFocusChange = inputControl::onFocusChanged,
+        onTextChange = inputControl::onValueChange,
+        onFocusChange = inputControl::onFocusChange,
         singleLine = minLines == 1,
         keyboardOptions = inputControl.keyboardOptions.toCompose(),
         keyboardActions = keyboardActions,
