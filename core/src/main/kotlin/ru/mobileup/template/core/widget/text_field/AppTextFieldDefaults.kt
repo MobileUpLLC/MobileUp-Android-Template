@@ -19,6 +19,12 @@ import androidx.compose.ui.unit.dp
 import ru.mobileup.template.core.theme.custom.CustomTheme
 
 @Immutable
+enum class TextFieldType {
+    Common,
+    Secure
+}
+
+@Immutable
 object AppTextFieldDefaults {
 
     @Stable
