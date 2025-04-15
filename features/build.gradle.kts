@@ -24,6 +24,7 @@ dependencies {
 
     // UI
     implementation(libs.bundles.compose)
+    implementation(libs.compose.material.icons)
     implementation(libs.bundles.accompanist)
     implementation(libs.bundles.coil)
 
