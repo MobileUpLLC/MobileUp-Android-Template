@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -45,6 +47,7 @@ fun PokemonListUi(
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
+        contentWindowInsets = WindowInsets.statusBars,
         topBar = {
             PokemonTypesRow(
                 types = component.types,
@@ -52,13 +55,13 @@ fun PokemonListUi(
                 onTypeClick = component::onTypeClick
             )
         },
-    ) { paddingValues ->
+    ) { innerPadding ->
         PullRefreshLceWidget(
-            modifier = Modifier.padding(top = paddingValues.calculateTopPadding()),
+            modifier = Modifier.padding(innerPadding),
             state = pokemonsState,
             onRefresh = component::onRefresh,
             onRetryClick = component::onRetryClick
-        ) { pokemons, refreshing ->
+        ) { pokemons, refreshing, paddingValues ->
             if (pokemons.isNotEmpty()) {
                 PokemonListContent(
                     pokemons = pokemons,
@@ -69,7 +72,10 @@ fun PokemonListUi(
                     )
                 )
             } else {
-                EmptyPlaceholder(description = stringResource(R.string.pokemons_empty_description))
+                EmptyPlaceholder(
+                    modifier = Modifier.padding(paddingValues),
+                    description = stringResource(R.string.pokemons_empty_description)
+                )
             }
             RefreshingProgress(refreshing)
         }
