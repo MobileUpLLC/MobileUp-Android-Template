@@ -4,12 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -55,6 +57,7 @@ fun PokemonDetailsUi(
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
+        contentWindowInsets = WindowInsets.statusBars,
         topBar = {
             Box(
                 Modifier
@@ -71,20 +74,24 @@ fun PokemonDetailsUi(
                 }
             }
         }
-    ) { paddingValues ->
+    ) { innerPadding ->
         PullRefreshLceWidget(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = paddingValues.calculateTopPadding()),
+                .padding(innerPadding),
             state = pokemonState,
             onRefresh = component::onRefresh,
-            onRetryClick = component::onRetryClick
-        ) { pokemon, refreshing ->
+            onRetryClick = component::onRetryClick,
+        ) { pokemon, refreshing, paddingValues ->
             PokemonDetailsContent(
                 pokemon = pokemon,
-                onTypeClick = component::onTypeClick
+                onTypeClick = component::onTypeClick,
+                contentPadding = paddingValues,
             )
-            RefreshingProgress(refreshing, modifier = Modifier.padding(top = 4.dp))
+            RefreshingProgress(
+                modifier = Modifier.padding(top = 4.dp),
+                active = refreshing
+            )
         }
     }
 }
@@ -93,14 +100,15 @@ fun PokemonDetailsUi(
 private fun PokemonDetailsContent(
     pokemon: DetailedPokemon,
     onTypeClick: (PokemonType) -> Unit,
+    contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 24.dp)
-            .navigationBarsPadding(),
+            .padding(contentPadding)
+            .padding(horizontal = 16.dp, vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
