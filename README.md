@@ -12,6 +12,16 @@ After cloning the template:
 3. Remove the pokemons feature. It is created as an example.
 4. Replace error text resources with text for your project.
 
+Or simply run the setup script:
+
+`bash scripts/setup-project <new.application.id> <JIRA_PROJECT_KEY>`
+
+This will:
+
+* Rename the package
+* Reset Git history
+* Set up Git hooks for Detekt and commit message formatting
+
 ## Modules
 The project is based on three gradle modules:
 
@@ -51,6 +61,10 @@ It consists of concrete features. Each feature has its own package which contain
 
 2. Adds issue prefix in every commit message according to branch name. Installation:
    `cp git_hooks/prepare-commit-msg .git/hooks/ && chmod 0775 .git/hooks/prepare-commit-msg`
+
+Or simply run the setup script:
+
+`bash scripts/setup-git-hooks <JIRA_PROJECT_KEY>`
 
 ### Geminio templates - creates boilerplate code
 1. Read installation instruction root/geminio/SETUP.MD

@@ -1,0 +1,43 @@
+#!/bin/sh
+
+set -e
+
+HOOKS_DIR="git_hooks"
+GIT_HOOKS_PATH=".git/hooks"
+
+ISSUE_PREFIX="$1"
+
+if [ -z "$ISSUE_PREFIX" ]; then
+  echo "Error: ISSUE_PREFIX is not set."
+  echo "Usage: ./setup-git-hooks ISSUE_PREFIX"
+  exit 1
+fi
+
+echo "Setting up Git hooks..."
+
+# Path to the target Git hook script
+TARGET_SCRIPT="$HOOKS_DIR/prepare-commit-msg"
+
+if [ ! -f "$TARGET_SCRIPT" ]; then
+  echo "Error: File '$TARGET_SCRIPT' not found."
+  exit 1
+fi
+
+# Update ISSUE_PREFIX in the file
+# Replaces the line ISSUE_PREFIX="..." with the new value
+if [[ "$OSTYPE" == darwin* ]]; then
+  sed -i '' "s/^ISSUE_PREFIX=\".*\"/ISSUE_PREFIX=\"$ISSUE_PREFIX\"/" "$TARGET_SCRIPT"
+else
+  sed -i "s/^ISSUE_PREFIX=\".*\"/ISSUE_PREFIX=\"$ISSUE_PREFIX\"/" "$TARGET_SCRIPT"
+fi
+
+cp "$HOOKS_DIR/pre-commit" "$GIT_HOOKS_PATH/pre-commit"
+chmod 0775 "$GIT_HOOKS_PATH/pre-commit"
+echo "✅ pre-commit installed"
+
+sed "s/ISSUE_PREFIX=\".*\"/ISSUE_PREFIX=\"$ISSUE_PREFIX\"/" \
+  "$HOOKS_DIR/prepare-commit-msg" > "$GIT_HOOKS_PATH/prepare-commit-msg"
+chmod 0775 "$GIT_HOOKS_PATH/prepare-commit-msg"
+echo "✅ prepare-commit-msg installed with ISSUE_PREFIX=$ISSUE_PREFIX"
+
+echo "✅ Git hooks setup complete."
