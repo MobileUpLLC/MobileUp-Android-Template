@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -e
+
+HOOKS_DIR="git_hooks"
+GIT_HOOKS_PATH=".git/hooks"
+PREPARE_COMMIT_SCRIPT="$HOOKS_DIR/prepare-commit-msg"
+
+ISSUE_PREFIX="$1"
+
+echo "Setting up Git hooks..."
+
+if [ ! -f "$PREPARE_COMMIT_SCRIPT" ]; then
+  echo "Error: File '$PREPARE_COMMIT_SCRIPT' not found."
+  exit 1
+fi
+
+# Update ISSUE_PREFIX in the file
+# Replaces the line ISSUE_PREFIX="..." with the new value
+if [ -n "$ISSUE_PREFIX" ]; then
+  echo "📌 Updating ISSUE_PREFIX to '$ISSUE_PREFIX' in $PREPARE_COMMIT_SCRIPT"
+
+  if [[ "$OSTYPE" == darwin* ]]; then
+    sed -i '' "s/^ISSUE_PREFIX=\".*\"/ISSUE_PREFIX=\"$ISSUE_PREFIX\"/" "$PREPARE_COMMIT_SCRIPT"
+  else
+    sed -i "s/^ISSUE_PREFIX=\".*\"/ISSUE_PREFIX=\"$ISSUE_PREFIX\"/" "$PREPARE_COMMIT_SCRIPT"
+  fi
+fi
+
+cp "$HOOKS_DIR/pre-commit" "$GIT_HOOKS_PATH/pre-commit"
+chmod 0775 "$GIT_HOOKS_PATH/pre-commit"
+echo "✅ pre-commit installed"
+
+cp "$PREPARE_COMMIT_SCRIPT" "$GIT_HOOKS_PATH/prepare-commit-msg"
+chmod 0775 "$GIT_HOOKS_PATH/prepare-commit-msg"
+echo "✅ prepare-commit-msg installed"
+
+echo "✅ Git hooks setup complete."

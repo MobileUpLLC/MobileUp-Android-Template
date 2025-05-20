@@ -1,0 +1,31 @@
+#!/bin/bash
+
+set -e
+
+NEW_ID="$1"
+ISSUE_PREFIX="$2"
+
+if [[ -z "$NEW_ID" || -z "$ISSUE_PREFIX" ]]; then
+  echo "Usage: $0 new.application.id ISSUE_PREFIX"
+  exit 1
+fi
+
+echo "Starting new project setup..."
+echo "→ New Application ID: $NEW_ID"
+echo "→ JIRA Issue Prefix: $ISSUE_PREFIX"
+
+SCRIPTS_DIR="scripts"
+
+chmod +x "$SCRIPTS_DIR"/*
+
+### Step 1: Rename package
+bash "$SCRIPTS_DIR/change-app-id" "$NEW_ID"
+
+### Step 2: Reset Git history
+bash "$SCRIPTS_DIR/reset-git-history"
+
+### Step 3: Setup Git hooks
+bash "$SCRIPTS_DIR/setup-git-hooks" "$ISSUE_PREFIX"
+
+echo "✅ Project setup complete."
+echo "👉 Don’t forget to sync with Gradle and rebuild the project."
