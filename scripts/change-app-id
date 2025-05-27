@@ -1,0 +1,86 @@
+#!/bin/bash
+
+set -e
+
+NEW_ID="$1"
+
+if [[ -z "$NEW_ID" ]]; then
+  echo "Usage: $0 new.application.id"
+  exit 1
+fi
+
+echo "Changing application ID..."
+echo "Reading old applicationId from app/build.gradle..."
+
+# Determine which Gradle file to use
+GRADLE_FILE="app/build.gradle"
+[[ ! -f "$GRADLE_FILE" ]] && GRADLE_FILE="app/build.gradle.kts"
+
+if [[ ! -f "$GRADLE_FILE" ]]; then
+  echo "❌ Error: Neither app/build.gradle nor app/build.gradle.kts found."
+  exit 1
+fi
+
+# Extract old applicationId
+OLD_ID=$(grep -m 1 'applicationId' "$GRADLE_FILE" | sed -E 's/.*applicationId[[:space:]]*=?[[:space:]]*"([^"]+)".*/\1/')
+
+if [[ -z "$OLD_ID" ]]; then
+  echo "❌ Error: Could not extract applicationId from $GRADLE_FILE"
+  exit 1
+fi
+
+echo "Renaming package from $OLD_ID to $NEW_ID..."
+
+OLD_DIR=${OLD_ID//./\/}
+NEW_DIR=${NEW_ID//./\/}
+
+replace_safe() {
+  local pattern="$1"
+  local file="$2"
+
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' "$pattern" "$file"
+  else
+    sed -i "$pattern" "$file"
+  fi
+}
+
+# Replace in all relevant files
+echo "Replacing occurrences in source files and build scripts..."
+grep -rl "$OLD_ID" . \
+  --include="*.kt" \
+  --include="*.java" \
+  --include="*.xml" \
+  --include="*.gradle" \
+  --include="*.gradle.kts" | while read -r file; do
+
+  grep -q 'project\.file(".*'"$OLD_DIR"'.*")' "$file" && {
+    echo "↪ Updating path in $file"
+    replace_safe "s|$OLD_DIR|$NEW_DIR|g" "$file"
+  }
+
+  replace_safe "s/$OLD_ID/$NEW_ID/g" "$file"
+done
+
+# Move Java directories
+echo "Moving Java source directories..."
+find . -type d -path "*/src/*/java/$OLD_DIR" | while read -r dir; do
+  new_path=$(echo "$dir" | sed "s|$OLD_DIR|$NEW_DIR|g")
+  mkdir -p "$(dirname "$new_path")"
+  mv "$dir" "$new_path"
+done
+
+# Move Kotlin directories
+echo "Moving Kotlin source directories..."
+find . -type d -path "*/src/*/kotlin/$OLD_DIR" | while read -r dir; do
+  new_path=$(echo "$dir" | sed "s|$OLD_DIR|$NEW_DIR|g")
+  mkdir -p "$(dirname "$new_path")"
+  mv "$dir" "$new_path"
+done
+
+# Clean up empty folders
+echo "Removing empty source directories..."
+find . -path "*/src/*" -type d -empty -delete
+
+echo "✅ Package name successfully changed from <$OLD_ID> to <$NEW_ID>."
+echo "👉 Please sync with Gradle and rebuild the project."

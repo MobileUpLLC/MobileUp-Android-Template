@@ -1,3 +1,5 @@
+@file:Suppress("NoUnusedImports")
+
 package configs.example
 
 import fakes.codegen.config.PluginConfig
