@@ -1,17 +1,36 @@
 plugins {
-    alias(libs.plugins.convetion.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.ktorfit)
 }
 
 android {
+    namespace = "ru.mobileup.template.core"
+    compileSdk = libs.versions.compileSdk.get().toInt()
+    defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlin {
+        jvmToolchain(17)
+    }
+
+    packaging {
+        resources.excludes += "META-INF/*"
+    }
+
     buildFeatures {
         buildConfig = true
     }
-
-    namespace = "ru.mobileup.template.core"
 }
 
 dependencies {
@@ -23,11 +42,13 @@ dependencies {
     implementation(libs.coroutines.android)
 
     // UI
-    implementation(libs.bundles.compose)
-    implementation(libs.compose.material.icons)
-    // TODO(Alpha version is required due to the usage of SecureTextField, remove when a stable release is available)
-    implementation("androidx.compose.material3:material3:1.4.0-alpha12")
-    implementation(libs.bundles.accompanist)
+    implementation(compose.runtime)
+    implementation(compose.foundation)
+    implementation(compose.material3)
+    implementation(compose.ui)
+    implementation(compose.components.uiToolingPreview)
+    implementation(libs.material.icons)
+    implementation(libs.activity.compose)
 
     // DI
     implementation(libs.koin)
@@ -54,4 +75,10 @@ dependencies {
     debugImplementation(libs.chucker)
     debugImplementation(libs.bundles.hyperion)
     debugImplementation(libs.replica.devtools)
+}
+
+composeCompiler {
+    stabilityConfigurationFiles.add(
+        rootProject.layout.projectDirectory.file("stability_config.conf")
+    )
 }

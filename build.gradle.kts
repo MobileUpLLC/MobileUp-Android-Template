@@ -8,11 +8,10 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.ktorfit) apply false
     alias(libs.plugins.moko.resources) apply false
-    alias(libs.plugins.convetion.library) apply false
-    alias(libs.plugins.convetion.lint) apply false
+    alias(libs.plugins.compose.multiplatform) apply false
     alias(libs.plugins.compose.compiler) apply false
-
-    alias(libs.plugins.convetion.detekt)
+    alias(libs.plugins.custom.lint) apply false
+    alias(libs.plugins.custom.detekt)
 }
 
 tasks.register("clean", Delete::class) {

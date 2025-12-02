@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import me.aartikov.replica.decompose.observe
+import me.aartikov.replica.decompose.replicaObserverHost
 import me.aartikov.replica.single.Loadable
 import me.aartikov.replica.single.Replica
 import me.aartikov.replica.single.currentState
@@ -41,7 +41,7 @@ fun <T : Any> Replica<T>.observe(
     componentContext: ComponentContext,
     errorHandler: ErrorHandler
 ): StateFlow<LoadableState<T>> {
-    val observer = observe(componentContext.lifecycle)
+    val observer = observe(componentContext.lifecycle.replicaObserverHost())
 
     observer
         .loadingErrorFlow

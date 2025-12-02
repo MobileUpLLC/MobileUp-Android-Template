@@ -20,6 +20,7 @@ class PokemonRepositoryImpl(
         replicaClient.createKeyedReplica(
             name = "pokemonsByType",
             childName = { typeId -> "typeId = ${typeId.value}" },
+            settings = KeyedReplicaSettings(maxCount = 5),
             childSettings = {
                 ReplicaSettings(
                     staleTime = 10.seconds,

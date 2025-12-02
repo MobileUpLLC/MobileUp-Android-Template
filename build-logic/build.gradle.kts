@@ -8,7 +8,6 @@ dependencies {
     compileOnly(libs.android.gradle.plugin)
     compileOnly(libs.kotlin.gradle.plugin)
     compileOnly(libs.detekt.gradle.plugin)
-    compileOnly(libs.compose.compiler.gradle.plugin)
 
     // Workaround for version catalog working inside precompiled scripts
     // Issue - https://github.com/gradle/gradle/issues/15383
@@ -17,16 +16,12 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        register("androidLibrary") {
-            id = "convention.android.library"
-            implementationClass = "AndroidLibraryPlugin"
-        }
         register("detekt") {
-            id = "convention.detekt"
+            id = "custom.detekt"
             implementationClass = "DetektPlugin"
         }
         register("lint") {
-            id = "convention.lint"
+            id = "custom.lint"
             implementationClass = "LintPlugin"
         }
     }

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import ru.mobileup.template.core.theme.AppTheme
 
@@ -22,7 +22,7 @@ fun ${uiName}(
     }
 }
 
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 private fun Preview() {
     AppTheme {

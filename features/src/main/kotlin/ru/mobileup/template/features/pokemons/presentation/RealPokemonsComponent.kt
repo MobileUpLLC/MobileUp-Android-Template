@@ -3,9 +3,9 @@ package ru.mobileup.template.features.pokemons.presentation
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
-import com.arkivanov.decompose.router.stack.push
 import kotlinx.serialization.Serializable
 import ru.mobileup.template.core.ComponentFactory
+import ru.mobileup.template.core.utils.safePush
 import ru.mobileup.template.core.utils.toStateFlow
 import ru.mobileup.template.features.pokemons.createPokemonDetailsComponent
 import ru.mobileup.template.features.pokemons.createPokemonListComponent
@@ -53,7 +53,7 @@ class RealPokemonsComponent(
     private fun onPokemonListOutput(output: PokemonListComponent.Output) {
         when (output) {
             is PokemonListComponent.Output.PokemonDetailsRequested -> {
-                navigation.push(ChildConfig.Details(output.pokemonId))
+                navigation.safePush(ChildConfig.Details(output.pokemonId))
             }
         }
     }

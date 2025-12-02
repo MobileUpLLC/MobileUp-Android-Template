@@ -1,11 +1,12 @@
-import com.buildlogic.libs
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import org.gradle.accessors.dm.LibrariesForLibs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.the
 import org.gradle.kotlin.dsl.withType
 
 private fun DependencyHandlerScope.detektPlugins(dependencyNotation: Any) {
@@ -15,12 +16,13 @@ private fun DependencyHandlerScope.detektPlugins(dependencyNotation: Any) {
 class DetektPlugin : Plugin<Project> {
 
     override fun apply(target: Project) = with(target) {
+        val libs = the<LibrariesForLibs>()
         pluginManager.apply(libs.plugins.detekt.get().pluginId)
 
         extensions.configure<DetektExtension> {
             toolVersion = libs.versions.detekt.get()
             source.setFrom(files(rootDir))
-            config.setFrom(files("$rootDir/code_quality/detekt/config.yml"))
+            config.setFrom(files("$rootDir/code_quality/detekt-config.yml"))
             parallel = true
             ignoreFailures = false
             disableDefaultRuleSets = true

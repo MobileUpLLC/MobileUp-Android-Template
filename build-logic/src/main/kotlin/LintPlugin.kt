@@ -11,7 +11,7 @@ class LintPlugin : Plugin<Project> {
                 abortOnError = true
                 warningsAsErrors = false
                 checkDependencies = true
-                lintConfig = rootProject.file("code_quality/lint/lint-config.xml")
+                lintConfig = rootProject.file("code_quality/lint-config.xml")
             }
         }
     }

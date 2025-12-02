@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.arkivanov.decompose.extensions.compose.stack.Children
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.features.pokemons.presentation.details.PokemonDetailsUi
 import ru.mobileup.template.features.pokemons.presentation.list.PokemonListUi

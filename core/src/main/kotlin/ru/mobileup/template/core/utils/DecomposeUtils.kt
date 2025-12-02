@@ -15,7 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.serialization.KSerializer
-import me.aartikov.replica.decompose.coroutineScope
+import me.aartikov.replica.decompose.replicaObserverHost
 
 /**
  * Creates a [ChildStack] with a single active component. Should be used to create a stack for Jetpack Compose preview.
@@ -69,14 +69,13 @@ fun <T : Any> Value<T>.toStateFlow(lifecycle: Lifecycle): StateFlow<T> {
  * Creates a coroutine scope tied to Decompose lifecycle. A scope is canceled when a component is destroyed.
  */
 val ComponentContext.componentScope: CoroutineScope
-    get() {
-        val scope = (instanceKeeper.get(ComponentScopeKey) as? CoroutineScopeWrapper)?.scope
-        if (scope != null) return scope
-
-        val newScope = lifecycle.coroutineScope()
-        instanceKeeper.put(ComponentScopeKey, CoroutineScopeWrapper(newScope))
-        return newScope
-    }
+    get() = (instanceKeeper.get(ComponentScopeKey) as? CoroutineScopeWrapper)?.scope
+        ?: lifecycle
+            .replicaObserverHost()
+            .observerCoroutineScope
+            .also { newScope ->
+                instanceKeeper.put(ComponentScopeKey, CoroutineScopeWrapper(newScope))
+            }
 
 private object ComponentScopeKey
 

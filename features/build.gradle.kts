@@ -1,6 +1,8 @@
 plugins {
-    alias(libs.plugins.convetion.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.compose.multiplatform)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.ktorfit)
@@ -9,6 +11,23 @@ plugins {
 
 android {
     namespace = "ru.mobileup.template.features"
+    compileSdk = libs.versions.compileSdk.get().toInt()
+    defaultConfig {
+        minSdk = libs.versions.minSdk.get().toInt()
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlin {
+        jvmToolchain(17)
+    }
+
+    packaging {
+        resources.excludes += "META-INF/*"
+    }
 }
 
 dependencies {
@@ -23,9 +42,12 @@ dependencies {
     implementation(libs.coroutines.android)
 
     // UI
-    implementation(libs.bundles.compose)
-    implementation(libs.compose.material.icons)
-    implementation(libs.bundles.accompanist)
+    implementation(compose.runtime)
+    implementation(compose.foundation)
+    implementation(compose.material3)
+    implementation(compose.ui)
+    implementation(compose.components.uiToolingPreview)
+    implementation(libs.material.icons)
     implementation(libs.bundles.coil)
 
     // DI
@@ -45,6 +67,12 @@ dependencies {
     implementation(libs.bundles.replica)
     api(libs.moko.resources)
     implementation(libs.moko.resourcesCompose)
+}
+
+composeCompiler {
+    stabilityConfigurationFiles.add(
+        rootProject.layout.projectDirectory.file("stability_config.conf")
+    )
 }
 
 // Usage: ./gradlew generateModuleGraph detectGraphCycles

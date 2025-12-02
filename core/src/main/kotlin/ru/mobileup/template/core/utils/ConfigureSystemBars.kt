@@ -1,8 +1,5 @@
 package ru.mobileup.template.core.utils
 
-import android.os.Build
-import android.view.Window
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,7 +13,6 @@ import androidx.compose.foundation.layout.windowInsetsEndWidth
 import androidx.compose.foundation.layout.windowInsetsStartWidth
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -29,9 +25,7 @@ import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.util.lerp
-import androidx.core.view.WindowInsetsControllerCompat
 import ru.mobileup.template.core.theme.custom.CustomTheme
-import android.graphics.Color as AndroidColor
 
 private enum class NavBarPosition {
     Bottom, Left, Right, None
@@ -55,7 +49,6 @@ fun ConfigureSystemBars(settings: SystemBarsSettings) {
     val navigationBars = WindowInsets.navigationBars
     val density = LocalDensity.current
     val layoutDirection = LocalLayoutDirection.current
-    val window = LocalActivity.current?.window
     val backgroundColor = CustomTheme.colors.background.screen
     val isLightTheme = CustomTheme.colors.isLight
     val isGestureNavigation by remember {
@@ -91,26 +84,11 @@ fun ConfigureSystemBars(settings: SystemBarsSettings) {
         }
     }
 
-    window?.let {
-        LaunchedEffect(Unit) {
-            @Suppress("DEPRECATION")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                window.isNavigationBarContrastEnforced = false
-            } else {
-                window.navigationBarColor = AndroidColor.TRANSPARENT
-                window.statusBarColor = AndroidColor.TRANSPARENT
-            }
-        }
-
-        LaunchedEffect(settings, isLightTheme) {
-            updateSystemBarIconColors(
-                window = window,
-                isLightTheme = isLightTheme,
-                statusBarIconsColor = settings.statusBarIconsColor,
-                navBarIconsColor = settings.navigationBarIconsColor
-            )
-        }
-    }
+    UpdateSystemBarIconColorsIfNeeded(
+        isLightTheme = isLightTheme,
+        statusBarIconsColor = settings.statusBarIconsColor,
+        navBarIconsColor = settings.navigationBarIconsColor
+    )
 
     Box(Modifier.fillMaxSize()) {
         Box(
@@ -149,24 +127,5 @@ fun ConfigureSystemBars(settings: SystemBarsSettings) {
                 drawRect(navBarColor)
             }
         )
-    }
-}
-
-private fun updateSystemBarIconColors(
-    window: Window,
-    isLightTheme: Boolean,
-    statusBarIconsColor: SystemBarIconsColor,
-    navBarIconsColor: SystemBarIconsColor,
-) = WindowInsetsControllerCompat(window, window.decorView).run {
-    isAppearanceLightStatusBars = if (statusBarIconsColor.isSpecified) {
-        statusBarIconsColor == SystemBarIconsColor.Dark
-    } else {
-        isLightTheme
-    }
-
-    isAppearanceLightNavigationBars = if (navBarIconsColor.isSpecified) {
-        navBarIconsColor == SystemBarIconsColor.Dark
-    } else {
-        isLightTheme
     }
 }
