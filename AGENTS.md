@@ -41,7 +41,7 @@ Notes:
 - **Coil** — image loading
 - **Kotlinx DateTime**, **Coroutines**
 - **Kotlin Serialization** — JSON serialization/parsing
-- **DataStore**, **Security Crypto**
+- **Settings + SettingsFactory**, **Security Crypto**
 - **Detekt** — static code analysis
 - **Module Graph Gradle Plugin** — feature dependency graph validation
 - Debug only: **Chucker**, **Hyperion**, **Replica DevTools**

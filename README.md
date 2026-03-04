@@ -51,7 +51,7 @@ It consists of concrete features. Each feature has its own package which contain
 - [Kotlin Serialization](https://github.com/Kotlin/kotlinx.serialization) - JSON serialization and parsing
 - [Kotlinx DateTime](https://github.com/Kotlin/kotlinx-datetime) - date/time models
 - [Coil](https://github.com/coil-kt/coil) - image loading
-- [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) - local key-value storage
+- `Settings` + `SettingsFactory` abstraction - local settings storage
 - [Security Crypto](https://developer.android.com/topic/security/data) - secure storage primitives
 - [Detekt](https://github.com/detekt/detekt) - static code analysis
 - [Hyperion](https://github.com/willowtreeapps/Hyperion-Android) - debug panel

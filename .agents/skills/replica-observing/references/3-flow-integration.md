@@ -1,11 +1,11 @@
 # Example: Integrating UI Flows with `flowReplica`
 
-Use `flowReplica` to treat a standard `Flow` or `StateFlow` (like user preferences from DataStore or app settings) as a `Replica`. This allows it to participate in Replica Algebra (like `combine` with API data).
+Use `flowReplica` to treat a standard `Flow` or `StateFlow` (like user preferences from `Settings` / `SettingsFactory`) as a `Replica`. This allows it to participate in Replica Algebra (like `combine` with API data).
 
 ## Code Example
 
 ```kotlin
-// User preference from DataStore/settings
+// User preference from Settings/SettingsFactory-backed source
 private val sortOrder: StateFlow<SortOrder> = settingsRepository.sortOrderFlow
 
 // Combine API data with user preferences
