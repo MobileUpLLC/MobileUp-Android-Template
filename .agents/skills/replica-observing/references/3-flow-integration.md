@@ -1,28 +1,29 @@
 # Example: Integrating UI Flows with `flowReplica`
 
-Use `flowReplica` to treat a standard `Flow` or `StateFlow` (like user preferences from `Settings` / `SettingsFactory`) as a `Replica`. This allows it to participate in Replica Algebra (like `combine` with API data).
+Use `flowReplica` to treat a standard `Flow` or `StateFlow` as a `Replica`. This allows it to participate in Replica Algebra (like `combine` with API data).
 
 ## Code Example
 
 ```kotlin
-// User preference from Settings/SettingsFactory-backed source
-private val sortOrder: StateFlow<SortOrder> = settingsRepository.sortOrderFlow
+private val isActionInProgress = MutableStateFlow(false)
 
-// Combine API data with user preferences
-private val sortedItemsReplica = combine(
+// Combine API data with local UI flow
+private val uiStateReplica = combine(
     itemsReplica,
-    flowReplica(sortOrder),
-) { items, order ->
-    // Sorting logic resides in a domain function
-    items.sortedBy(order)
+    flowReplica(isActionInProgress),
+) { items, inProgress ->
+    UiState(
+        items = items,
+        isActionInProgress = inProgress,
+    )
 }
 
-override val sortedItemsState = sortedItemsReplica.observe(this, errorHandler)
+override val uiState = uiStateReplica.observe(this, errorHandler)
 ```
 
 ## Key Points
 
-- Combines network-fetched data with local settings/preferences
-- Applies transformations (sorting, filtering) reactively
-- Keeps the UI updated when user changes preferences
+- Combines network-fetched data with local UI state
+- Applies transformations reactively when local flow changes
+- Keeps UI loading/action flags in the same Replica pipeline
 - `flowReplica` wraps any Flow/StateFlow to participate in Replica operations

@@ -20,7 +20,7 @@ Use `computed` to create reactive Query objects from one or more UI `StateFlows`
 
 ## 3. Integrating UI Flows (`flowReplica`)
 
-Use `flowReplica` to treat a standard `Flow` or `StateFlow` (like user preferences from `Settings` / `SettingsFactory` abstraction) as a `Replica`. This allows it to participate in Replica Algebra (like `combine` with API data).
+Use `flowReplica` to treat a standard `Flow` or `StateFlow` as a `Replica`. This allows it to participate in Replica Algebra (like `combine` with API data).
 
 ## 4. Keyed Replicas and UX
 
@@ -63,7 +63,7 @@ Returns a Replica with static placeholder data. Useful for providing default/fal
 
 - [Standard Observation](references/1-standard-observation.md) - Basic pattern
 - [Computed Query](references/2-computed-query.md) - Reactive parameters with `computed`
-- [Flow Integration](references/3-flow-integration.md) - Using `flowReplica` with preferences
+- [Flow Integration](references/3-flow-integration.md) - Using `flowReplica` with local UI flow
 - [Keep Previous Data](references/4-keep-previous-data.md) - Preventing loading flicker
 - [Combine Replicas](references/5-combine-replicas.md) - Merging multiple sources
 - [Conditional Associate](references/6-conditional-associate.md) - Auth-based branching

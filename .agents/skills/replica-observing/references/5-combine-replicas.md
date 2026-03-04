@@ -5,12 +5,14 @@ Merges multiple Replicas into one. The result emits data only when **all** sourc
 ## Code Example
 
 ```kotlin
+private val isActionInProgress = MutableStateFlow(false)
+
 private val dashboardReplica = combine(
     repository.profileReplica,
-    flowReplica(localSettingsFlow),
+    flowReplica(isActionInProgress),
     repository.notificationsReplica.toReplica() // Use toReplica() for paged data
-) { profile, settings, notifications ->
-    DashboardData(profile, settings, notifications)
+) { profile, inProgress, notifications ->
+    DashboardData(profile, inProgress, notifications)
 }
 ```
 
