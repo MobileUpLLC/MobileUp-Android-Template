@@ -9,9 +9,16 @@ After cloning the template:
 
 1. Run the setup script to configure your application ID and JIRA key:  
    `./scripts/setup-project <new.application.id> <JIRA_PROJECT_KEY>` [for Windows see](#calling-scripts-for-windows)
-2. Replace application name and icon to the correct ones.
-3. Remove the pokemons feature. It is created as an example.
-4. Replace error text resources with text for your project.
+2. Update `AGENTS.md` for your concrete product context.
+3. Replace application name and icon to the correct ones.
+4. Remove the `pokemons` feature. It is created as an example.
+5. Replace error text resources with text for your project.
+6. Build a project-specific `CustomTheme` and reusable widget set in `core`.
+7. Continue with product feature implementation.
+
+Notes:
+- `setup-project` also runs Git history reset and hook setup scripts.
+- If needed separately, history reset script is: `./scripts/reset-git-history`.
 
 ## Modules
 The project is based on three gradle modules:
@@ -26,7 +33,7 @@ It contains general purpose things: error handing, message showing, network, the
 It consists of concrete features. Each feature has its own package which contains:
 - DI configuration
 - **ui layer** - components, Jetpack Compose UI
-- **domain layer** - entities, interactors
+- **domain layer** - entities, queries, pure functions
 - **data layer** - repositories, storages
 
 ## Features structure
