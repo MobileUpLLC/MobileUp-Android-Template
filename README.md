@@ -8,11 +8,11 @@ Hi! This is a template for initializing an Android project in [MobileUp](https:/
 After cloning the template:
 
 1. Run the setup script to configure your application ID and JIRA key:  
-   `./scripts/setup-project <new.application.id> <JIRA_PROJECT_KEY>` [for Windows see](#calling-scripts-for-windows)
+   `./scripts/setup-project <new.application.id> <JIRA_PROJECT_KEY>`
 2. Update `AGENTS.md` for your concrete product context.
-3. Replace application name and icon to the correct ones.
-4. Remove the `pokemons` feature. It is created as an example.
-5. Replace error text resources with text for your project.
+3. Replace application name and icon with project-specific assets.
+4. Remove the demo `pokemons` feature and related wiring.
+5. Replace error text resources with product text.
 6. Build a project-specific `CustomTheme` and reusable widget set in `core`.
 7. Continue with product feature implementation.
 
@@ -46,25 +46,21 @@ It consists of concrete features. Each feature has its own package which contain
 - [Koin](https://github.com/InsertKoinIO/koin) - Dependency Injection
 - [Ktor](https://ktor.io/) - Network
 - [Ktorfit](https://github.com/Foso/Ktorfit) - network requests in Retrofit way
+- [Moko Resources](https://github.com/icerockdev/moko-resources) - string resources without `Context`
 - [Coroutines](https://developer.android.com/kotlin/coroutines) - asynchronous operations
 - [Kotlin Serialization](https://github.com/Kotlin/kotlinx.serialization) - JSON serialization and parsing
+- [Kotlinx DateTime](https://github.com/Kotlin/kotlinx-datetime) - date/time models
 - [Coil](https://github.com/coil-kt/coil) - image loading
+- [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) - local key-value storage
+- [Security Crypto](https://developer.android.com/topic/security/data) - secure storage primitives
 - [Detekt](https://github.com/detekt/detekt) - static code analysis
 - [Hyperion](https://github.com/willowtreeapps/Hyperion-Android) - debug panel
 - [Module Graph Gradle Plugin](https://github.com/MobileUpLLC/Module-Graph-Gradle-Plugin) - feature dependency graph visualization and validation
 
 ### Git hooks
 To install the Git hooks for commit checks and automatic issue prefixes, simply run:
-`./scripts/setup-git-hooks` [for Windows see](#calling-scripts-for-windows)
 
-### Calling scripts for Windows
-1. Install [Git Bash](https://gitforwindows.org/)
-2. Go to your project folder and open Git Bash here (right click)
-3. If your pre-commit failed by OUTPUT_MODULE_GRAPH_GENERATE.
-   Download and install [Graphviz](https://graphviz.org/download/) for Windows. 
-   During installation, select "Add Graphviz to the system PATH for all users." and Reboot.
-4. It is important to ensure that the java in the project (Project structure) 
-   matches the java in JAVA_HOME (environment variables)
+`./scripts/setup-git-hooks`
 
 ### Geminio templates - creates boilerplate code
 1. Read installation instruction root/geminio/SETUP.MD

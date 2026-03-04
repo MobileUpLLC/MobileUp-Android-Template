@@ -54,4 +54,7 @@ dependencies {
     debugImplementation(libs.chucker)
     debugImplementation(libs.bundles.hyperion)
     debugImplementation(libs.replica.devtools)
+
+    // Data store
+    implementation(libs.bundles.datastore)
 }
