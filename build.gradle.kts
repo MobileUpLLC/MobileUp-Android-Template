@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.ktorfit) apply false
     alias(libs.plugins.moko.resources) apply false
+    alias(libs.plugins.kover) apply false
     alias(libs.plugins.convetion.library) apply false
     alias(libs.plugins.convetion.lint) apply false
     alias(libs.plugins.compose.compiler) apply false

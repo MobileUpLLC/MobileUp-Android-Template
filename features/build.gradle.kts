@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.ktorfit)
     alias(libs.plugins.module.graph)
+    alias(libs.plugins.kover)
 }
 
 android {
@@ -45,6 +46,35 @@ dependencies {
     implementation(libs.bundles.replica)
     api(libs.moko.resources)
     implementation(libs.moko.resourcesCompose)
+
+    testImplementation(libs.kotest.runner.junit5)
+    testImplementation(libs.kotest.assertions.core)
+    testImplementation(libs.turbine)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.koin.test)
+    testImplementation(libs.ktor.client.mock)
+    testImplementation(libs.ktor.core)
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
+kover {
+    reports {
+        filters {
+            includes {
+                // We focus coverage on tested behavior: Real components + repositories + data/domain models + DI wiring.
+                classes(
+                    "*.presentation.Real*Component",
+                    "*.presentation.*.Real*Component",
+                    "*.data.*RepositoryImpl",
+                    "DIKt",
+                    "*.DIKt"
+                )
+            }
+        }
+    }
 }
 
 // Usage: ./gradlew generateModuleGraph detectGraphCycles
