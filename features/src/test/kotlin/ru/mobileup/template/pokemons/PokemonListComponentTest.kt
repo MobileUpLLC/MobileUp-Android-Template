@@ -2,11 +2,13 @@ package ru.mobileup.template.pokemons
 
 import app.cash.turbine.test
 import com.arkivanov.essenty.lifecycle.Lifecycle
+import io.kotest.assertions.timing.eventually
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import ru.mobileup.template.core.network.MockApiResponse
 import ru.mobileup.template.features.pokemons.createPokemonListComponent
+import ru.mobileup.template.features.pokemons.domain.PokemonType
 import ru.mobileup.template.features.pokemons.presentation.list.PokemonListComponent
 import ru.mobileup.template.utils.ComponentFixture
 import ru.mobileup.template.utils.ComponentSpec
@@ -126,6 +128,65 @@ class PokemonListComponentTest : ComponentSpec({
                     val dataState = awaitMatching { !it.loading && it.data != null }
                     dataState.data shouldBe TestPokemons.firePokemons
                     dataState.error shouldBe null
+                }
+            }
+        }
+
+        When("type is changed") {
+
+            beforeTest {
+                fixture().koin.testApiDispatcher.setHandler { path ->
+                    when (path) {
+                        "/api/v2/type/10" -> MockApiResponse(
+                            statusCode = 200,
+                            body = TestPokemons.firePokemonsJson
+                        )
+                        "/api/v2/type/11" -> MockApiResponse(
+                            statusCode = 200,
+                            body = TestPokemons.waterPokemonsJson
+                        )
+                        else -> error("Unexpected request path: $path")
+                    }
+                }
+
+                fixture().componentContext.moveToState(Lifecycle.State.RESUMED)
+                fixture().sut.pokemonsState.first { !it.loading && it.data != null }
+
+                fixture().sut.onTypeClick(PokemonType.Water.id)
+                fixture().sut.pokemonsState.first {
+                    !it.loading && it.data == TestPokemons.waterPokemons
+                }
+            }
+
+            then("it updates selected type and reloads pokemons for selected tab") {
+                fixture().sut.selectedTypeId.value shouldBe PokemonType.Water.id
+                fixture().sut.pokemonsState.value.data shouldBe TestPokemons.waterPokemons
+            }
+        }
+
+        When("refresh is clicked") {
+
+            beforeTest {
+                fixture().koin.testApiDispatcher.setHandler { path ->
+                    when (path) {
+                        "/api/v2/type/10" -> MockApiResponse(
+                            statusCode = 200,
+                            body = TestPokemons.firePokemonsJson
+                        )
+                        else -> error("Unexpected request path: $path")
+                    }
+                }
+
+                fixture().componentContext.moveToState(Lifecycle.State.RESUMED)
+                fixture().sut.pokemonsState.first { !it.loading && it.data != null }
+            }
+
+            then("it reloads pokemons for current type") {
+                fixture().sut.onRefresh()
+
+                eventually(5.seconds) {
+                    fixture().sut.pokemonsState.value.data shouldBe TestPokemons.firePokemons
+                    fixture().sut.pokemonsState.value.error shouldBe null
                 }
             }
         }

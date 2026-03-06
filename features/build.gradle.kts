@@ -68,7 +68,8 @@ kover {
                 classes(
                     "*.presentation.Real*Component",
                     "*.presentation.*.Real*Component",
-                    "*.data.*RepositoryImpl",
+                    "*.data.*",
+                    "*.domain.*",
                     "DIKt",
                     "*.DIKt"
                 )

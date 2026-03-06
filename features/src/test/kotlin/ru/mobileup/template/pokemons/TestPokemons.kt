@@ -50,6 +50,32 @@ object TestPokemons {
         Pokemon(id = PokemonId("77"), name = "Ponyta")
     )
 
+    val waterPokemonsJson = """
+        {
+          "pokemon": [
+            {
+              "pokemon": {
+                "name": "squirtle",
+                "url": "https://pokeapi.co/api/v2/pokemon/7/"
+              },
+              "slot": 1
+            },
+            {
+              "pokemon": {
+                "name": "wartortle",
+                "url": "https://pokeapi.co/api/v2/pokemon/8/"
+              },
+              "slot": 1
+            }
+          ]
+        }
+    """.trimIndent()
+
+    val waterPokemons = listOf(
+        Pokemon(id = PokemonId("7"), name = "Squirtle"),
+        Pokemon(id = PokemonId("8"), name = "Wartortle")
+    )
+
     val detailedPonytaJson = """
         {
           "height": 10,

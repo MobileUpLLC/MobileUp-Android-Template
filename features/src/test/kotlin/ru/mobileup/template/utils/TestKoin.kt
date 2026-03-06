@@ -35,6 +35,7 @@ fun createTestKoin(
     moduleDeclaration: ModuleDeclaration? = null
 ): TestKoinContext {
     val testModule = module {
+        single { ComponentFactory(getKoin()) }
         single<NetworkConnectivityProvider> { TestNetworkConnectivityProvider() }
         single { TestApiDispatcher() }
         single<HttpClientEngine> { createMockHttpEngine(get()) }
@@ -63,3 +64,6 @@ val Koin.componentFactory: ComponentFactory
 
 val Koin.testApiDispatcher: TestApiDispatcher
     get() = get()
+
+val Koin.testMessageService: TestMessageService
+    get() = get<MessageService>() as TestMessageService
