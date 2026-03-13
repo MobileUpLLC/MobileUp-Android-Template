@@ -17,6 +17,7 @@ dependencies {
 
     // Modules
     implementation(project(":core"))
+    testImplementation(project(":core-testing"))
 
     // Kotlin
     implementation(libs.kotlinx.datetime)
@@ -48,12 +49,6 @@ dependencies {
     implementation(libs.moko.resourcesCompose)
 
     testImplementation(libs.kotest.runner.junit5)
-    testImplementation(libs.kotest.assertions.core)
-    testImplementation(libs.turbine)
-    testImplementation(libs.coroutines.test)
-    testImplementation(libs.koin.test)
-    testImplementation(libs.ktor.client.mock)
-    testImplementation(libs.ktor.core)
 }
 
 tasks.withType<Test>().configureEach {

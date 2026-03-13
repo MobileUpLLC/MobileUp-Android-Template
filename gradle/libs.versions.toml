@@ -31,7 +31,6 @@ composeRules = "0.4.18"
 form = "1.2.0"
 securityCrypto = "1.1.0-alpha06"
 kotest = "5.9.1"
-turbine = "1.1.0"
 kover = "0.9.1"
 
 [libraries]
@@ -62,7 +61,6 @@ form-validation = { module = "ru.mobileup:kmm-form-validation", version.ref = "f
 koin = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 logger-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
-turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }

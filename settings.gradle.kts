@@ -35,3 +35,4 @@ rootProject.name = "MobileUp Android Template"
 include(":app")
 include(":core")
 include(":features")
+include(":core-testing")
