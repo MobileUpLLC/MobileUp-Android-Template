@@ -5,8 +5,6 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.launch
-import ru.mobileup.template.core.message.domain.Message
 import ru.mobileup.template.core_testing.network.HttpResponse
 import ru.mobileup.template.core_testing.network.RequestMatcher
 import ru.mobileup.template.core_testing.network.containsPath
@@ -20,13 +18,12 @@ class PokemonDetailsComponentTest : FunSpec({
     context("Pokemon details screen") {
 
         integrationTest("loads details successfully") {
-            // Prepare a successful details response
+            // Prepare a successful details response and create the component
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/${pokemonId.value}"),
                 HttpResponse(TestPokemons.detailedPonytaJson)
             )
-
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
 
             // Wait for the initial loading to complete
@@ -38,13 +35,12 @@ class PokemonDetailsComponentTest : FunSpec({
         }
 
         integrationTest("shows error when loading fails") {
-            // Prepare a failed details response
+            // Prepare a failed details response and create the component
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/${pokemonId.value}"),
                 HttpResponse(status = HttpStatusCode.NotFound)
             )
-
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
 
             // Wait for the initial loading to complete
@@ -55,77 +51,52 @@ class PokemonDetailsComponentTest : FunSpec({
         }
 
         integrationTest("shows message with types when type is clicked") {
-            // Prepare a successful details response
+            // Prepare a successful details response and create the component
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/${pokemonId.value}"),
                 HttpResponse(TestPokemons.detailedPonytaJson)
             )
-
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
-
-            // Wait for the initial loading to complete
             advanceUntilIdle()
-
-            // Start observing message events
-            val emittedMessages = mutableListOf<Message>()
-            val collectJob = launch {
-                testMessageService.messageFlow.collect { emittedMessages += it }
-            }
-            runCurrent()
 
             // Click a pokemon type
             component.onTypeClick(PokemonType.Fire)
 
             // Verify message is emitted
             runCurrent()
-            emittedMessages.size shouldBe 1
-            emittedMessages.first().shouldNotBeNull()
-            collectJob.cancel()
+            testMessageService.last.shouldNotBeNull()
+            testMessageService.all.size shouldBe 1
         }
 
         integrationTest("does not emit message when details are not loaded") {
-            // Prepare a failed details response
+            // Prepare a failed details response and create the component
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/${pokemonId.value}"),
                 HttpResponse(status = HttpStatusCode.NotFound)
             )
-
-            // Create the details component
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
-
-            // Wait for the initial loading to complete
             advanceUntilIdle()
-
-            // Start observing message events
-            val emittedMessages = mutableListOf<Message>()
-            val collectJob = launch {
-                testMessageService.messageFlow.collect { emittedMessages += it }
-            }
 
             // Click a pokemon type when data is absent
             component.onTypeClick(PokemonType.Fire)
 
             // Verify no message is emitted
             runCurrent()
-            emittedMessages.shouldBeEmpty()
-            collectJob.cancel()
+            testMessageService.all.shouldBeEmpty()
+            testMessageService.isEmpty shouldBe true
         }
 
         integrationTest("reloads details when retry is clicked") {
-            // Prepare initial and retry responses
+            // Prepare initial and retry responses, then create the component
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/${pokemonId.value}"),
                 HttpResponse(TestPokemons.detailedPonytaJson),
                 HttpResponse(TestPokemons.detailedPonytaJson)
             )
-
-            // Create the details component
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
-
-            // Wait for the initial loading to complete
             advanceUntilIdle()
 
             // Retry loading details
@@ -137,18 +108,14 @@ class PokemonDetailsComponentTest : FunSpec({
         }
 
         integrationTest("reloads details when refresh is requested") {
-            // Prepare initial and refresh responses
+            // Prepare initial and refresh responses, then create the component
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/${pokemonId.value}"),
                 HttpResponse(TestPokemons.detailedPonytaJson),
                 HttpResponse(TestPokemons.detailedPonytaJson)
             )
-
-            // Create the details component
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
-
-            // Wait for the initial loading to complete
             advanceUntilIdle()
 
             // Refresh loaded details

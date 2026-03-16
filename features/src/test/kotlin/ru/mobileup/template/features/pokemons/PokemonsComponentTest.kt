@@ -21,27 +21,21 @@ class PokemonsComponentTest : FunSpec({
         }
 
         integrationTest("navigates to details when pokemon is clicked in the list") {
-            // Prepare list and details responses
+            // Prepare list and details responses, then create the router component
             mockServer.enqueue(
-                RequestMatcher.containsPath("type/10"),
+                RequestMatcher.containsPath("type/${TestPokemons.fireTypeId.value}"),
                 HttpResponse(TestPokemons.firePokemonsJson)
             )
             mockServer.enqueue(
-                RequestMatcher.containsPath("pokemon/4"),
+                RequestMatcher.containsPath("pokemon/${TestPokemons.charmanderId.value}"),
                 HttpResponse(TestPokemons.detailedPonytaJson)
             )
-
-            // Create the pokemons router component
             val component = setupComponent { createPokemonsComponent(it) }
-
-            // Wait for the initial loading to complete
             advanceUntilIdle()
 
-            // Click a pokemon in the list
+            // Click a pokemon in the list and deliver router events
             val listChild = component.childStack.value.active.instance as PokemonsComponent.Child.List
             listChild.component.onPokemonClick(TestPokemons.firePokemons.first().id)
-
-            // Deliver router events
             runCurrent()
 
             // Verify details screen is shown
