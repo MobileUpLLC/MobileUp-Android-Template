@@ -2,7 +2,6 @@ package ru.mobileup.template.core_testing.scope
 
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import io.kotest.core.test.TestScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScheduler
 import org.koin.core.Koin
 import ru.mobileup.template.core.ComponentFactory
@@ -12,6 +11,11 @@ import ru.mobileup.template.core_testing.network.MockServer
 import ru.mobileup.template.core_testing.utils.TestComponentContext
 import kotlin.time.Duration
 
+/**
+ * Default implementation of [IntegrationTestScope].
+ *
+ * Bridges Kotest test scope, Koin graph, and coroutine test scheduler.
+ */
 class IntegrationTestScopeImpl(
     koin: Koin,
     private val kotestScope: TestScope,
@@ -24,8 +28,7 @@ class IntegrationTestScopeImpl(
 
     override fun advanceUntilIdle() = testScheduler.advanceUntilIdle()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override fun advanceTimeBy(delayTime: Duration) = testScheduler.advanceTimeBy(delayTime.inWholeMilliseconds)
+    override fun advanceTimeBy(delayTime: Duration) = testScheduler.advanceTimeBy(delayTime)
 
     override fun runCurrent() = testScheduler.runCurrent()
 
@@ -40,6 +43,7 @@ class IntegrationTestScopeImpl(
         targetState: Lifecycle.State,
         create: ComponentFactory.(TestComponentContext) -> T
     ): Pair<T, TestComponentContext> {
+        // Keep Decompose initialization order explicit for predictable tests.
         val lifecycle = TestComponentContext()
         val component = componentFactory.create(lifecycle)
         lifecycle.moveToState(targetState)

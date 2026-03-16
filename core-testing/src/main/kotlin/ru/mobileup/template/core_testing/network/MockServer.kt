@@ -4,14 +4,29 @@ import kotlinx.coroutines.delay
 import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.time.Duration
 
+/**
+ * In-memory mock server used by integration tests.
+ *
+ * Responses are queued as one-time rules and consumed in request order.
+ */
 class MockServer {
     private val rules = CopyOnWriteArrayList<MockRule>()
     private val recordedRequests = CopyOnWriteArrayList<HttpRequest>()
 
+    /**
+     * Enqueues one-time responses for requests matching [matcher].
+     *
+     * Each response is consumed by exactly one matching request.
+     */
     fun enqueue(matcher: RequestMatcher, vararg responses: HttpResponse) {
-        rules.add(MockRule(matcher, responses.toMutableList()))
+        responses.forEach { response ->
+            rules.add(MockRule(matcher, response))
+        }
     }
 
+    /**
+     * Returns all recorded requests filtered by [matcher].
+     */
     fun getRecordedRequests(matcher: RequestMatcher = RequestMatcher): List<HttpRequest> {
         return recordedRequests.filter { matcher.matches(it) }
     }
@@ -19,17 +34,14 @@ class MockServer {
     internal suspend fun handleRequest(request: HttpRequest): HttpResponse {
         recordedRequests.add(request)
 
-        val rule = rules.find { it.matcher.matches(request) }
+        val rule = rules.firstOrNull { it.matcher.matches(request) }
             ?: error("No mock response enqueued for request: ${request.method.value} ${request.fullUrl}")
 
-        val response = if (rule.responses.size > 1) {
-            rule.responses.removeAt(0)
-        } else {
-            rule.responses.first()
-        }
+        rules.remove(rule)
+        val response = rule.response
 
         if (response.delay > Duration.ZERO) {
-            // Работает с виртуальным временем в тестах
+            // Works with virtual test time via kotlinx-coroutines-test.
             delay(response.delay)
         }
 
@@ -38,6 +50,6 @@ class MockServer {
 
     private data class MockRule(
         val matcher: RequestMatcher,
-        val responses: MutableList<HttpResponse>
+        val response: HttpResponse
     )
 }

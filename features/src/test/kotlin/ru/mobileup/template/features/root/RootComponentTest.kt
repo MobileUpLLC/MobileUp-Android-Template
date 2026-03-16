@@ -11,14 +11,18 @@ class RootComponentTest : FunSpec({
     context("Root component") {
 
         integrationTest("shows pokemons as initial screen") {
+            // Create the root component
             val component = setupComponent { createRootComponent(it) }
 
+            // Verify pokemons screen is shown initially
             component.childStack.value.active.instance.shouldBeInstanceOf<RootComponent.Child.Pokemons>()
         }
 
         integrationTest("creates message component") {
+            // Create the root component
             val component = setupComponent { createRootComponent(it) }
 
+            // Verify message component is available
             component.messageComponent.shouldNotBeNull()
         }
     }

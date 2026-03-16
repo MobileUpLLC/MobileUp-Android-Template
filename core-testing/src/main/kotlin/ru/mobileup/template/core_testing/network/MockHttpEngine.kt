@@ -9,6 +9,12 @@ import io.ktor.http.content.TextContent
 import io.ktor.http.headers
 import kotlinx.coroutines.CoroutineDispatcher
 
+/**
+ * Creates a Ktor [MockEngine] backed by [MockServer].
+ *
+ * All requests are converted to [HttpRequest], delegated to the mock server,
+ * and transformed back to Ktor responses.
+ */
 fun createMockHttpEngine(
     mockServer: MockServer,
     dispatcher: CoroutineDispatcher
@@ -37,6 +43,9 @@ fun createMockHttpEngine(
     )
 }
 
+/**
+ * Converts Ktor [Headers] to a plain map for easier assertions in tests.
+ */
 private fun Headers.toMap(): Map<String, String> {
     val result = mutableMapOf<String, String>()
     forEach { key, values -> result[key] = values.joinToString() }

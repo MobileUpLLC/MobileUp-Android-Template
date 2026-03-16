@@ -8,6 +8,7 @@ import ru.mobileup.template.features.pokemons.domain.PokemonTypeId
 import ru.mobileup.template.features.readTestResource
 
 object TestPokemons {
+    val ponytaId = PokemonId("77")
 
     val firePokemonsJson by lazy { readTestResource("responses/fire_pokemons.json") }
 
@@ -19,7 +20,7 @@ object TestPokemons {
     val detailedPonytaJson by lazy { readTestResource("responses/detailed_ponyta.json") }
 
     val detailedPonyta = DetailedPokemon(
-        id = PokemonId("77"),
+        id = ponytaId,
         name = "Ponyta",
         height = 1f,
         weight = 30f,

@@ -54,11 +54,4 @@ dependencies {
     debugImplementation(libs.chucker)
     debugImplementation(libs.bundles.hyperion)
     debugImplementation(libs.replica.devtools)
-
-    // Testing
-    testImplementation(libs.ktor.client.mock)
-    testImplementation(libs.bundles.replica)
-    testImplementation(libs.koin.test)
-    testImplementation(libs.coroutines.test)
-    testImplementation(libs.kotest.runner.junit5)
 }

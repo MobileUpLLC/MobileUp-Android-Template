@@ -1,5 +1,8 @@
 package ru.mobileup.template.core_testing.utils
 
+/**
+ * Collects emitted outputs from components for assertions in tests.
+ */
 class OutputCapturer<T> : (T) -> Unit {
     private val _all = mutableListOf<T>()
     val all: List<T> get() = _all
