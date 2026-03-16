@@ -8,6 +8,9 @@ import ru.mobileup.template.core_testing.network.containsPath
 import ru.mobileup.template.features.integrationTest
 import ru.mobileup.template.features.pokemons.presentation.PokemonsComponent
 
+private val FIRE_TYPE_ID = TestPokemons.fireTypeId.value
+private val CHARMANDER_ID = TestPokemons.charmanderId.value
+
 class PokemonsComponentTest : FunSpec({
 
     context("Pokemons сomponent") {
@@ -23,11 +26,11 @@ class PokemonsComponentTest : FunSpec({
         integrationTest("navigates to details when pokemon is clicked in the list") {
             // Prepare list and details responses, then create the router component
             mockServer.enqueue(
-                RequestMatcher.containsPath("type/${TestPokemons.fireTypeId.value}"),
+                RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
                 HttpResponse(TestPokemons.firePokemonsJson)
             )
             mockServer.enqueue(
-                RequestMatcher.containsPath("pokemon/${TestPokemons.charmanderId.value}"),
+                RequestMatcher.containsPath("pokemon/$CHARMANDER_ID"),
                 HttpResponse(TestPokemons.detailedPonytaJson)
             )
             val component = setupComponent { createPokemonsComponent(it) }

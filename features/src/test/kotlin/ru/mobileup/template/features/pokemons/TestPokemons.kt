@@ -13,6 +13,8 @@ object TestPokemons {
     val ponytaTypeId = PokemonTypeId("77")
     val fireTypeId = PokemonType.Fire.id
     val waterTypeId = PokemonType.Water.id
+    val squirtleId = PokemonId("7")
+    val psyduckId = PokemonId("54")
 
     val firePokemonsJson by lazy { readTestResource("responses/fire_pokemons.json") }
 
@@ -21,13 +23,30 @@ object TestPokemons {
         Pokemon(id = ponytaId, name = "Ponyta")
     )
 
+    val waterPokemonsJson by lazy { readTestResource("responses/water_pokemons.json") }
+
+    val waterPokemons = listOf(
+        Pokemon(id = squirtleId, name = "Squirtle"),
+        Pokemon(id = psyduckId, name = "Psyduck")
+    )
+
     val detailedPonytaJson by lazy { readTestResource("responses/detailed_ponyta.json") }
+    val detailedPonytaUpdatedJson by lazy { readTestResource("responses/detailed_ponyta_updated.json") }
 
     val detailedPonyta = DetailedPokemon(
         id = ponytaId,
         name = "Ponyta",
         height = 1f,
         weight = 30f,
+        imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${ponytaId.value}.png",
+        types = listOf(PokemonType(ponytaTypeId, "Fire"))
+    )
+
+    val detailedPonytaUpdated = DetailedPokemon(
+        id = ponytaId,
+        name = "Ponyta updated",
+        height = 1.1f,
+        weight = 31f,
         imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${ponytaId.value}.png",
         types = listOf(PokemonType(ponytaTypeId, "Fire"))
     )

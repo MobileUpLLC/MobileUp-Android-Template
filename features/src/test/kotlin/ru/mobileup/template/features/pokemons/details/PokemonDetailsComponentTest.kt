@@ -12,6 +12,9 @@ import ru.mobileup.template.features.integrationTest
 import ru.mobileup.template.features.pokemons.TestPokemons
 import ru.mobileup.template.features.pokemons.createPokemonDetailsComponent
 import ru.mobileup.template.features.pokemons.domain.PokemonType
+import kotlin.time.Duration.Companion.seconds
+
+private val PONYTA_ID = TestPokemons.ponytaId.value
 
 class PokemonDetailsComponentTest : FunSpec({
 
@@ -21,7 +24,7 @@ class PokemonDetailsComponentTest : FunSpec({
             // Prepare a successful details response and create the component
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
-                RequestMatcher.containsPath("pokemon/${pokemonId.value}"),
+                RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
                 HttpResponse(TestPokemons.detailedPonytaJson)
             )
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
@@ -38,7 +41,7 @@ class PokemonDetailsComponentTest : FunSpec({
             // Prepare a failed details response and create the component
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
-                RequestMatcher.containsPath("pokemon/${pokemonId.value}"),
+                RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
                 HttpResponse(status = HttpStatusCode.NotFound)
             )
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
@@ -54,7 +57,7 @@ class PokemonDetailsComponentTest : FunSpec({
             // Prepare a successful details response and create the component
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
-                RequestMatcher.containsPath("pokemon/${pokemonId.value}"),
+                RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
                 HttpResponse(TestPokemons.detailedPonytaJson)
             )
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
@@ -73,7 +76,7 @@ class PokemonDetailsComponentTest : FunSpec({
             // Prepare a failed details response and create the component
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
-                RequestMatcher.containsPath("pokemon/${pokemonId.value}"),
+                RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
                 HttpResponse(status = HttpStatusCode.NotFound)
             )
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
@@ -89,31 +92,39 @@ class PokemonDetailsComponentTest : FunSpec({
         }
 
         integrationTest("reloads details when retry is clicked") {
-            // Prepare initial and retry responses, then create the component
+            // Prepare a failed initial response and a successful retry response, then create the component
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
-                RequestMatcher.containsPath("pokemon/${pokemonId.value}"),
-                HttpResponse(TestPokemons.detailedPonytaJson),
-                HttpResponse(TestPokemons.detailedPonytaJson)
+                RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
+                HttpResponse(status = HttpStatusCode.NotFound),
+                HttpResponse(TestPokemons.detailedPonytaJson, delay = 1.seconds)
             )
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
             advanceUntilIdle()
 
             // Retry loading details
             component.onRetryClick()
+            runCurrent()
+
+            // Verify loading starts again
+            component.pokemonState.value.loading shouldBe true
+
+            // Wait for retry loading to complete
             advanceUntilIdle()
 
-            // Verify request is sent again
-            mockServer.getRecordedRequests(RequestMatcher.containsPath("pokemon/${pokemonId.value}")).size shouldBe 2
+            // Verify details are loaded after retry
+            component.pokemonState.value.loading shouldBe false
+            component.pokemonState.value.error shouldBe null
+            component.pokemonState.value.data shouldBe TestPokemons.detailedPonyta
         }
 
         integrationTest("reloads details when refresh is requested") {
             // Prepare initial and refresh responses, then create the component
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
-                RequestMatcher.containsPath("pokemon/${pokemonId.value}"),
+                RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
                 HttpResponse(TestPokemons.detailedPonytaJson),
-                HttpResponse(TestPokemons.detailedPonytaJson)
+                HttpResponse(TestPokemons.detailedPonytaUpdatedJson)
             )
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
             advanceUntilIdle()
@@ -122,8 +133,10 @@ class PokemonDetailsComponentTest : FunSpec({
             component.onRefresh()
             advanceUntilIdle()
 
-            // Verify request is sent again
-            mockServer.getRecordedRequests(RequestMatcher.containsPath("pokemon/${pokemonId.value}")).size shouldBe 2
+            // Verify updated details are shown
+            component.pokemonState.value.loading shouldBe false
+            component.pokemonState.value.error shouldBe null
+            component.pokemonState.value.data shouldBe TestPokemons.detailedPonytaUpdated
         }
     }
 })

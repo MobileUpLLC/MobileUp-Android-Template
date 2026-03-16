@@ -26,6 +26,10 @@ class MockServer {
 
     /**
      * Returns all recorded requests filtered by [matcher].
+     *
+     * Prefer asserting user-visible state/output in tests.
+     * Use this only when the request itself is the observable behavior
+     * (for example, create/update/delete command scenarios).
      */
     fun getRecordedRequests(matcher: RequestMatcher = RequestMatcher): List<HttpRequest> {
         return recordedRequests.filter { matcher.matches(it) }

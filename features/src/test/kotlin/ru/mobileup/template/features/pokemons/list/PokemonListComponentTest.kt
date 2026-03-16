@@ -2,6 +2,7 @@ package ru.mobileup.template.features.pokemons.list
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.ktor.http.HttpStatusCode
 import ru.mobileup.template.core_testing.network.HttpResponse
 import ru.mobileup.template.core_testing.network.RequestMatcher
 import ru.mobileup.template.core_testing.network.containsPath
@@ -13,6 +14,9 @@ import ru.mobileup.template.features.pokemons.presentation.list.PokemonListCompo
 import ru.mobileup.template.features.pokemons.domain.PokemonType
 import kotlin.time.Duration.Companion.seconds
 
+private val FIRE_TYPE_ID = TestPokemons.fireTypeId.value
+private val WATER_TYPE_ID = TestPokemons.waterTypeId.value
+
 class PokemonListComponentTest : FunSpec({
 
     context("Pokemon list screen") {
@@ -20,7 +24,7 @@ class PokemonListComponentTest : FunSpec({
         integrationTest("loads the default type pokemon list") {
             // Prepare the default type response and create the list component
             mockServer.enqueue(
-                RequestMatcher.containsPath("type/${TestPokemons.fireTypeId.value}"),
+                RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
                 HttpResponse(TestPokemons.firePokemonsJson)
             )
             val component = setupComponent { createPokemonListComponent(it, {}) }
@@ -37,7 +41,7 @@ class PokemonListComponentTest : FunSpec({
         integrationTest("emits pokemon details output when a pokemon is clicked") {
             // Prepare the loaded pokemon list
             mockServer.enqueue(
-                RequestMatcher.containsPath("type/${TestPokemons.fireTypeId.value}"),
+                RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
                 HttpResponse(TestPokemons.firePokemonsJson)
             )
             val capturer = OutputCapturer<PokemonListComponent.Output>()
@@ -55,7 +59,7 @@ class PokemonListComponentTest : FunSpec({
         integrationTest("shows loading during refresh") {
             // Prepare initial data and a delayed refresh response
             mockServer.enqueue(
-                RequestMatcher.containsPath("type/${TestPokemons.fireTypeId.value}"),
+                RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
                 HttpResponse(TestPokemons.firePokemonsJson),
                 HttpResponse(
                     TestPokemons.firePokemonsJson,
@@ -82,12 +86,12 @@ class PokemonListComponentTest : FunSpec({
         integrationTest("loads selected type pokemon list when type is clicked") {
             // Prepare responses for default and selected types
             mockServer.enqueue(
-                RequestMatcher.containsPath("type/${TestPokemons.fireTypeId.value}"),
+                RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
                 HttpResponse(TestPokemons.firePokemonsJson)
             )
             mockServer.enqueue(
-                RequestMatcher.containsPath("type/${TestPokemons.waterTypeId.value}"),
-                HttpResponse(TestPokemons.firePokemonsJson)
+                RequestMatcher.containsPath("type/$WATER_TYPE_ID"),
+                HttpResponse(TestPokemons.waterPokemonsJson)
             )
             val component = setupComponent { createPokemonListComponent(it, {}) }
             advanceUntilIdle()
@@ -96,27 +100,35 @@ class PokemonListComponentTest : FunSpec({
             component.onTypeClick(PokemonType.Water.id)
             advanceUntilIdle()
 
-            // Verify selected type and request are updated
+            // Verify selected type and list are updated
             component.selectedTypeId.value shouldBe PokemonType.Water.id
-            mockServer.getRecordedRequests(RequestMatcher.containsPath("type/${TestPokemons.waterTypeId.value}")).size shouldBe 1
+            component.pokemonsState.value.data shouldBe TestPokemons.waterPokemons
         }
 
         integrationTest("reloads pokemon list when retry is clicked") {
-            // Prepare initial and retry responses
+            // Prepare a failed initial response and a successful retry response
             mockServer.enqueue(
-                RequestMatcher.containsPath("type/${TestPokemons.fireTypeId.value}"),
-                HttpResponse(TestPokemons.firePokemonsJson),
-                HttpResponse(TestPokemons.firePokemonsJson)
+                RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
+                HttpResponse(status = HttpStatusCode.NotFound),
+                HttpResponse(TestPokemons.firePokemonsJson, delay = 1.seconds)
             )
             val component = setupComponent { createPokemonListComponent(it, {}) }
             advanceUntilIdle()
 
             // Retry loading the current list
             component.onRetryClick()
+            runCurrent()
+
+            // Verify loading starts again
+            component.pokemonsState.value.loading shouldBe true
+
+            // Wait for retry loading to complete
             advanceUntilIdle()
 
-            // Verify the request is sent again
-            mockServer.getRecordedRequests(RequestMatcher.containsPath("type/${TestPokemons.fireTypeId.value}")).size shouldBe 2
+            // Verify the list is loaded after retry
+            component.pokemonsState.value.loading shouldBe false
+            component.pokemonsState.value.error shouldBe null
+            component.pokemonsState.value.data shouldBe TestPokemons.firePokemons
         }
     }
 })
