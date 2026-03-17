@@ -21,7 +21,7 @@ class PokemonDetailsComponentTest : FunSpec({
     context("Pokemon details screen") {
 
         integrationTest("loads details successfully") {
-            // Prepare a successful details response and create the component
+            // Prepare a successful details response
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
@@ -38,7 +38,7 @@ class PokemonDetailsComponentTest : FunSpec({
         }
 
         integrationTest("shows error when loading fails") {
-            // Prepare a failed details response and create the component
+            // Prepare a failed details response
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
@@ -54,7 +54,7 @@ class PokemonDetailsComponentTest : FunSpec({
         }
 
         integrationTest("shows message with types when type is clicked") {
-            // Prepare a successful details response and create the component
+            // Prepare a successful details response
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
@@ -73,7 +73,7 @@ class PokemonDetailsComponentTest : FunSpec({
         }
 
         integrationTest("does not emit message when details are not loaded") {
-            // Prepare a failed details response and create the component
+            // Prepare a failed details response
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
@@ -92,7 +92,7 @@ class PokemonDetailsComponentTest : FunSpec({
         }
 
         integrationTest("reloads details when retry is clicked") {
-            // Prepare a failed initial response and a successful retry response, then create the component
+            // Prepare a failed initial response and a successful retry response
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
@@ -119,7 +119,7 @@ class PokemonDetailsComponentTest : FunSpec({
         }
 
         integrationTest("reloads details when refresh is requested") {
-            // Prepare initial and refresh responses, then create the component
+            // Prepare initial and refresh responses
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/$PONYTA_ID"),

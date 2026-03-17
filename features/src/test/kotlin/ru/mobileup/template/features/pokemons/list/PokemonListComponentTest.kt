@@ -22,7 +22,7 @@ class PokemonListComponentTest : FunSpec({
     context("Pokemon list screen") {
 
         integrationTest("loads the default type pokemon list") {
-            // Prepare the default type response and create the list component
+            // Prepare the default type response
             mockServer.enqueue(
                 RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
                 HttpResponse(TestPokemons.firePokemonsJson)
