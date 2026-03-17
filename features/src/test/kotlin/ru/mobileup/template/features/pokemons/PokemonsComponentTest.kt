@@ -16,7 +16,6 @@ class PokemonsComponentTest : FunSpec({
     context("Pokemons сomponent") {
 
         integrationTest("shows list as initial screen") {
-            // Create the pokemons router component
             val component = setupComponent { createPokemonsComponent(it) }
 
             // Verify list screen is shown initially
@@ -24,7 +23,7 @@ class PokemonsComponentTest : FunSpec({
         }
 
         integrationTest("navigates to details when pokemon is clicked in the list") {
-            // Prepare list and details responses, then create the router component
+            // Prepare list and details responses
             mockServer.enqueue(
                 RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
                 HttpResponse(TestPokemons.firePokemonsJson)
