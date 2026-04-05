@@ -1,5 +1,4 @@
 pluginManagement {
-    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -32,6 +31,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "MobileUp Android Template"
 
-include(":app")
+include(":androidApp")
+include(":shared")
 include(":core")
 include(":features")

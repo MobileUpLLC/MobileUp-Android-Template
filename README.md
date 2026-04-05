@@ -1,7 +1,7 @@
-# MobileUp Android Template 🌀
+# MobileUp CMP Template 🌀
 
 
-Hi! This is a template for initializing an Android project in [MobileUp](https://mobileup.ru/).
+Hi! This is a template for initializing an Compose Multiplatform project in [MobileUp](https://mobileup.ru/).
 
 ## Creating Project
 

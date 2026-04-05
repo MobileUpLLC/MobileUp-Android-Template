@@ -1,6 +1,8 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
@@ -9,64 +11,70 @@ plugins {
     alias(libs.plugins.module.graph)
 }
 
-android {
-    namespace = "ru.mobileup.template.features"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
+kotlin {
+    android {
+        namespace = "ru.mobileup.template.features"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
+
+        androidResources {
+            enable = true
+        }
+
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 
-    kotlin {
-        jvmToolchain(17)
-    }
+    applyDefaultHierarchyTemplate()
 
-    packaging {
-        resources.excludes += "META-INF/*"
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":core"))
+
+            // Kotlin
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.coroutines.core)
+
+            // UI
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.material3)
+            implementation(libs.compose.material.icons)
+            implementation(libs.compose.ui)
+            implementation(libs.compose.uiToolingPreview)
+            implementation(libs.compose.components.resources)
+            implementation(libs.bundles.coil)
+
+            // DI
+            implementation(libs.koin)
+
+            // Logging
+            implementation(libs.logger.kermit)
+
+            // Network
+            implementation(libs.bundles.ktor.shared)
+            implementation(libs.ktorfit.lib)
+
+            implementation(libs.form.validation)
+
+            // Architecture
+            implementation(libs.bundles.decompose)
+            implementation(libs.bundles.replica.shared)
+        }
     }
 }
 
-dependencies {
-    ksp(libs.ktorfit.ksp)
+compose.resources {
+    packageOfResClass = "ru.mobileup.template.features.generated.resources"
+}
 
-    // Modules
-    implementation(project(":core"))
-
-    // Kotlin
-    implementation(libs.kotlinx.datetime)
-    implementation(libs.coroutines.core)
-    implementation(libs.coroutines.android)
-
-    // UI
-    implementation(compose.runtime)
-    implementation(compose.foundation)
-    implementation(compose.material3)
-    implementation(compose.ui)
-    implementation(compose.components.uiToolingPreview)
-    implementation(libs.material.icons)
-    implementation(libs.bundles.coil)
-
-    // DI
-    implementation(libs.koin)
-
-    // Logging
-    implementation(libs.logger.kermit)
-
-    // Network
-    implementation(libs.bundles.ktor)
-    implementation(libs.ktorfit.lib)
-
-    implementation(libs.form.validation)
-
-    // Architecture
-    implementation(libs.bundles.decompose)
-    implementation(libs.bundles.replica)
-    api(libs.moko.resources)
-    implementation(libs.moko.resourcesCompose)
+ktorfit {
+    compilerPluginVersion.set(libs.versions.ktorfitCompiler.get())
 }
 
 composeCompiler {
@@ -75,9 +83,13 @@ composeCompiler {
     )
 }
 
+dependencies {
+    androidRuntimeClasspath(libs.compose.uiTooling)
+}
+
 // Usage: ./gradlew generateModuleGraph detectGraphCycles
 moduleGraph {
     featuresPackage.set("ru.mobileup.template.features")
-    featuresDirectory.set(project.file("src/main/kotlin/ru/mobileup/template/features"))
+    featuresDirectory.set(project.file("src/commonMain/kotlin/ru/mobileup/template/features"))
     outputDirectory.set(project.file("module_graph"))
 }
