@@ -1,4 +1,4 @@
-package ru.mobileup.template.features.root.presentation
+ package ru.mobileup.template.features.root.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
