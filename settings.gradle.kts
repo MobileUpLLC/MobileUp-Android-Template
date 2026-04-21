@@ -29,7 +29,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MobileUp Android Template"
+rootProject.name = "MobileUp CMP Template"
 
 include(":androidApp")
 include(":shared")
