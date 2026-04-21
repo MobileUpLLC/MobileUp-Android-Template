@@ -9,9 +9,16 @@ After cloning the template:
 
 1. Run the setup script to configure your application ID and JIRA key:  
    `./scripts/setup-project <new.application.id> <JIRA_PROJECT_KEY>`
-2. Replace application name and icon to the correct ones.
-3. Remove the pokemons feature. It is created as an example.
-4. Replace error text resources with text for your project.
+2. Update `AGENTS.md` for your concrete product context.
+3. Replace application name and icon with project-specific assets.
+4. Remove the demo `pokemons` feature and related wiring.
+5. Replace error text resources with product text.
+6. Build a project-specific `CustomTheme` and reusable widget set in `core`.
+7. Continue with product feature implementation.
+
+Notes:
+- `setup-project` also runs Git history reset and hook setup scripts.
+- If needed separately, history reset script is: `./scripts/reset-git-history`.
 
 ## Modules
 The project is based on three gradle modules:
@@ -23,7 +30,7 @@ It contains general purpose things: error handing, message showing, network, the
 It consists of concrete features. Each feature has its own package which contains:
 - DI configuration
 - **presentation layer** - components, Compose UI
-- **domain layer** - entities, interactors
+- **domain layer** - entities, queries, pure functions
 - **data layer** - repositories, storages
 
 #### shared
@@ -47,7 +54,10 @@ Xcode project, SwiftUI entry point, assets, iOS-specific integrations, and launc
 - [Ktorfit](https://github.com/Foso/Ktorfit) - network requests in Retrofit way
 - [Coroutines](https://developer.android.com/kotlin/coroutines) - asynchronous operations
 - [Kotlin Serialization](https://github.com/Kotlin/kotlinx.serialization) - JSON serialization and parsing
+- [Kotlinx DateTime](https://github.com/Kotlin/kotlinx-datetime) - date/time models
 - [Coil](https://github.com/coil-kt/coil) - image loading
+- `Settings` + `SettingsFactory` abstraction - local settings storage
+- [Security Crypto](https://developer.android.com/topic/security/data) - secure storage primitives
 - [Detekt](https://github.com/detekt/detekt) - static code analysis
 - [Hyperion](https://github.com/willowtreeapps/Hyperion-Android) - debug panel
 - [Module Graph Gradle Plugin](https://github.com/MobileUpLLC/Module-Graph-Gradle-Plugin) - feature dependency graph visualization and validation

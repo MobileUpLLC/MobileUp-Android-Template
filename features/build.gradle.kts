@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotest.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
@@ -23,6 +24,10 @@ kotlin {
 
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+        }
+
+        withHostTest {
+            isIncludeAndroidResources = true
         }
     }
 
@@ -60,11 +65,20 @@ kotlin {
             implementation(libs.bundles.ktor.shared)
             implementation(libs.ktorfit.lib)
 
-            implementation(libs.form.validation)
-
             // Architecture
             implementation(libs.bundles.decompose)
             implementation(libs.bundles.replica.shared)
+        }
+
+        commonTest.dependencies {
+            implementation(project(":core-testing"))
+            implementation(libs.coroutines.test)
+            implementation(libs.kotest.framework.engine)
+            implementation(libs.kotest.assertions.core)
+        }
+
+        getByName("androidHostTest").dependencies {
+            implementation(libs.kotest.runner.junit5)
         }
     }
 }
@@ -85,6 +99,10 @@ composeCompiler {
 
 dependencies {
     androidRuntimeClasspath(libs.compose.uiTooling)
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 // Usage: ./gradlew generateModuleGraph detectGraphCycles

@@ -30,6 +30,8 @@ material3 = "1.10.0-alpha05"
 materialIcons = "1.7.3"
 form = "2.1.0"
 securityCrypto = "1.1.0"
+kotest = "5.9.1"
+kover = "0.9.1"
 
 [libraries]
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "dateTime" }
@@ -67,6 +69,11 @@ form-validation = { module = "ru.mobileup:kmm-form-validation", version.ref = "f
 
 koin = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 logger-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
+kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
 
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 detekt-compose-rules = { module = "io.nlopez.compose.rules:detekt", version.ref = "composeRules" }
@@ -127,3 +134,5 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
 module-graph = { id = "ru.mobileup.module-graph", version.ref = "moduleGraph" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+kotest-multiplatform = { id = "io.kotest.multiplatform", version.ref = "kotest" }

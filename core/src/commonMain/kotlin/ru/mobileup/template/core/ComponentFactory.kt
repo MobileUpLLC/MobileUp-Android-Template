@@ -1,9 +1,9 @@
 /**
- * Based on MobileUp Android Template: https://github.com/MobileUpLLC/MobileUp-Android-Template
+ * Based on MobileUp Template: https://github.com/MobileUpLLC/MobileUp-Android-Template
  *
  *  MIT License
  *
- *   Copyright (c) 2023 MobileUp
+ *   Copyright (c) 2026 MobileUp
  *
  *   Permission is hereby granted, free of charge, to any person obtaining a copy
  *   of this software and associated documentation files (the "Software"), to deal
