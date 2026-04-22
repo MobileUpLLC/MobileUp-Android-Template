@@ -23,7 +23,8 @@ class IntegrationTestScopeImpl(
 ) : IntegrationTestScope, TestScope by kotestScope {
 
     override val mockServer: MockServer = koin.get()
-    override val testMessageService: TestMessageService = koin.get<MessageService>() as TestMessageService
+    override val testMessageService: TestMessageService =
+        koin.get<MessageService>() as TestMessageService
     private val componentFactory: ComponentFactory = koin.get()
 
     override fun advanceUntilIdle() = testScheduler.advanceUntilIdle()

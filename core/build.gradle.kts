@@ -94,6 +94,7 @@ kotlin {
 }
 
 compose.resources {
+    publicResClass = true
     packageOfResClass = "ru.mobileup.template.core.generated.resources"
 }
 

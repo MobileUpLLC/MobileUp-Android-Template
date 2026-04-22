@@ -5,8 +5,8 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import ru.mobileup.template.core_testing.network.HttpResponse
 import ru.mobileup.template.core_testing.network.RequestMatcher
 import ru.mobileup.template.core_testing.network.containsPath
-import ru.mobileup.template.features.utils.integrationTest
 import ru.mobileup.template.features.pokemons.presentation.PokemonsComponent
+import ru.mobileup.template.features.utils.integrationTest
 
 private val FIRE_TYPE_ID = TestPokemons.fireTypeId.value
 private val CHARMANDER_ID = TestPokemons.charmanderId.value
@@ -36,7 +36,8 @@ class PokemonsComponentTest : FunSpec({
             advanceUntilIdle()
 
             // Click a pokemon in the list and deliver router events
-            val listChild = component.childStack.value.active.instance as PokemonsComponent.Child.List
+            val listChild =
+                component.childStack.value.active.instance as PokemonsComponent.Child.List
             listChild.component.onPokemonClick(TestPokemons.firePokemons.first().id)
             runCurrent()
 

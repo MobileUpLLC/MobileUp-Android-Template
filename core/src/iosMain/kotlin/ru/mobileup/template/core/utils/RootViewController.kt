@@ -15,11 +15,8 @@ import platform.UIKit.UIStatusBarStyleLightContent
 import platform.UIKit.UIViewController
 import platform.UIKit.addChildViewController
 import platform.UIKit.didMoveToParentViewController
-import ru.mobileup.template.core.LocalPlatformUiProvider
-import ru.mobileup.template.core.PlatformUiProvider
 
 class RootViewController(
-    private val platformUiProvider: PlatformUiProvider,
     private val backDispatcher: BackDispatcher,
     private val rootUi: @Composable () -> Unit
 ) : UIViewController(nibName = null, bundle = null) {
@@ -57,7 +54,6 @@ class RootViewController(
             backIcon = null
         ) {
             CompositionLocalProvider(
-                LocalPlatformUiProvider provides platformUiProvider,
                 LocalSystemBarIconsColorHandler provides systemBarIconsColorHandler,
                 LocalBackAction provides backDispatcher::back
             ) {

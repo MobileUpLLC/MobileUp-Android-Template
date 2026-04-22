@@ -31,7 +31,8 @@ object TestPokemons {
     )
 
     suspend fun detailedPonytaJson(): String = readTestResource("responses/detailed_ponyta.json")
-    suspend fun detailedPonytaUpdatedJson(): String = readTestResource("responses/detailed_ponyta_updated.json")
+    suspend fun detailedPonytaUpdatedJson(): String =
+        readTestResource("responses/detailed_ponyta_updated.json")
 
     val detailedPonyta = DetailedPokemon(
         id = ponytaId,

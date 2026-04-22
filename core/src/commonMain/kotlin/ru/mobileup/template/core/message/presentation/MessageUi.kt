@@ -1,10 +1,13 @@
 package ru.mobileup.template.core.message.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,7 +15,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,7 +31,6 @@ import org.jetbrains.compose.resources.painterResource
 import ru.mobileup.template.core.message.domain.Message
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.theme.custom.CustomTheme
-import ru.mobileup.template.core.utils.navigationBarsWithImePadding
 import kotlin.math.roundToInt
 
 /**
@@ -49,7 +50,8 @@ fun MessageUi(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .navigationBarsWithImePadding()
+            .navigationBarsPadding()
+            .imePadding()
     ) {
         visibleMessage?.let {
             MessagePopup(
@@ -77,7 +79,6 @@ private fun MessagePopup(
     ) {
         Card(
             shape = RoundedCornerShape(8.dp),
-            // TODO: use different containerColor depending on MessageType
             colors = CardDefaults.cardColors(containerColor = CustomTheme.colors.background.toast),
             elevation = CardDefaults.cardElevation(3.dp),
             modifier = Modifier
@@ -118,15 +119,14 @@ private fun MessageButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    TextButton(
-        onClick = onClick,
-        modifier = modifier,
-    ) {
-        Text(
-            text = text,
-            style = CustomTheme.typography.button.bold
-        )
-    }
+    Text(
+        modifier = modifier
+            .clickable { onClick() }
+            .padding(4.dp),
+        text = text,
+        style = CustomTheme.typography.button.bold,
+        color = CustomTheme.colors.button.primary
+    )
 }
 
 @Preview

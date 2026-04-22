@@ -3,7 +3,7 @@ package ru.mobileup.template.core.utils
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.extensions.compose.stack.animation.StackAnimation
 import com.arkivanov.essenty.backhandler.BackHandlerOwner
-import ru.mobileup.template.core.LocalPlatformUiProvider
+import com.arkivanov.essenty.backhandler.BackHandler
 
 /**
  * Should be implemented by components with ChildStack to support predictive back animation
@@ -18,6 +18,10 @@ interface PredictiveBackComponent : BackHandlerOwner {
  */
 @Composable
 fun <C : Any, T : Any> PredictiveBackComponent.predictiveBackAnimation(): StackAnimation<C, T> {
-    val uiProvider = LocalPlatformUiProvider.current
-    return uiProvider.createPredictiveBackAnimation(backHandler, ::onBack)
+    return createPlatformPredictiveBackAnimation(backHandler, ::onBack)
 }
+
+internal expect fun <C : Any, T : Any> createPlatformPredictiveBackAnimation(
+    backHandler: BackHandler,
+    onBack: () -> Unit
+): StackAnimation<C, T>

@@ -1,8 +1,8 @@
 package ru.mobileup.template.features.pokemons.domain.power
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.assertions.throwables.shouldThrow
 import ru.mobileup.template.features.pokemons.domain.PokemonBaseStats
 import ru.mobileup.template.features.pokemons.domain.PowerTier
 

@@ -1,6 +1,14 @@
 package ru.mobileup.template.core.error_handling
 
-import ru.mobileup.template.core.generated.resources.*
+import ru.mobileup.template.core.generated.resources.Res
+import ru.mobileup.template.core.generated.resources.error_deserialization
+import ru.mobileup.template.core.generated.resources.error_matching_application_not_found
+import ru.mobileup.template.core.generated.resources.error_no_internet_connection
+import ru.mobileup.template.core.generated.resources.error_server
+import ru.mobileup.template.core.generated.resources.error_server_unavailable
+import ru.mobileup.template.core.generated.resources.error_ssl_handshake
+import ru.mobileup.template.core.generated.resources.error_unauthorized
+import ru.mobileup.template.core.generated.resources.error_unexpected
 import ru.mobileup.template.core.utils.StringDesc
 import ru.mobileup.template.core.utils.desc
 import ru.mobileup.template.core.utils.plus

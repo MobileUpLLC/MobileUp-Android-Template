@@ -42,6 +42,7 @@ private suspend fun convertToApplicationException(throwable: Throwable) = when (
         HttpStatusCode.GatewayTimeout, HttpStatusCode.ServiceUnavailable -> {
             ServerUnavailableException(throwable)
         }
+
         HttpStatusCode.Unauthorized -> UnauthorizedException(throwable)
         else -> mapBadRequestException(throwable)
     }

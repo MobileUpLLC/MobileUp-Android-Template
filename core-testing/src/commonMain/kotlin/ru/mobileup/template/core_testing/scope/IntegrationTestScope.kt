@@ -2,8 +2,8 @@ package ru.mobileup.template.core_testing.scope
 
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import io.kotest.core.test.TestScope
-import ru.mobileup.template.core_testing.message.data.TestMessageService
 import ru.mobileup.template.core.ComponentFactory
+import ru.mobileup.template.core_testing.message.data.TestMessageService
 import ru.mobileup.template.core_testing.network.MockServer
 import ru.mobileup.template.core_testing.utils.TestComponentContext
 import kotlin.time.Duration

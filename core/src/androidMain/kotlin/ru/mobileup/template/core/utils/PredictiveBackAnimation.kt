@@ -11,7 +11,7 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.essenty.backhandler.BackHandler
 
 @OptIn(ExperimentalDecomposeApi::class)
-internal fun <C : Any, T : Any> predictiveBackAnimation(
+internal actual fun <C : Any, T : Any> createPlatformPredictiveBackAnimation(
     backHandler: BackHandler,
     onBack: () -> Unit
 ): StackAnimation<C, T> = predictiveBackAnimation(

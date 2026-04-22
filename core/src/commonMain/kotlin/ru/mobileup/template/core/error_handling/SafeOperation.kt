@@ -4,7 +4,8 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import ru.mobileup.template.core.generated.resources.*
+import ru.mobileup.template.core.generated.resources.Res
+import ru.mobileup.template.core.generated.resources.common_retry
 import ru.mobileup.template.core.utils.StringDesc
 import ru.mobileup.template.core.utils.resourceDesc
 

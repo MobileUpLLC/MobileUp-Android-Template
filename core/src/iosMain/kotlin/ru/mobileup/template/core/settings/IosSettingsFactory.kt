@@ -8,9 +8,9 @@ class IosSettingsFactory(
 ) : SettingsFactory {
 
     override fun createSettings(name: String): Settings = IosUserDefaultsSettings(
-            userDefaults = NSUserDefaults(name),
-            dispatcher = dispatcher
-        )
+        userDefaults = NSUserDefaults(name),
+        dispatcher = dispatcher
+    )
 
     override fun createEncryptedSettings(name: String): Settings =
         IosKeychainSettings(name, dispatcher)

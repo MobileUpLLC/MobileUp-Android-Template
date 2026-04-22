@@ -36,9 +36,7 @@ interface SystemBarIconsColorHandler {
     fun updateSystemBarIconsColor(darkStatusBarIcons: Boolean, darkNavigationBarIcons: Boolean)
 }
 
-val LocalSystemBarIconsColorHandler = staticCompositionLocalOf<SystemBarIconsColorHandler> {
-    error("SystemBarIconsColorHandler is not present")
-}
+val LocalSystemBarIconsColorHandler = staticCompositionLocalOf<SystemBarIconsColorHandler?> { null }
 
 private enum class NavBarPosition {
     Bottom, Left, Right, None
@@ -112,8 +110,13 @@ fun ConfigureSystemBars(settings: SystemBarsSettings) {
     }
 
     val systemBarIconsColorHandler = LocalSystemBarIconsColorHandler.current
-    LaunchedEffect(darkStatusBarIcons, darkNavigationBarIcons) {
-        systemBarIconsColorHandler.updateSystemBarIconsColor(darkStatusBarIcons, darkNavigationBarIcons)
+    if (systemBarIconsColorHandler != null) {
+        LaunchedEffect(darkStatusBarIcons, darkNavigationBarIcons) {
+            systemBarIconsColorHandler.updateSystemBarIconsColor(
+                darkStatusBarIcons,
+                darkNavigationBarIcons
+            )
+        }
     }
 
     Box(Modifier.fillMaxSize()) {

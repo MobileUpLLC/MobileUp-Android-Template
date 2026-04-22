@@ -14,7 +14,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
-import ru.mobileup.template.core.generated.resources.*
+import ru.mobileup.template.core.generated.resources.Res
+import ru.mobileup.template.core.generated.resources.common_retry
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.theme.custom.CustomTheme
 
