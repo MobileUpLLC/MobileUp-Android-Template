@@ -5,7 +5,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 import ru.mobileup.template.core_testing.network.HttpResponse
 import ru.mobileup.template.core_testing.network.RequestMatcher
 import ru.mobileup.template.core_testing.network.containsPath
-import ru.mobileup.template.features.integrationTest
+import ru.mobileup.template.features.utils.integrationTest
 import ru.mobileup.template.features.pokemons.presentation.PokemonsComponent
 
 private val FIRE_TYPE_ID = TestPokemons.fireTypeId.value
@@ -26,11 +26,11 @@ class PokemonsComponentTest : FunSpec({
             // Prepare list and details responses
             mockServer.enqueue(
                 RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
-                HttpResponse(TestPokemons.firePokemonsJson)
+                HttpResponse(TestPokemons.firePokemonsJson())
             )
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/$CHARMANDER_ID"),
-                HttpResponse(TestPokemons.detailedPonytaJson)
+                HttpResponse(TestPokemons.detailedPonytaJson())
             )
             val component = setupComponent { createPokemonsComponent(it) }
             advanceUntilIdle()

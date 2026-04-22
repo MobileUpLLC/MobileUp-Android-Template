@@ -7,14 +7,31 @@ plugins {
 
 kotlin {
     android {
-        namespace = "ru.mobileup.template.core_testing"
+        namespace = "ru.mobileup.template.features"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
+        androidResources {
+            enable = true
+        }
+
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
-            freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
         }
+    }
+
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
+    compilerOptions {
+        freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
     }
 
     sourceSets {

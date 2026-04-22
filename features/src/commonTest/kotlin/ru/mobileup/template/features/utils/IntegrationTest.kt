@@ -1,4 +1,4 @@
-package ru.mobileup.template.features
+package ru.mobileup.template.features.utils
 
 import io.kotest.core.spec.style.scopes.FunSpecContainerScope
 import io.kotest.core.test.testCoroutineScheduler
@@ -9,8 +9,13 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.test.TestDispatcher
+import org.koin.core.Koin
+import ru.mobileup.template.core.ComponentFactory
+import ru.mobileup.template.core_testing.coreTestModule
 import ru.mobileup.template.core_testing.scope.IntegrationTestScope
 import ru.mobileup.template.core_testing.scope.IntegrationTestScopeImpl
+import ru.mobileup.template.features.featureModules
 
 // TODO: remove this, workaround after moving replica-decompose
 private val integrationTestMainDispatcherMutex = Mutex()
@@ -43,5 +48,13 @@ suspend fun FunSpecContainerScope.integrationTest(
                 Dispatchers.resetMain()
             }
         }
+    }
+}
+
+private fun createKoin(testDispatcher: TestDispatcher): Koin {
+    return Koin().apply {
+        loadModules(coreTestModule(testDispatcher) + featureModules)
+        declare(ComponentFactory(this))
+        createEagerInstances()
     }
 }

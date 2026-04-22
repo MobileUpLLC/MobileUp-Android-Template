@@ -8,11 +8,15 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.predictiveback
 import com.arkivanov.decompose.extensions.compose.stack.animation.predictiveback.predictiveBackAnimation
 import com.arkivanov.decompose.extensions.compose.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
+import com.arkivanov.essenty.backhandler.BackHandler
 
 @OptIn(ExperimentalDecomposeApi::class)
-actual fun <C : Any, T : Any> PredictiveBackComponent.predictiveBackAnimation(): StackAnimation<C, T> = predictiveBackAnimation(
+internal fun <C : Any, T : Any> predictiveBackAnimation(
+    backHandler: BackHandler,
+    onBack: () -> Unit
+): StackAnimation<C, T> = predictiveBackAnimation(
     backHandler = backHandler,
     fallbackAnimation = stackAnimation(fade() + slide()),
     selector = { backEvent, _, _ -> androidPredictiveBackAnimatableV2(backEvent) },
-    onBack = ::onBack
+    onBack = onBack
 )

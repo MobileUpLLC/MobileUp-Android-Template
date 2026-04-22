@@ -7,7 +7,7 @@ import ru.mobileup.template.core_testing.network.HttpResponse
 import ru.mobileup.template.core_testing.network.RequestMatcher
 import ru.mobileup.template.core_testing.network.containsPath
 import ru.mobileup.template.core_testing.utils.OutputCapturer
-import ru.mobileup.template.features.integrationTest
+import ru.mobileup.template.features.utils.integrationTest
 import ru.mobileup.template.features.pokemons.TestPokemons
 import ru.mobileup.template.features.pokemons.createPokemonListComponent
 import ru.mobileup.template.features.pokemons.presentation.list.PokemonListComponent
@@ -25,7 +25,7 @@ class PokemonListComponentTest : FunSpec({
             // Prepare the default type response
             mockServer.enqueue(
                 RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
-                HttpResponse(TestPokemons.firePokemonsJson)
+                HttpResponse(TestPokemons.firePokemonsJson())
             )
             val component = setupComponent { createPokemonListComponent(it, {}) }
 
@@ -42,7 +42,7 @@ class PokemonListComponentTest : FunSpec({
             // Prepare the loaded pokemon list
             mockServer.enqueue(
                 RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
-                HttpResponse(TestPokemons.firePokemonsJson)
+                HttpResponse(TestPokemons.firePokemonsJson())
             )
             val capturer = OutputCapturer<PokemonListComponent.Output>()
             val component = setupComponent { createPokemonListComponent(it, capturer) }
@@ -58,11 +58,12 @@ class PokemonListComponentTest : FunSpec({
 
         integrationTest("shows loading during refresh") {
             // Prepare initial data and a delayed refresh response
+            val firePokemonsJson = TestPokemons.firePokemonsJson()
             mockServer.enqueue(
                 RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
-                HttpResponse(TestPokemons.firePokemonsJson),
+                HttpResponse(firePokemonsJson),
                 HttpResponse(
-                    TestPokemons.firePokemonsJson,
+                    firePokemonsJson,
                     delay = 1.seconds
                 )
             )
@@ -87,11 +88,11 @@ class PokemonListComponentTest : FunSpec({
             // Prepare responses for default and selected types
             mockServer.enqueue(
                 RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
-                HttpResponse(TestPokemons.firePokemonsJson)
+                HttpResponse(TestPokemons.firePokemonsJson())
             )
             mockServer.enqueue(
                 RequestMatcher.containsPath("type/$WATER_TYPE_ID"),
-                HttpResponse(TestPokemons.waterPokemonsJson)
+                HttpResponse(TestPokemons.waterPokemonsJson())
             )
             val component = setupComponent { createPokemonListComponent(it, {}) }
             advanceUntilIdle()
@@ -110,7 +111,7 @@ class PokemonListComponentTest : FunSpec({
             mockServer.enqueue(
                 RequestMatcher.containsPath("type/$FIRE_TYPE_ID"),
                 HttpResponse(status = HttpStatusCode.NotFound),
-                HttpResponse(TestPokemons.firePokemonsJson, delay = 1.seconds)
+                HttpResponse(TestPokemons.firePokemonsJson(), delay = 1.seconds)
             )
             val component = setupComponent { createPokemonListComponent(it, {}) }
             advanceUntilIdle()

@@ -7,7 +7,7 @@ import io.ktor.http.HttpStatusCode
 import ru.mobileup.template.core_testing.network.HttpResponse
 import ru.mobileup.template.core_testing.network.RequestMatcher
 import ru.mobileup.template.core_testing.network.containsPath
-import ru.mobileup.template.features.integrationTest
+import ru.mobileup.template.features.utils.integrationTest
 import ru.mobileup.template.features.pokemons.TestPokemons
 import ru.mobileup.template.features.pokemons.createPokemonDetailsComponent
 import kotlin.time.Duration.Companion.seconds
@@ -23,7 +23,7 @@ class PokemonDetailsComponentTest : FunSpec({
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
-                HttpResponse(TestPokemons.detailedPonytaJson)
+                HttpResponse(TestPokemons.detailedPonytaJson())
             )
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
 
@@ -57,7 +57,7 @@ class PokemonDetailsComponentTest : FunSpec({
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
                 HttpResponse(status = HttpStatusCode.NotFound),
-                HttpResponse(TestPokemons.detailedPonytaJson, delay = 1.seconds)
+                HttpResponse(TestPokemons.detailedPonytaJson(), delay = 1.seconds)
             )
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
             advanceUntilIdle()
@@ -83,8 +83,8 @@ class PokemonDetailsComponentTest : FunSpec({
             val pokemonId = TestPokemons.ponytaId
             mockServer.enqueue(
                 RequestMatcher.containsPath("pokemon/$PONYTA_ID"),
-                HttpResponse(TestPokemons.detailedPonytaJson),
-                HttpResponse(TestPokemons.detailedPonytaUpdatedJson)
+                HttpResponse(TestPokemons.detailedPonytaJson()),
+                HttpResponse(TestPokemons.detailedPonytaUpdatedJson())
             )
             val component = setupComponent { createPokemonDetailsComponent(it, pokemonId) }
             advanceUntilIdle()

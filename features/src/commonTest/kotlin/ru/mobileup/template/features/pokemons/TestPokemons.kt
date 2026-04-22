@@ -5,7 +5,7 @@ import ru.mobileup.template.features.pokemons.domain.Pokemon
 import ru.mobileup.template.features.pokemons.domain.PokemonId
 import ru.mobileup.template.features.pokemons.domain.PokemonType
 import ru.mobileup.template.features.pokemons.domain.PokemonTypeId
-import ru.mobileup.template.features.readTestResource
+import ru.mobileup.template.features.utils.readTestResource
 
 object TestPokemons {
     val charmanderId = PokemonId("4")
@@ -16,22 +16,22 @@ object TestPokemons {
     val squirtleId = PokemonId("7")
     val psyduckId = PokemonId("54")
 
-    val firePokemonsJson by lazy { readTestResource("responses/fire_pokemons.json") }
+    suspend fun firePokemonsJson(): String = readTestResource("responses/fire_pokemons.json")
 
     val firePokemons = listOf(
         Pokemon(id = charmanderId, name = "Charmander"),
         Pokemon(id = ponytaId, name = "Ponyta")
     )
 
-    val waterPokemonsJson by lazy { readTestResource("responses/water_pokemons.json") }
+    suspend fun waterPokemonsJson(): String = readTestResource("responses/water_pokemons.json")
 
     val waterPokemons = listOf(
         Pokemon(id = squirtleId, name = "Squirtle"),
         Pokemon(id = psyduckId, name = "Psyduck")
     )
 
-    val detailedPonytaJson by lazy { readTestResource("responses/detailed_ponyta.json") }
-    val detailedPonytaUpdatedJson by lazy { readTestResource("responses/detailed_ponyta_updated.json") }
+    suspend fun detailedPonytaJson(): String = readTestResource("responses/detailed_ponyta.json")
+    suspend fun detailedPonytaUpdatedJson(): String = readTestResource("responses/detailed_ponyta_updated.json")
 
     val detailedPonyta = DetailedPokemon(
         id = ponytaId,

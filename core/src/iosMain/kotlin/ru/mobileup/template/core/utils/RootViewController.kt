@@ -15,8 +15,11 @@ import platform.UIKit.UIStatusBarStyleLightContent
 import platform.UIKit.UIViewController
 import platform.UIKit.addChildViewController
 import platform.UIKit.didMoveToParentViewController
+import ru.mobileup.template.core.LocalPlatformUiProvider
+import ru.mobileup.template.core.PlatformUiProvider
 
 class RootViewController(
+    private val platformUiProvider: PlatformUiProvider,
     private val backDispatcher: BackDispatcher,
     private val rootUi: @Composable () -> Unit
 ) : UIViewController(nibName = null, bundle = null) {
@@ -26,7 +29,10 @@ class RootViewController(
     private val composeViewController = ComposeUIViewController { content() }
 
     private val systemBarIconsColorHandler = object : SystemBarIconsColorHandler {
-        override fun updateSystemBarIconsColor(darkStatusBarIcons: Boolean) {
+        override fun updateSystemBarIconsColor(
+            darkStatusBarIcons: Boolean,
+            darkNavigationBarIcons: Boolean // is not used on iOS
+        ) {
             this@RootViewController.darkStatusBarIcons = darkStatusBarIcons
             setNeedsStatusBarAppearanceUpdate()
         }
@@ -51,8 +57,9 @@ class RootViewController(
             backIcon = null
         ) {
             CompositionLocalProvider(
-                LocalBackAction provides backDispatcher::back,
-                LocalSystemBarIconsColorHandler provides systemBarIconsColorHandler
+                LocalPlatformUiProvider provides platformUiProvider,
+                LocalSystemBarIconsColorHandler provides systemBarIconsColorHandler,
+                LocalBackAction provides backDispatcher::back
             ) {
                 rootUi()
             }

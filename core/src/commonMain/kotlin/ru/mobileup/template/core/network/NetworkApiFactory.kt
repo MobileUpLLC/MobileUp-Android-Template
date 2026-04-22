@@ -9,14 +9,15 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.client.plugins.logging.Logger as KtorLogger
 
 /**
  * Creates implementations of Ktorfit APIs.
  */
 class NetworkApiFactory(
-    private val loggingEnabled: Boolean,
     private val backendUrl: BackendUrl,
-    private val httpClientEngine: HttpClientEngine
+    private val httpClientEngine: HttpClientEngine,
+    private val ktorLogger: KtorLogger? = null
 ) {
     companion object {
         private const val CONNECT_TIMEOUT_MILLISECONDS = 30000L
@@ -39,9 +40,11 @@ class NetworkApiFactory(
 
     private fun createHttpClient(authorized: Boolean): HttpClient {
         return HttpClient(httpClientEngine) {
-            install(Logging) {
-                logger = createKtorLogger()
-                level = if (loggingEnabled) LogLevel.ALL else LogLevel.NONE
+            if (ktorLogger != null) {
+                install(Logging) {
+                    logger = ktorLogger
+                    level = LogLevel.ALL
+                }
             }
 
             install(ContentNegotiation) {

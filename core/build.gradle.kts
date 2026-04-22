@@ -29,6 +29,13 @@ kotlin {
     iosArm64()
     iosSimulatorArm64()
 
+    // for testing on Desktop
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
     sourceSets {
         commonMain.dependencies {
             // Kotlin
@@ -68,7 +75,7 @@ kotlin {
             implementation(libs.activity.compose)
 
             // Network
-            implementation(libs.ktor.android)
+            implementation(libs.ktor.okhttp)
             implementation(libs.replica.android.network)
 
             // Security
@@ -77,7 +84,11 @@ kotlin {
         }
 
         iosMain.dependencies {
-            api(libs.ktor.ios)
+            api(libs.ktor.darwin)
+        }
+
+        jvmMain.dependencies {
+            api(libs.ktor.okhttp)
         }
     }
 }

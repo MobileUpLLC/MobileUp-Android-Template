@@ -2,13 +2,13 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.kotest.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.ktorfit)
+    alias(libs.plugins.kotest)
     alias(libs.plugins.module.graph)
 }
 
@@ -25,17 +25,18 @@ kotlin {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
-
-        withHostTest {
-            isIncludeAndroidResources = true
-        }
     }
 
     iosX64()
     iosArm64()
     iosSimulatorArm64()
 
-    applyDefaultHierarchyTemplate()
+    // for testing on Desktop
+    jvm {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
 
     sourceSets {
         commonMain.dependencies {
@@ -72,15 +73,18 @@ kotlin {
 
         commonTest.dependencies {
             implementation(project(":core-testing"))
-            implementation(libs.coroutines.test)
             implementation(libs.kotest.framework.engine)
             implementation(libs.kotest.assertions.core)
         }
 
-        getByName("androidHostTest").dependencies {
+        jvmTest.dependencies {
             implementation(libs.kotest.runner.junit5)
         }
     }
+}
+
+dependencies {
+    androidRuntimeClasspath(libs.compose.uiTooling) // for preview
 }
 
 compose.resources {
@@ -95,10 +99,6 @@ composeCompiler {
     stabilityConfigurationFiles.add(
         rootProject.layout.projectDirectory.file("stability_config.conf")
     )
-}
-
-dependencies {
-    androidRuntimeClasspath(libs.compose.uiTooling)
 }
 
 tasks.withType<Test>().configureEach {

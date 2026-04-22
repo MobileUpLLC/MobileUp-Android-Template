@@ -26,9 +26,9 @@ fun coreModule(configuration: Configuration) = module {
     }
     single {
         NetworkApiFactory(
-            loggingEnabled = configuration.buildType == BuildType.Debug,
             backendUrl = BackendUrl.getMainUrl(configuration.backend),
-            httpClientEngine = get()
+            httpClientEngine = get(),
+            ktorLogger = getOrNull()
         )
     }
 }

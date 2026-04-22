@@ -28,10 +28,9 @@ composeRules = "0.5.7"
 composeMultiplatform = "1.10.3"
 material3 = "1.10.0-alpha05"
 materialIcons = "1.7.3"
-form = "2.1.0"
+form = "2.2.0"
 securityCrypto = "1.1.0"
-kotest = "5.9.1"
-kover = "0.9.1"
+kotest = "6.1.11"
 
 [libraries]
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "dateTime" }
@@ -55,8 +54,8 @@ ktor-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
-ktor-android = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
-ktor-ios = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
+ktor-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktorfit-lib = { module = "de.jensklingenberg.ktorfit:ktorfit-lib", version.ref = "ktorfit" }
 
 replica-core = { module = "com.github.aartikov:replica-core", version.ref = "replica" }
@@ -97,8 +96,6 @@ hyperion-addons-logs = { module = "me.nemiron.hyperion:logs", version.ref = "hyp
 hyperion-addons-networkEmulation = { module = "me.nemiron.hyperion:network-emulation", version.ref = "hyperionAddons" }
 hyperion-addons-chucker = { module = "me.nemiron.hyperion:chucker", version.ref = "hyperionAddons" }
 
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-
 [bundles]
 decompose = ["decompose-core", "decompose-compose"]
 replica-shared = ["replica-core", "replica-algebra", "replica-decompose"]
@@ -134,5 +131,4 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
 module-graph = { id = "ru.mobileup.module-graph", version.ref = "moduleGraph" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
-kotest-multiplatform = { id = "io.kotest.multiplatform", version.ref = "kotest" }
+kotest = { id = "io.kotest", version.ref = "kotest" }

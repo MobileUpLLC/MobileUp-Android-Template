@@ -8,10 +8,14 @@ import com.arkivanov.decompose.retainedComponent
 import com.arkivanov.essenty.lifecycle.asEssentyLifecycle
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import me.aartikov.replica.client.ReplicaClient
+import ru.mobileup.template.core.AndroidUiProvider
+import ru.mobileup.template.core.LocalPlatformUiProvider
 import ru.mobileup.template.core.activity.ActivityProvider
 import ru.mobileup.template.core.debug_tools.AndroidDebugTools
 import ru.mobileup.template.core.theme.AppTheme
+import ru.mobileup.template.core.utils.AndroidSystemBarIconsColorHandler
 import ru.mobileup.template.core.utils.LocalBackAction
+import ru.mobileup.template.core.utils.LocalSystemBarIconsColorHandler
 import ru.mobileup.template.features.root.presentation.RootUi
 
 val Application.sharedApp get() = (this as SharedAppProvider).sharedApp
@@ -27,11 +31,17 @@ fun SharedApp.launchInActivity(activity: ComponentActivity) {
         createRootComponent(componentContext)
     }
 
+    val platfromUiProvider = AndroidUiProvider()
+    val systemBarIconsColorHandler = AndroidSystemBarIconsColorHandler(activity.window)
+    val backAction = activity.onBackPressedDispatcher::onBackPressed
+
     activity.setContent {
-        AppTheme {
-            CompositionLocalProvider(
-                LocalBackAction provides activity.onBackPressedDispatcher::onBackPressed
-            ) {
+        CompositionLocalProvider(
+            LocalPlatformUiProvider provides platfromUiProvider,
+            LocalSystemBarIconsColorHandler provides systemBarIconsColorHandler,
+            LocalBackAction provides backAction
+        ) {
+            AppTheme {
                 RootUi(rootComponent)
             }
         }

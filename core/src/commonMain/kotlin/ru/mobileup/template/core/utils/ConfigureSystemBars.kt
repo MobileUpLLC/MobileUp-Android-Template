@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.windowInsetsEndWidth
 import androidx.compose.foundation.layout.windowInsetsStartWidth
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -26,6 +28,17 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.util.lerp
 import ru.mobileup.template.core.theme.custom.CustomTheme
+
+/**
+ * Should be implemented by platforms and provided through LocalSystemBarIconsColorHandler
+ */
+interface SystemBarIconsColorHandler {
+    fun updateSystemBarIconsColor(darkStatusBarIcons: Boolean, darkNavigationBarIcons: Boolean)
+}
+
+val LocalSystemBarIconsColorHandler = staticCompositionLocalOf<SystemBarIconsColorHandler> {
+    error("SystemBarIconsColorHandler is not present")
+}
 
 private enum class NavBarPosition {
     Bottom, Left, Right, None
@@ -50,6 +63,7 @@ fun ConfigureSystemBars(settings: SystemBarsSettings) {
     val layoutDirection = LocalLayoutDirection.current
     val backgroundColor = CustomTheme.colors.background.screen
     val isLightTheme = CustomTheme.colors.isLight
+
     val isGestureNavigation by remember {
         derivedStateOf {
             systemGestures.run {
@@ -97,10 +111,10 @@ fun ConfigureSystemBars(settings: SystemBarsSettings) {
         }
     }
 
-    UpdateSystemBarIconColors(
-        darkStatusBarIcons = darkStatusBarIcons,
-        darkNavigationBarIcons = darkNavigationBarIcons
-    )
+    val systemBarIconsColorHandler = LocalSystemBarIconsColorHandler.current
+    LaunchedEffect(darkStatusBarIcons, darkNavigationBarIcons) {
+        systemBarIconsColorHandler.updateSystemBarIconsColor(darkStatusBarIcons, darkNavigationBarIcons)
+    }
 
     Box(Modifier.fillMaxSize()) {
         Box(
@@ -141,9 +155,3 @@ fun ConfigureSystemBars(settings: SystemBarsSettings) {
         )
     }
 }
-
-@Composable
-expect fun UpdateSystemBarIconColors(
-    darkStatusBarIcons: Boolean,
-    darkNavigationBarIcons: Boolean
-)

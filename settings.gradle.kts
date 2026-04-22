@@ -34,5 +34,5 @@ rootProject.name = "MobileUp CMP Template"
 include(":androidApp")
 include(":shared")
 include(":core")
-include(":features")
 include(":core-testing")
+include(":features")

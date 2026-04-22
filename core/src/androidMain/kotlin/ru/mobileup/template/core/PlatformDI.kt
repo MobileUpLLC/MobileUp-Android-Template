@@ -7,7 +7,9 @@ import me.aartikov.replica.network.AndroidNetworkConnectivityProvider
 import me.aartikov.replica.network.NetworkConnectivityProvider
 import org.koin.dsl.module
 import ru.mobileup.template.core.activity.ActivityProvider
+import ru.mobileup.template.core.configuration.BuildType
 import ru.mobileup.template.core.configuration.Configuration
+import ru.mobileup.template.core.network.createKtorLogger
 import ru.mobileup.template.core.network.createOkHttpEngine
 import ru.mobileup.template.core.settings.AndroidSettingsFactory
 import ru.mobileup.template.core.settings.SettingsFactory
@@ -18,6 +20,9 @@ actual fun platformCoreModule(configuration: Configuration) = module {
     single<Context> { get<Application>() }
     single { ActivityProvider() }
     single { createOkHttpEngine(get()) }
+    if (configuration.buildType == BuildType.Debug) {
+        single { createKtorLogger() }
+    }
     single<NetworkConnectivityProvider> { AndroidNetworkConnectivityProvider(get()) }
     single<SettingsFactory> { AndroidSettingsFactory(get(), Dispatchers.IO) }
 }
