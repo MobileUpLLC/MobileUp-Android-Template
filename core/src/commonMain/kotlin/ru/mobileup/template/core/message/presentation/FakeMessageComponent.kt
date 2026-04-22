@@ -2,12 +2,16 @@ package ru.mobileup.template.core.message.presentation
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import ru.mobileup.template.core.message.domain.Message
+import ru.mobileup.template.core.message.domain.MessageType
 import ru.mobileup.template.core.utils.desc
 
 class FakeMessageComponent : MessageComponent {
 
     override val visibleMessage = MutableStateFlow(
-        Message("Message".desc())
+        Message(
+            text = "Message".desc(),
+            type = MessageType.Positive
+        )
     )
 
     override fun onActionClick() = Unit

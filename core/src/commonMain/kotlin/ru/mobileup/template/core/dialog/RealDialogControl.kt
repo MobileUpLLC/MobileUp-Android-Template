@@ -21,8 +21,8 @@ import ru.mobileup.template.core.utils.toStateFlow
 fun <C : Any, T : Any> ComponentContext.dialogControl(
     key: String,
     dialogComponentFactory: (C, ComponentContext, DialogControl<C, T>) -> T,
+    serializer: KSerializer<C>?,
     dismissableByUser: (C, T) -> StateFlow<Boolean> = { _, _ -> MutableStateFlow(true) },
-    serializer: KSerializer<C>? = null,
 ): DialogControl<C, T> {
     return RealDialogControl(
         componentContext = this,

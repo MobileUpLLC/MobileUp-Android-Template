@@ -77,6 +77,7 @@ private fun MessagePopup(
     ) {
         Card(
             shape = RoundedCornerShape(8.dp),
+            // TODO: use different containerColor depending on MessageType
             colors = CardDefaults.cardColors(containerColor = CustomTheme.colors.background.toast),
             elevation = CardDefaults.cardElevation(3.dp),
             modifier = Modifier

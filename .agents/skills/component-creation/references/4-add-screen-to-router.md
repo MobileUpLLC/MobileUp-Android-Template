@@ -183,7 +183,7 @@ private fun onOptionsOutput(output: OptionsComponent.Output) {
 
 ## Step 7: Add Navigation to New Screen
 
-**Add method to parent component that triggers navigation:**
+**Add method to component that triggers navigation:**
 
 In `RealResultsListComponent.kt`:
 
@@ -193,7 +193,7 @@ override fun onFilterClick() {
 }
 ```
 
-**Update parent's Output:**
+**Update it's Output:**
 
 In `ResultsListComponent.kt`:
 
@@ -248,35 +248,6 @@ Children(childStack, modifier) { child ->
 
 ---
 
-## Step 9: Update Fake Component (Optional)
-
-**In `FakeFlowComponent.kt`:**
-
-If you want to preview the new screen in isolation:
-
-```kotlin
-class FakeFlowComponent(
-    child: FlowComponent.Child = FlowComponent.Child.Form(FakeInputFormComponent())
-) : FlowComponent {
-    override val childStack = createFakeChildStackStateFlow(child)
-}
-
-// For preview
-@Preview
-@Composable
-private fun OptionsScreenPreview() {
-    CustomTheme {
-        SearchUi(
-            component = FakeFlowComponent(
-                child = FlowComponent.Child.Options(FakeOptionsComponent())
-            )
-        )
-    }
-}
-```
-
----
-
 ## Checklist
 
 - [ ] Created 4 files for new component (Interface, Real, Fake, Ui)
@@ -288,7 +259,6 @@ private fun OptionsScreenPreview() {
 - [ ] Added navigation trigger from parent screen
 - [ ] Updated parent's `Output` interface
 - [ ] Added UI rendering in `Children` composable
-- [ ] Updated fake component for previews (optional)
 - [ ] Tested navigation flow
 - [ ] Tested back button behavior
 
@@ -296,14 +266,16 @@ private fun OptionsScreenPreview() {
 
 ## Common Mistakes
 
-**1. Forgetting @Serializable:**
+**1. Forgetting @Serializable when passing object to ChildConfig:**
 ```kotlin
-// ❌ Will crash on configuration restore
-data class Options(val categories: List<String>)
+// ❌ Category is not serializable
+data class Details(val category: Category) : ChildConfig
 
-// ✅ Correct
-@Serializable
-data class Options(val categories: List<String>)
+// ✅  Options is serializable
+data class Details(val options: Options) : ChildConfig
+
+// ✅ Primitive data
+data class Details(val itemId: String) : ChildConfig
 ```
 
 **2. Not handling output in router:**
@@ -316,18 +288,9 @@ private fun onOptionsOutput(output: OptionsComponent.Output) {
 
 **3. Using push instead of safePush:**
 ```kotlin
-// ❌ Can create duplicate screens
+// ❌ Crashes on duplicate screens
 navigation.push(ChildConfig.Options(...))
 
-// ✅ Prevents duplicates
+// ✅ Filter duplicates
 navigation.safePush(ChildConfig.Options(...))
-```
-
-**4. Passing non-serializable data:**
-```kotlin
-// ❌ ViewModel is not serializable
-data class Details(val viewModel: DetailsViewModel) : ChildConfig
-
-// ✅ Pass only primitive data or serializable objects
-data class Details(val itemId: String) : ChildConfig
 ```

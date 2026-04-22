@@ -26,7 +26,7 @@ interface TeamListComponent {
     val teamListState: StateFlow<LoadableState<List<TeamMember>>>
 
     fun onAddStaffClick()
-    fun onPersonAdded(user: Person, roleId: RoleId, role: Role)
+    fun onPersonAdded(user: Person, role: Role)
 }
 
 class RealTeamListComponent(
@@ -51,14 +51,14 @@ class RealTeamListComponent(
         )
     }
 
-    override fun onPersonAdded(user: Person, roleId: RoleId, role: Role) {
+    override fun onPersonAdded(user: Person, role: Role) {
         // This method is called by parent when user is selected
         componentScope.safeLaunch(errorHandler) {
-            repository.addTeamMember(user, roleId, role)
+            repository.addTeamMember(user, role)
 
             messageService.showMessage(
                 Message(
-                    text = StringDesc.Resource(R.string.team_member_added),
+                    text = Res.string.team_member_added.resourceDesc(),
                     type = MessageType.Positive
                 )
             )
@@ -66,10 +66,7 @@ class RealTeamListComponent(
     }
 
     sealed interface Output {
-        data class PersonPickerRequested(
-            val targetRole: Role,
-            val roleId: RoleId
-        ) : Output
+        data class PersonPickerRequested(val targetRole: Role) : Output
     }
 }
 ```
@@ -125,28 +122,6 @@ class RealManagementComponent(
         childFactory = ::createChild
     ).toStateFlow(lifecycle)
 
-    @Serializable
-    private sealed interface ChildConfig {
-        @Serializable
-        data object TeamList : ChildConfig
-
-        @Serializable
-        data object GroupList : ChildConfig
-
-        @Serializable
-        data class PersonPicker(
-            val targetRole: Role,
-            val roleId: RoleId,
-            val requesterId: String // "team" or "groups"
-        ) : ChildConfig
-    }
-
-    sealed interface Child {
-        data class TeamList(val component: TeamListComponent) : Child
-        data class GroupList(val component: GroupListComponent) : Child
-        data class PersonPicker(val component: PersonPickerComponent) : Child
-    }
-
     private fun createChild(
         childConfig: ChildConfig,
         componentContext: ComponentContext
@@ -157,12 +132,7 @@ class RealManagementComponent(
                 ::onTeamListOutput
             )
         )
-        ChildConfig.GroupList -> Child.GroupList(
-            componentFactory.createGroupListComponent(
-                componentContext,
-                ::onGroupListOutput
-            )
-        )
+        
         is ChildConfig.PersonPicker -> Child.PersonPicker(
             componentFactory.createPersonPickerComponent(
                 componentContext,
@@ -174,26 +144,9 @@ class RealManagementComponent(
     private fun onTeamListOutput(output: TeamListComponent.Output) {
         when (output) {
             is TeamListComponent.Output.PersonPickerRequested -> {
-                // Open search, remember who requested it
                 navigation.safePush(
                     ChildConfig.PersonPicker(
-                        targetRole = output.targetRole,
-                        roleId = output.roleId,
-                        requesterId = "team"
-                    )
-                )
-            }
-        }
-    }
-
-    private fun onGroupListOutput(output: GroupListComponent.Output) {
-        when (output) {
-            is GroupListComponent.Output.PersonPickerRequested -> {
-                navigation.safePush(
-                    ChildConfig.PersonPicker(
-                        targetRole = Role.Coach,
-                        roleId = RoleId("coach"),
-                        requesterId = "groups"
+                        targetRole = output.targetRole
                     )
                 )
             }
@@ -203,34 +156,34 @@ class RealManagementComponent(
     private fun onPersonPickerOutput(output: PersonPickerComponent.Output) {
         when (output) {
             is PersonPickerComponent.Output.PersonSelected -> {
-                // Get config to know who requested search
+                // Get config to know targetRole
                 val config = childStack.value.active.configuration as? ChildConfig.PersonPicker
-                val requesterId = config?.requesterId
                 val targetRole = config?.targetRole
-                val roleId = config?.roleId
 
                 // Pass selected user to the requester child
-                when (requesterId) {
-                    "team" -> {
-                        if (targetRole != null && roleId != null) {
-                            childStack.value
-                                .getChild<Child.TeamList>()
-                                ?.component
-                                ?.onPersonAdded(output.user, roleId, targetRole)
-                        }
-                    }
-                    "groups" -> {
-                        childStack.value
-                            .getChild<Child.GroupList>()
-                            ?.component
-                            ?.onCoachAdded(output.user)
-                    }
+                if (targetRole != null) {
+                    childStack.value
+                        .getChild<Child.TeamList>()
+                        ?.component
+                        ?.onPersonAdded(output.user, targetRole)
                 }
 
                 // Close search screen
                 navigation.pop()
             }
         }
+    }
+
+    @Serializable
+    private sealed interface ChildConfig {
+
+        @Serializable
+        data object TeamList : ChildConfig
+
+        @Serializable
+        data class PersonPicker(
+            val targetRole: Role
+        ) : ChildConfig
     }
 }
 ```
@@ -240,188 +193,25 @@ class RealManagementComponent(
 ## 3. Key Points
 
 ### Pattern Flow:
-1. **Staff List** requests user search via Output
-2. **Parent** opens Search screen, stores context in ChildConfig (requesterId)
-3. **Search** selects user, emits Output
-4. **Parent** receives Output, checks config to know who requested
+1. **Team List** requests user search via Output
+2. **Parent** opens Search screen, stores context in ChildConfig (targetRole)
+3. **Picker** selects user, emits Output
+4. **Parent** receives Output
 5. **Parent** finds requester via `getChild<Child.TeamList>()`
-6. **Parent** calls method on Staff List component directly
+6. **Parent** calls method on Team List component directly
 7. **Parent** closes Search screen
-
-### Why Store Context in ChildConfig?
-```kotlin
-@Serializable
-data class PersonPicker(
-    val requesterId: String, // Who requested this search
-    val targetRole: Role, // What role to assign
-    val roleId: RoleId    // Role ID for assignment
-) : ChildConfig
-```
-
-This allows parent to know:
-- Who opened the search screen
-- What to do with selected data
-- Where to pass the data back
-
-### Alternative: Output Bubbling
-
-Instead of direct method call, you could bubble Output up:
-
-```kotlin
-private fun onPersonPickerOutput(output: PersonPickerComponent.Output) {
-    when (output) {
-        is PersonPickerComponent.Output.PersonSelected -> {
-            // Bubble up to grandparent
-            onOutput(
-                ManagementComponent.Output.PersonSelectedForStaff(
-                    user = output.user,
-                    roleId = ...,
-                    role = ...
-                )
-            )
-        }
-    }
-}
-```
-
-But this makes grandparent responsible for coordination, which is less clean.
 
 ### When to Use getChild():
 - ✅ Passing data from picker/selector to requester screen
-- ✅ Multiple screens can request same picker (Staff, Coaches, Members)
+- ✅ Multiple screens can request same picker
 - ✅ Requester screen is in the back stack (not active)
 - ❌ Don't use for simple parent-child communication (use Output)
-- ❌ Don't use if requester is not in stack (data will be lost)
-
----
-
-## 4. Complete Example with UI
-
-### Staff List UI
-
-```kotlin
-@Composable
-fun TeamListUi(
-    component: TeamListComponent,
-    modifier: Modifier = Modifier
-) {
-    val state by component.state.collectAsState()
-
-    LceWidget(
-        state = state,
-        onRetryClick = { /* ... */ }
-    ) { teamList, _ ->
-        Column(modifier = modifier.fillMaxSize()) {
-            CustomButton(
-                text = "Add Staff Member",
-                onClick = component::onAddStaffClick
-            )
-
-            LazyColumn {
-                items(teamList) { team ->
-                    TeamMemberRow(team = team)
-                }
-            }
-        }
-    }
-}
-```
-
-### Person Search UI
-
-```kotlin
-@Composable
-fun PersonPickerUi(
-    component: PersonPickerComponent,
-    modifier: Modifier = Modifier
-) {
-    val state by component.state.collectAsState()
-
-    LceWidget(
-        state = state,
-        onRetryClick = { /* ... */ }
-    ) { users, _ ->
-        LazyColumn(modifier = modifier.fillMaxSize()) {
-            items(users) { user ->
-                PersonRow(
-                    user = user,
-                    onClick = { component.onPersonClick(user) }
-                )
-            }
-        }
-    }
-}
-```
-
-### Router UI
-
-```kotlin
-@Composable
-fun ManagementUi(
-    component: ManagementComponent,
-    modifier: Modifier = Modifier
-) {
-    val childStack by component.childStack.collectAsState()
-
-    Children(childStack, modifier) { child ->
-        when (val instance = child.instance) {
-            is ManagementComponent.Child.TeamList -> {
-                TeamListUi(instance.component)
-            }
-            is ManagementComponent.Child.GroupList -> {
-                GroupListUi(instance.component)
-            }
-            is ManagementComponent.Child.PersonPicker -> {
-                PersonPickerUi(instance.component)
-            }
-        }
-    }
-}
-```
-
----
-
-## 5. Testing
-
-```kotlin
-@Test
-fun `user selection flows back to team list`() {
-    val navigation = TestStackNavigation<ChildConfig>()
-    val component = RealManagementComponent(
-        componentContext = DefaultComponentContext(...),
-        componentFactory = FakeComponentFactory(),
-        navigation = navigation
-    )
-
-    // 1. Open team list
-    val teamComponent = component.childStack.value
-        .getChild<Child.TeamList>()!!
-        .component
-
-    // 2. Request user search
-    teamComponent.onAddStaffClick()
-    assertEquals(ChildConfig.PersonPicker::class, navigation.stack.last()::class)
-
-    // 3. Select user in search
-    val searchComponent = component.childStack.value
-        .getChild<Child.PersonPicker>()!!
-        .component
-
-    val selectedPerson = Person.MOCK
-    searchComponent.onPersonClick(selectedPerson)
-
-    // 4. Verify user added to team (getChild works even after pop)
-    // Parent should call onPersonAdded on team component
-}
-```
 
 ---
 
 ## Summary
-
-**getChild() Pattern:**
-- Allows passing data from picker/selector back to specific requester
+**getChild() pattern:**
+- Allows passing data from picker back to specific requester
 - Parent coordinates data flow between children
-- Store context (requesterId) in ChildConfig
-- Call methods on non-active children in the stack
+- Store context in ChildConfig
 - Clean separation: each child only knows its own Output contract

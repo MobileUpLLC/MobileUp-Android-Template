@@ -12,6 +12,7 @@ fun ComponentContext.standardDialogControl(
 ): StandardDialogControl {
     return simpleDialogControl(
         key = key,
+        serializer = null,
         dismissableByUser = { data -> data.dismissableByUser }
     )
 }

@@ -77,10 +77,10 @@ A component that manages `ChildStack` and coordinates multiple screens.
 **CRITICAL RULE:** Components NEVER call parent methods directly. All communication happens via `Output` callbacks.
 
 **Two event types:**
+- **Past tense** (preferred option) - child informs parent about completed action
+   - `ItemSaved`, `DataUpdated`, `ProfileDeleted`
 - **`Requested`** suffix - child requests action from parent (navigation, dialogs)
   - `LoginRequested`, `ItemDetailsRequested`, `SelectCityRequested`
-- **Past tense** - child informs parent about completed action
-  - `ItemSaved`, `DataUpdated`, `ProfileDeleted`
 
 **Flow:**
 1. Child defines `sealed interface Output` with event types
@@ -135,17 +135,9 @@ Global service for Toast/Snackbar messages. Inject and call `showMessage()`.
 Create dialog control as component property, call `.show()` to display:
 
 - **StandardDialogControl** - Confirmation/alert dialogs (AlertDialog)
-- **SelectFromEnumDialogControl<T>** - Selection from enum list (BottomSheet)
 - **DialogControl<T>** - Custom bottom sheet content
 
-**Fake implementations:** `fakeStandardDialogControl()`, `fakeSelectFromEnumDialogControl<T>()`, `fakeDialogControl<T>()`
-
-### PrivilegesChecker
-Automatic authorization/permission checks with built-in UI:
-
-- `requireAuthorization(block)` - Shows auth dialog if not authorized
-- `requireAuthorizationAndSubscription(block)` - Shows auth or subscription screen
-- `requirePermissionForAcademyAdmin(permission, block)` - Shows restriction dialog if no permission
+**Fake implementations:** `fakeStandardDialogControl()`, `fakeDialogControl<T>()`
 
 > **For detailed examples:** See [Dialogs](references/5-dialogs.md) and [Messages](references/6-messages.md)
 
@@ -234,10 +226,10 @@ Components created via **extension functions** on `ComponentFactory` in `DI.kt`:
 
 4. **Output Events:**
    - Always use `sealed interface Output`
+   - Use **past tense** for completed actions (informing parent of facts)
+      - `TrainingCreated`, `DataSaved`, `ProfileUpdated`, `ItemDeleted`
    - Use **`Requested`** suffix for requesting actions from parent (navigation, dialogs, etc.)
      - `LoginRequested`, `ArticleDetailsRequested`, `SelectCityRequested`
-   - Use **past tense** for completed actions (informing parent of facts)
-     - `TrainingCreated`, `DataSaved`, `ProfileUpdated`, `ItemDeleted`
    - Never use `OnClick` or event handler names - describe what happened/needed
    - Include necessary data in Output events (IDs, queries, parameters)
 
@@ -251,7 +243,6 @@ Components created via **extension functions** on `ComponentFactory` in `DI.kt`:
 6. **Messages and Dialogs:**
    - Use `MessageService` for Toast/Snackbar messages
    - Use `StandardDialogControl` for confirmation/alert dialogs
-   - Use `SelectFromEnumDialogControl` for standard selection lists
    - Use `DialogControl` for custom bottom sheets
    - Use `PrivilegesChecker` for authorization/permission checks with automatic dialogs
 

@@ -6,15 +6,17 @@ Shows how to use MessageService for displaying Toast/Snackbar messages in compon
 
 ## Overview
 
-**MessageService** is a centralized service for showing Toast/Snackbar messages. It's injected into components and used to display success/error/info messages to users.
+**MessageService** is a centralized service for showing Toast/Snackbar messages. It's injected into
+components and used to display success/error/info messages to users.
 
-**Key feature:** MessageService is global - messages are observed and displayed at root level automatically. No UI rendering needed in components.
+**Key feature:** MessageService is global - messages are observed and displayed at root level
+automatically. No UI rendering needed in components.
 
 ---
 
 ## 1. Basic Usage
 
-### Success Message
+### Message
 
 ```kotlin
 class RealActionsComponent(
@@ -28,47 +30,12 @@ class RealActionsComponent(
 
             messageService.showMessage(
                 Message(
-                    text = StringDesc.Resource(R.string.actions_save_success),
-                    type = MessageType.Positive
+                    text = Res.string.actions_save_success.resourceDesc(),
+                    type = MessageType.Positive,
+                    iconRes = Res.drawable.ic_success // optional icon
                 )
             )
         }
-    }
-}
-```
-
-### Error Message with Icon
-
-```kotlin
-override fun onDeleteClick() {
-    componentScope.safeLaunch(errorHandler) {
-        // ... perform delete operation
-
-        messageService.showMessage(
-            Message(
-                text = StringDesc.Resource(R.string.actions_delete_success),
-                type = MessageType.Negative,
-                iconRes = R.drawable.ic_delete
-            )
-        )
-    }
-}
-```
-
-### Info Message
-
-```kotlin
-override fun onShareClick() {
-    componentScope.safeLaunch(errorHandler) {
-        // ... perform share operation
-
-        messageService.showMessage(
-            Message(
-                text = StringDesc.Resource(R.string.actions_link_copied),
-                type = MessageType.Neutral,
-                iconRes = R.drawable.ic_link
-            )
-        )
     }
 }
 ```
@@ -84,9 +51,9 @@ fun onDismissNotification() {
 
         messageService.showMessage(
             Message(
-                text = StringDesc.Resource(R.string.notification_dismissed),
+                text = Res.string.string.notification_dismissed,
                 type = MessageType.Neutral,
-                actionTitle = StringDesc.Resource(R.string.undo),
+                actionTitle = Res.string.string.undo,
                 action = {
                     // Undo action
                 }
@@ -95,54 +62,14 @@ fun onDismissNotification() {
     }
 }
 ```
-
----
-
-## 3. Dynamic Message Text
-
-### Using StringDesc.Raw
-
-```kotlin
-fun onCopyToClipboard(text: String) {
-    // ... copy to clipboard
-
-    messageService.showMessage(
-        Message(
-            text = StringDesc.Raw("Copied: $text"),
-            type = MessageType.Neutral
-        )
-    )
-}
-```
-
-### Using String Resource with Placeholder
-
-```kotlin
-fun onQuantityChanged(quantity: Int) {
-    componentScope.safeLaunch(errorHandler) {
-        // ... update quantity
-
-        messageService.showMessage(
-            Message(
-                text = StringDesc.Resource(
-                    R.string.item_quantity_updated,
-                    quantity // String resource with placeholder: "Updated to %d items"
-                ),
-                type = MessageType.Positive
-            )
-        )
-    }
-}
-```
-
 ---
 
 ## Key Points
 
 ### Message Types:
-- **MessageType.Positive** - Success messages (green background)
-- **MessageType.Negative** - Error/warning messages (red background)
-- **MessageType.Neutral** - Info messages (gray background)
+- **MessageType.Positive** - Success messages
+- **MessageType.Negative** - Error messages 
+- **MessageType.Neutral** - Info messages
 
 ### Message Fields:
 - `text: StringDesc` - Message text (required)
@@ -150,11 +77,6 @@ fun onQuantityChanged(quantity: Int) {
 - `iconRes: Int?` - Optional icon drawable resource
 - `actionTitle: StringDesc?` - Optional action button text
 - `action: (() -> Unit)?` - Optional action button callback
-
-### StringDesc Usage:
-- `StringDesc.Resource(R.string.key)` - Localized string from resources
-- `StringDesc.Resource(R.string.key, arg1, arg2)` - With placeholders
-- `StringDesc.Raw("text")` - Dynamic non-localized text
 
 ### Best Practices:
 - Show success messages for important user actions (save, delete, share)

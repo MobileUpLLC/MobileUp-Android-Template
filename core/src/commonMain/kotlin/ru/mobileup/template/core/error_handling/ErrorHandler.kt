@@ -5,6 +5,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import ru.mobileup.template.core.message.data.MessageService
 import ru.mobileup.template.core.message.domain.Message
+import ru.mobileup.template.core.message.domain.MessageType
 import ru.mobileup.template.core.utils.StringDesc
 import ru.mobileup.template.core.utils.e
 
@@ -39,7 +40,8 @@ class ErrorHandler(
             showError -> {
                 messageService.showMessage(
                     Message(
-                        text = exception.getErrorMessage(showDebugInfo)
+                        text = exception.getErrorMessage(showDebugInfo),
+                        type = MessageType.Negative
                     )
                 )
             }
@@ -67,6 +69,7 @@ class ErrorHandler(
                 messageService.showMessage(
                     Message(
                         text = exception.getErrorMessage(showDebugInfo),
+                        type = MessageType.Negative,
                         actionTitle = retryActionTitle,
                         action = retryAction
                     )

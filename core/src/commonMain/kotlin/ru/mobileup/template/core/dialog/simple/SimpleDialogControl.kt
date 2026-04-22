@@ -11,14 +11,14 @@ typealias SimpleDialogControl<T> = DialogControl<T, T>
 
 fun <T : Any> ComponentContext.simpleDialogControl(
     key: String,
+    serializer: KSerializer<T>?,
     dismissableByUser: (T) -> Boolean = { true },
-    serializer: KSerializer<T>? = null
 ): SimpleDialogControl<T> {
     return dialogControl(
         key = key,
         dialogComponentFactory = { data, _, _ -> data },
-        dismissableByUser = { data, _ -> MutableStateFlow(dismissableByUser(data)) },
-        serializer = serializer
+        serializer = serializer,
+        dismissableByUser = { data, _ -> MutableStateFlow(dismissableByUser(data)) }
     )
 }
 

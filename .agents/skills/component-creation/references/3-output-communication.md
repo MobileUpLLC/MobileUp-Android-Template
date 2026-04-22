@@ -57,7 +57,7 @@ interface ItemListComponent {
 class RealItemListComponent(
     componentContext: ComponentContext,
     private val onOutput: (ItemListComponent.Output) -> Unit, // Output callback
-    private val repository: ItemRepository
+    repository: ItemRepository
 ) : ComponentContext by componentContext, ItemListComponent {
 
     private val itemsReplica = repository.itemsReplica
@@ -156,16 +156,4 @@ class RealFeatureRootComponent(
 - **Bubbling** - Events can be forwarded up the hierarchy
 - **Clarity** - Explicit contract between child and parent
 
----
 
-## When to Use Output vs StateFlow
-
-**Use Output for:**
-- One-time events (navigation, dialogs)
-- User actions (clicks, form submissions)
-- Events that trigger side effects
-
-**Use StateFlow for:**
-- Continuous state (loading, data, UI state)
-- Values that can change over time
-- State that UI needs to observe
