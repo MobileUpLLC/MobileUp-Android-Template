@@ -1,4 +1,5 @@
 @file:Suppress("FunctionName")
+
 package ru.mobileup.template.core.utils
 
 import androidx.compose.runtime.Composable

@@ -2,6 +2,7 @@ package ru.mobileup.template.core.utils
 
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.extensions.compose.stack.animation.StackAnimation
+import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.essenty.backhandler.BackHandlerOwner
 import ru.mobileup.template.core.LocalPlatformUiProvider
 
@@ -18,6 +19,6 @@ interface PredictiveBackComponent : BackHandlerOwner {
  */
 @Composable
 fun <C : Any, T : Any> PredictiveBackComponent.predictiveBackAnimation(): StackAnimation<C, T> {
-    val uiProvider = LocalPlatformUiProvider.current
+    val uiProvider = LocalPlatformUiProvider.current ?: return stackAnimation()
     return uiProvider.createPredictiveBackAnimation(backHandler, ::onBack)
 }

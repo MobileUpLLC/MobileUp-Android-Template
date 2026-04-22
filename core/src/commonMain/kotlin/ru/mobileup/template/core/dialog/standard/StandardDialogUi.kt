@@ -28,7 +28,7 @@ fun StandardDialog(dialogControl: StandardDialogControl) {
         val data = it.instance
 
         AlertDialog(
-            onDismissRequest = { dialogControl.dismiss() },
+            onDismissRequest = dialogControl::dismiss,
             properties = DialogProperties(
                 dismissOnBackPress = dismissableByUser,
                 dismissOnClickOutside = dismissableByUser
@@ -68,8 +68,10 @@ fun StandardDialog(dialogControl: StandardDialogControl) {
             confirmButton = {
                 DialogButton(
                     text = data.confirmButton.text.resolve(),
-                    onClick = data.confirmButton.action,
-                    onDismiss = dialogControl::dismiss
+                    onClick = {
+                        dialogControl.dismiss()
+                        data.confirmButton.action?.invoke()
+                    }
                 )
             },
 
@@ -77,8 +79,10 @@ fun StandardDialog(dialogControl: StandardDialogControl) {
                 {
                     DialogButton(
                         text = dismissButton.text.resolve(),
-                        onClick = dismissButton.action,
-                        onDismiss = dialogControl::dismiss
+                        onClick = {
+                            dialogControl.dismiss()
+                            dismissButton.action?.invoke()
+                        }
                     )
                 }
             }
@@ -90,7 +94,6 @@ fun StandardDialog(dialogControl: StandardDialogControl) {
 private fun DialogButton(
     text: String,
     onClick: () -> Unit,
-    onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Text(
@@ -106,7 +109,6 @@ private fun DialogButton(
         modifier = modifier
             .clickable {
                 onClick()
-                onDismiss()
             }
             .padding(4.dp)
             .widthIn(min = 60.dp)

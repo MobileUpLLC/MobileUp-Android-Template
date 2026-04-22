@@ -14,6 +14,4 @@ interface PlatformUiProvider {
     ): StackAnimation<C, T>
 }
 
-val LocalPlatformUiProvider = staticCompositionLocalOf<PlatformUiProvider> {
-    error("PlatformUiProvider is not present")
-}
+val LocalPlatformUiProvider = staticCompositionLocalOf<PlatformUiProvider?> { null }

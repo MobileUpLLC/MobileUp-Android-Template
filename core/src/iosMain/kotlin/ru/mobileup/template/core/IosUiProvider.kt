@@ -1,7 +1,6 @@
 package ru.mobileup.template.core
 
 import com.arkivanov.decompose.extensions.compose.stack.animation.StackAnimation
-import com.arkivanov.decompose.extensions.compose.stack.animation.predictiveback.predictiveBackAnimation
 import com.arkivanov.essenty.backhandler.BackHandler
 import ru.mobileup.template.core.utils.predictiveBackAnimation
 

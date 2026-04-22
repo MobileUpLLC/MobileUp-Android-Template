@@ -11,7 +11,7 @@ typealias SimpleDialogControl<T> = DialogControl<T, T>
 
 fun <T : Any> ComponentContext.simpleDialogControl(
     key: String,
-    serializer: KSerializer<T>?,
+    serializer: KSerializer<T>? = null,
     dismissableByUser: (T) -> Boolean = { true },
 ): SimpleDialogControl<T> {
     return dialogControl(

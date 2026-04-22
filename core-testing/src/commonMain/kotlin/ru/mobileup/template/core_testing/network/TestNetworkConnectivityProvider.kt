@@ -19,5 +19,7 @@ class TestNetworkConnectivityProvider : NetworkConnectivityProvider {
      */
     var isConnected: Boolean
         get() = _connectedFlow.value
-        set(value) { _connectedFlow.value = value }
+        set(value) {
+            _connectedFlow.value = value
+        }
 }

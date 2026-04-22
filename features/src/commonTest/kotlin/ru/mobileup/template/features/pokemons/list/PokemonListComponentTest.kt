@@ -7,11 +7,11 @@ import ru.mobileup.template.core_testing.network.HttpResponse
 import ru.mobileup.template.core_testing.network.RequestMatcher
 import ru.mobileup.template.core_testing.network.containsPath
 import ru.mobileup.template.core_testing.utils.OutputCapturer
-import ru.mobileup.template.features.utils.integrationTest
 import ru.mobileup.template.features.pokemons.TestPokemons
 import ru.mobileup.template.features.pokemons.createPokemonListComponent
-import ru.mobileup.template.features.pokemons.presentation.list.PokemonListComponent
 import ru.mobileup.template.features.pokemons.domain.PokemonType
+import ru.mobileup.template.features.pokemons.presentation.list.PokemonListComponent
+import ru.mobileup.template.features.utils.integrationTest
 import kotlin.time.Duration.Companion.seconds
 
 private val FIRE_TYPE_ID = TestPokemons.fireTypeId.value

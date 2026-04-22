@@ -4,12 +4,12 @@ import io.kotest.core.spec.style.scopes.FunSpecContainerScope
 import io.kotest.core.test.testCoroutineScheduler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import org.koin.core.Koin
 import ru.mobileup.template.core.ComponentFactory
 import ru.mobileup.template.core_testing.coreTestModule

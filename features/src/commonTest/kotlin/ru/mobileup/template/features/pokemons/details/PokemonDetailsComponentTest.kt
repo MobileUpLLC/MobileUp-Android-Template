@@ -7,9 +7,9 @@ import io.ktor.http.HttpStatusCode
 import ru.mobileup.template.core_testing.network.HttpResponse
 import ru.mobileup.template.core_testing.network.RequestMatcher
 import ru.mobileup.template.core_testing.network.containsPath
-import ru.mobileup.template.features.utils.integrationTest
 import ru.mobileup.template.features.pokemons.TestPokemons
 import ru.mobileup.template.features.pokemons.createPokemonDetailsComponent
+import ru.mobileup.template.features.utils.integrationTest
 import kotlin.time.Duration.Companion.seconds
 
 private val PONYTA_ID = TestPokemons.ponytaId.value

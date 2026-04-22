@@ -15,19 +15,13 @@ data class StandardDialogData(
         val MOCK = StandardDialogData(
             title = "Title".desc(),
             message = "Message".desc(),
-            confirmButton = DialogButton(
-                text = "Next".desc(),
-                action = {}
-            ),
-            dismissButton = DialogButton(
-                text = "Cancel".desc(),
-                action = {}
-            )
+            confirmButton = DialogButton(text = "Next".desc()),
+            dismissButton = DialogButton(text = "Cancel".desc())
         )
     }
 }
 
 data class DialogButton(
     val text: StringDesc,
-    val action: () -> Unit
+    val action: (() -> Unit)? = null
 )

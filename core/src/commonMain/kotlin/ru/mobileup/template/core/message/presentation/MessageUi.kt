@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,7 +31,6 @@ import org.jetbrains.compose.resources.painterResource
 import ru.mobileup.template.core.message.domain.Message
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.theme.custom.CustomTheme
-import ru.mobileup.template.core.utils.navigationBarsWithImePadding
 import kotlin.math.roundToInt
 
 /**
@@ -49,7 +50,8 @@ fun MessageUi(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .navigationBarsWithImePadding()
+            .navigationBarsPadding()
+            .imePadding()
     ) {
         visibleMessage?.let {
             MessagePopup(
@@ -77,7 +79,6 @@ private fun MessagePopup(
     ) {
         Card(
             shape = RoundedCornerShape(8.dp),
-            // TODO: use different containerColor depending on MessageType
             colors = CardDefaults.cardColors(containerColor = CustomTheme.colors.background.toast),
             elevation = CardDefaults.cardElevation(3.dp),
             modifier = Modifier
