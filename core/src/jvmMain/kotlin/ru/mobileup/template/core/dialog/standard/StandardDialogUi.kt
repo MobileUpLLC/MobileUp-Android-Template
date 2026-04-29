@@ -3,4 +3,4 @@ package ru.mobileup.template.core.dialog.standard
 import androidx.compose.runtime.Composable
 
 @Composable
-expect fun StandardDialog(dialogControl: StandardDialogControl)
+actual fun StandardDialog(dialogControl: StandardDialogControl) = Unit // stub for jvm target

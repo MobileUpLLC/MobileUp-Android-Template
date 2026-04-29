@@ -7,7 +7,7 @@ data class StandardDialogData(
     val title: StringDesc,
     val message: StringDesc? = null,
     val confirmButton: DialogButton,
-    val dismissButton: DialogButton? = null,
+    val cancelButton: DialogButton? = null,
     val dismissableByUser: Boolean = true
 ) {
 
@@ -16,12 +16,17 @@ data class StandardDialogData(
             title = "Title".desc(),
             message = "Message".desc(),
             confirmButton = DialogButton(text = "Next".desc()),
-            dismissButton = DialogButton(text = "Cancel".desc())
+            cancelButton = DialogButton(text = "Cancel".desc())
         )
     }
 }
 
 data class DialogButton(
     val text: StringDesc,
+    val style: DialogButtonStyle = DialogButtonStyle.Normal,
     val action: (() -> Unit)? = null
 )
+
+enum class DialogButtonStyle {
+    Normal, Destructive
+}
