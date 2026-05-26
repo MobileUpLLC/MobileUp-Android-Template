@@ -81,7 +81,8 @@ kotlin {
             // Permissions
             implementation(libs.bundles.moko.permissions)
 
-            // Location
+            // Map
+            api(libs.yandex.mapkit)
             implementation(libs.play.services.location)
         }
 
