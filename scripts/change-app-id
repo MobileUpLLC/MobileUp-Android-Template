@@ -46,19 +46,22 @@ replace_in_file() {
 }
 
 collect_project_files() {
-  if git -C "$PROJECT_ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    git -C "$PROJECT_ROOT" ls-files -z
-  else
-    find "$PROJECT_ROOT" \
+  find "$PROJECT_ROOT" \
+    \( \
+      -type d \
       \( \
-        -path "$PROJECT_ROOT/.git" -o \
-        -path "$PROJECT_ROOT/.gradle" -o \
-        -path "$PROJECT_ROOT/.idea" -o \
-        -path "$PROJECT_ROOT/.derivedData" -o \
-        -path "*/build" \
-      \) -prune \
-      -o -type f -print0
-  fi
+        -name ".git" -o \
+        -name ".gradle" -o \
+        -name ".idea" -o \
+        -name ".derivedData" -o \
+        -name "DerivedData" -o \
+        -name ".kotlin" -o \
+        -name ".konan" -o \
+        -name "build" -o \
+        -name "node_modules" \
+      \) \
+    \) -prune \
+    -o -type f -print0
 }
 
 if [[ -z "$NEW_ID" ]]; then
@@ -103,6 +106,7 @@ MOVED_DIRECTORIES=0
 SOURCE_DIRECTORIES=(
   "$PROJECT_ROOT/androidApp"
   "$PROJECT_ROOT/core"
+  "$PROJECT_ROOT/core-testing"
   "$PROJECT_ROOT/shared"
   "$PROJECT_ROOT/features"
 )
@@ -129,7 +133,7 @@ while IFS= read -r -d '' file; do
     fi
   done
 
-  if [[ "$should_process" == true ]] && grep -F -q -e "$OLD_ID" -e "$OLD_DIR" "$file"; then
+  if [[ "$should_process" == true ]] && command grep -F -q -e "$OLD_ID" -e "$OLD_DIR" "$file"; then
     replace_in_file "$file"
   fi
 done < <(
@@ -153,6 +157,41 @@ echo "Removing empty source directories..."
 find "${SOURCE_DIRECTORIES[@]}" -depth -type d \
   \( -path "*/src/*/kotlin/*" -o -path "*/src/*/java/*" \) \
   -empty -delete
+
+echo "Verifying package rename..."
+REMAINING_FILES=0
+while IFS= read -r -d '' file; do
+  should_process=false
+
+  for extension in "${TEXT_EXTENSIONS[@]}"; do
+    if [[ "$file" == *."$extension" ]]; then
+      should_process=true
+      break
+    fi
+  done
+
+  if [[ "$should_process" == true ]] && command grep -F -q -e "$OLD_ID" -e "$OLD_DIR" "$file"; then
+    echo "❌ Old package reference remains in ${file#$PROJECT_ROOT/}"
+    REMAINING_FILES=$((REMAINING_FILES + 1))
+  fi
+done < <(
+  collect_project_files
+)
+
+REMAINING_DIRECTORIES=0
+while IFS= read -r -d '' dir; do
+  echo "❌ Old package directory remains: ${dir#$PROJECT_ROOT/}"
+  REMAINING_DIRECTORIES=$((REMAINING_DIRECTORIES + 1))
+done < <(
+  find "${SOURCE_DIRECTORIES[@]}" -type d \
+    \( -path "*/src/*/kotlin/$OLD_DIR" -o -path "*/src/*/java/$OLD_DIR" \) \
+    -print0
+)
+
+if (( REMAINING_FILES > 0 || REMAINING_DIRECTORIES > 0 )); then
+  echo "❌ Error: Package rename verification failed."
+  exit 1
+fi
 
 echo "✅ Package name successfully changed."
 echo "Old ID: $OLD_ID"
