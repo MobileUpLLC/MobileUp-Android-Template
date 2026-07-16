@@ -5,12 +5,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.arkivanov.decompose.extensions.compose.stack.Children
+import com.arkivanov.decompose.ExperimentalDecomposeApi
+import com.arkivanov.decompose.extensions.compose.experimental.stack.ChildStack
 import ru.mobileup.template.core.theme.AppTheme
 import ru.mobileup.template.core.utils.predictiveBackAnimation
 import ru.mobileup.template.features.pokemons.presentation.details.PokemonDetailsUi
 import ru.mobileup.template.features.pokemons.presentation.list.PokemonListUi
 
+@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun PokemonsUi(
     component: PokemonsComponent,
@@ -18,7 +20,7 @@ fun PokemonsUi(
 ) {
     val childStack by component.childStack.collectAsState()
 
-    Children(
+    ChildStack(
         stack = childStack,
         modifier = modifier,
         animation = component.predictiveBackAnimation()

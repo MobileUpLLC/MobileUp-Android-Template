@@ -48,6 +48,7 @@ compose-uiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-previ
 
 decompose-core = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 decompose-compose = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
+decompose-compose-experimental = { module = "com.arkivanov.decompose:extensions-compose-experimental", version.ref = "decompose" }
 
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
@@ -104,7 +105,7 @@ hyperion-addons-networkEmulation = { module = "me.nemiron.hyperion:network-emula
 hyperion-addons-chucker = { module = "me.nemiron.hyperion:chucker", version.ref = "hyperionAddons" }
 
 [bundles]
-decompose = ["decompose-core", "decompose-compose"]
+decompose = ["decompose-core", "decompose-compose", "decompose-compose-experimental"]
 replica-shared = ["replica-core", "replica-algebra", "replica-decompose"]
 ktor-shared = [
     "ktor-core",

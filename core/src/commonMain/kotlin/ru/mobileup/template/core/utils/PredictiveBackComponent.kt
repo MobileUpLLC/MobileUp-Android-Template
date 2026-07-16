@@ -1,7 +1,8 @@
 package ru.mobileup.template.core.utils
 
 import androidx.compose.runtime.Composable
-import com.arkivanov.decompose.extensions.compose.stack.animation.StackAnimation
+import com.arkivanov.decompose.ExperimentalDecomposeApi
+import com.arkivanov.decompose.extensions.compose.experimental.stack.animation.StackAnimation
 import com.arkivanov.essenty.backhandler.BackHandlerOwner
 import com.arkivanov.essenty.backhandler.BackHandler
 
@@ -13,14 +14,15 @@ interface PredictiveBackComponent : BackHandlerOwner {
 }
 
 /**
- * A convenient method to create [com.arkivanov.decompose.extensions.compose.stack.animation.predictiveback.predictiveBackAnimation]
- * for components implementing [PredictiveBackComponent].
+ * Creates a stack animation with predictive back support for [PredictiveBackComponent].
  */
+@OptIn(ExperimentalDecomposeApi::class)
 @Composable
 fun <C : Any, T : Any> PredictiveBackComponent.predictiveBackAnimation(): StackAnimation<C, T> {
     return createPlatformPredictiveBackAnimation(backHandler, ::onBack)
 }
 
+@ExperimentalDecomposeApi
 internal expect fun <C : Any, T : Any> createPlatformPredictiveBackAnimation(
     backHandler: BackHandler,
     onBack: () -> Unit
